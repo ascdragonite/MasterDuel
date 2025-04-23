@@ -1,4 +1,5 @@
 #include <iostream>
+#include "card.h"
 #include "monstercard.h"
 #include <vector>
 

@@ -8,12 +8,12 @@ Card :: Card(string name, string type, string description){
     this -> description = description;
 }
 
-string Card :: getName() const{
+string Card::getName() const{
     return name;
 }
-string Card :: getDescription() const{
+string Card::getDescription() const{
     return description;
 }
-string Card :: getType() const{
+string Card::getType() const{
     return type;
 }

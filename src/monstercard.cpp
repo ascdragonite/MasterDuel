@@ -6,13 +6,13 @@ Monstercard :: Monstercard(string name, int atk, int def, string description) : 
     this -> atk = atk;
     this -> def = def;
 }
-int Monstercard :: getAtk() const{
+int Monstercard::getAtk() const{
     return atk;
 }
-int Monstercard :: getDef() const{
+int Monstercard::getDef() const{
     return def;
 }
-void Monstercard :: showInfo() const{
+void Monstercard::showInfo() const{
     cout << "Name: " << getName() << endl;
     cout << "Type: " << getType() << endl;
     cout << "Atk: " << atk << "Def: " << def << endl;

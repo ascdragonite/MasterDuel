@@ -5,15 +5,15 @@
 
 class Monstercard : public Card{
     private:
-    int atk;
-    int def;
+        int atk;
+        int def;
     public:
-    Monstercard(string name, int atk, int def, string description);
+        Monstercard(string name, int atk, int def, string description);
 
-    int getAtk() const;
-    int getDef() const;
+        int getAtk() const;
+        int getDef() const;
 
-    void showInfo() const override;
+        void showInfo() const override;
 };
 #endif
 
