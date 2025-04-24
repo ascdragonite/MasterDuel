@@ -3,12 +3,12 @@
 
 #include "card.h"
 
-class Monstercard : public Card{
+class MonsterCard : public Card{
     private:
         int atk;
         int def;
     public:
-        Monstercard(string name, int atk, int def, string description);
+        MonsterCard(string name, int atk, int def, string description);
 
         int getAtk() const;
         int getDef() const;
