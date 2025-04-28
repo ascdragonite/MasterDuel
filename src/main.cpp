@@ -1,6 +1,9 @@
 #include <iostream>
 #include "card.h"
 #include "monstercard.h"
+#include "spellcard.h"
+#include "trapcard.h"
+#include "player.h"
 #include <vector>
 
 int main(){

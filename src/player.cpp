@@ -25,9 +25,9 @@ void Player :: playMonster(int handIndex){
             field.push_back(hand[handIndex]);
             hand.erase(hand.begin() + handIndex);
         }
-    }
-    else{
-        cout << "This is not a monster card" << endl;
+        else{
+            cout << "This is not a monster card" << endl;
+        }
     }
 }
 
@@ -37,9 +37,9 @@ void Player :: activateSpell(int handIndex){
             field.push_back(hand[handIndex]);
             hand.erase(hand.begin() + handIndex);
         }
-    }
-    else{
-        cout << "This is not a spell card" << endl;
+        else{
+            cout << "This is not a spell card" << endl;
+        }
     }
 }
 
@@ -49,9 +49,9 @@ void Player :: setTrap(int handIndex){
             field.push_back(hand[handIndex]);
             hand.erase(hand.begin() + handIndex);
         }
-    }
-    else{
-        cout << "This is not a trap card" << endl;
+        else{
+            cout << "This is not a trap card" << endl;
+        }
     }
 }
 
@@ -65,7 +65,7 @@ void Player :: showHand() const{
 }
 
 void Player :: showField() const{
-    cout << "Fiend: " << endl;
+    cout << "Field: " << endl;
     for(int i = 0 ; i < field.size() ; i++){
         cout << i << " ";
         field[i] -> showInfo();
@@ -91,7 +91,14 @@ vector<Card*>& Player :: getField(){
 }
 
 void Player :: loadDeckDarkMagician(){
-    
+    deck.push_back(new MonsterCard("Dark Magician", 2500, 2100, "The ultimate wizard in term of attack and defend"));
+    deck.push_back(new MonsterCard("Dark Magician", 2500, 2100, "The ultimate wizard in term of attack and defend"));
+    deck.push_back(new MonsterCard("Dark Magician Girl", 2000, 1700, "Dark Magician favourite student"));
+    deck.push_back(new MonsterCard("Kuriboh", 0, 0, "Little fluffy ball that like to help others"));
+    deck.push_back(new SpellCard("Re:End of a dream", "If and only if your lifepoint is lower or equal to 500 you can activate this card. When this card is activated, you can conduct anorther turn"));
+    deck.push_back(new SpellCard("Disorted Fate", "Look at your full deck and place a card you like at the top of the deck"));
+    deck.push_back(new SpellCard("Oshama Scramble", "Shuffle your opponent's deck when this card is activated"));
+    deck.push_back(new SpellCard("Oshama Scramble", "Shuffle your opponent's deck when activated"));
 }
 
 
