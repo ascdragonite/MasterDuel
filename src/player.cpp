@@ -3,6 +3,10 @@
 #include "spellcard.h"
 #include "trapcard.h"
 #include <iostream>
+#include <algorithm>
+#include <random>
+#include <vector>
+#include <ctime>
 using namespace std;
 
 Player :: Player(){
@@ -14,9 +18,6 @@ void Player :: drawCard(){
         hand.push_back(deck.back());
         deck.pop_back();
     }
-    else{
-        cout << "Unable to draw card" << endl;
-    }
 }
 
 void Player :: playMonster(int handIndex){
@@ -24,9 +25,6 @@ void Player :: playMonster(int handIndex){
         if(dynamic_cast<MonsterCard*>(hand[handIndex])){
             field.push_back(hand[handIndex]);
             hand.erase(hand.begin() + handIndex);
-        }
-        else{
-            cout << "This is not a monster card" << endl;
         }
     }
 }
@@ -37,9 +35,6 @@ void Player :: activateSpell(int handIndex){
             field.push_back(hand[handIndex]);
             hand.erase(hand.begin() + handIndex);
         }
-        else{
-            cout << "This is not a spell card" << endl;
-        }
     }
 }
 
@@ -49,28 +44,23 @@ void Player :: setTrap(int handIndex){
             field.push_back(hand[handIndex]);
             hand.erase(hand.begin() + handIndex);
         }
-        else{
-            cout << "This is not a trap card" << endl;
-        }
     }
 }
 
-void Player :: showHand() const{
-    cout << "Hand: " << endl;
-    for(int i = 0 ; i < hand.size() ; i++){
-        cout << i << " ";
-        hand[i] -> showInfo();
-        cout << endl;
+vector<string> Player :: getHandInfo() const{
+    vector<string> info;
+    for(auto card : hand){
+        info.push_back(card -> getName());
     }
+    return info;
 }
 
-void Player :: showField() const{
-    cout << "Field: " << endl;
-    for(int i = 0 ; i < field.size() ; i++){
-        cout << i << " ";
-        field[i] -> showInfo();
-        cout << endl;
+vector<string> Player::getFieldInfo() const {
+    vector<string> info;
+    for (auto card : field) {
+        info.push_back(card->getName());
     }
+    return info;
 }
 
 void Player :: takeDamage(int amount){
@@ -80,6 +70,10 @@ void Player :: takeDamage(int amount){
 
 int Player :: getHp() const{
     return hp;
+}
+
+vector<Card*>& Player::getHand() {
+    return hand;
 }
 
 vector<Card*>& Player :: getDeck(){
@@ -133,6 +127,11 @@ void Player :: loadDeckBlueEyes(){
     deck.push_back(new SpellCard("Dragon United", "Buff a monster attack and defense by 100 for each faceup monster you control when this card is activated."));
     deck.push_back(new SpellCard("Burst Stream of Destruction", "If you controll a Blue eye white dragon destroy all card your opponent controll but skip your next 2 battle phase."));
     deck.push_back(new SpellCard("Rage of the blue eyes", "Sacrifice 2/3 of your lifepoint, “Blue Eyes White Dragon” you controll can now attack twice in a turn ( can not active “Re:End of a dream” the turn you activate this card).")); 
+}
+
+void Player::shuffleDeck(){
+    auto rng = default_random_engine(time(0));
+    shuffle(deck.begin(), deck.end(), rng);
 }
 
 
