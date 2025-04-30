@@ -7,6 +7,8 @@ class MonsterCard : public Card{
     private:
         int atk;
         int def;
+        bool defenseMode;
+        bool isSet;
     public:
         MonsterCard(string name, int atk, int def, string description);
 
@@ -14,6 +16,10 @@ class MonsterCard : public Card{
         int getDef() const;
 
         void showInfo() const override;
+        void setDefenseMode(bool mode);
+        bool isInDefense() const;
+        void reveal();
+        bool isFacedown() const;
 };
 #endif
 

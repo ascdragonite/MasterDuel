@@ -20,11 +20,26 @@ void Player :: drawCard(){
     }
 }
 
-void Player :: playMonster(int handIndex){
-    if(handIndex >= 0 && handIndex < hand.size()){
-        if(dynamic_cast<MonsterCard*>(hand[handIndex])){
-            field.push_back(hand[handIndex]);
+void Player::playMonster(int handIndex, bool defenseMode) {
+    if (handIndex >= 0 && handIndex < hand.size()) {
+        MonsterCard* m = dynamic_cast<MonsterCard*>(hand[handIndex]);
+        if (m) {
+            m->setDefenseMode(defenseMode);
+            field.push_back(m);
             hand.erase(hand.begin() + handIndex);
+        }
+    }
+}
+
+void Player::switchPosition(int fieldIndex) {
+    if (fieldIndex >= 0 && fieldIndex < field.size()) {
+        MonsterCard* m = dynamic_cast<MonsterCard*>(field[fieldIndex]);
+        if (m) {
+            if (m->isFacedown()) {
+                m->reveal(); 
+            } else {
+                m->setDefenseMode(!m->isInDefense()); 
+            }
         }
     }
 }

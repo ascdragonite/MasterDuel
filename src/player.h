@@ -17,9 +17,11 @@ class Player{
     Player();
 
     void drawCard();
-    void playMonster(int handIndex);
+    void playMonster(int handIndex, bool defenseMode);
     void activateSpell(int handIndex);
     void setTrap(int handIndex);
+
+    void switchPosition(int fieldIndex);
 
     void takeDamage(int amount);
     int getHp() const;
