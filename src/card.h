@@ -12,7 +12,7 @@ class Card{
     string type;
 
     public:
-    Card(string name, string description, string type);
+    Card(string name, string type, string description);
 
     string getName() const;
     string getDescription() const;

@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-MonsterCard :: MonsterCard(string name, int atk, int def, string description) : Card(name, description, "Monster"){
+MonsterCard :: MonsterCard(string name, int atk, int def, string description) : Card(name, "Monster", description){
     this -> atk = atk;
     this -> def = def;
     this -> isSet = false;

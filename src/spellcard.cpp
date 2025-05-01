@@ -1,7 +1,7 @@
 #include "spellcard.h"
 #include <iostream>
 using namespace std;
-SpellCard :: SpellCard(string name, string description) : Card(name, description, "Spell"){}
+SpellCard :: SpellCard(string name, string description) : Card(name, "Spell", description){}
 
 void SpellCard :: activateEffect(){
     cout << "Activating spell: " << getName() << endl;

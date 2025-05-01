@@ -1,7 +1,7 @@
 #include "trapcard.h"
 #include <iostream>
 using namespace std;
-TrapCard :: TrapCard(string name, string description) : Card(name, description, "Trap"){}
+TrapCard :: TrapCard(string name, string description) : Card(name, "Trap", description){}
 
 void TrapCard :: activateEffect(){
     cout << "Activating spell: " << getName() << endl;
