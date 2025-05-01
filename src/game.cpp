@@ -1,9 +1,10 @@
 #include "game.h"
+#include "player.h"
 #include <algorithm>
 #include <random>
 #include <ctime>
 
-void startGame(Player& p1, Player& p2) {
+void GameState::startGame(Player& p1, Player& p2) {
     p1.shuffleDeck();
     p2.shuffleDeck();
 
@@ -13,3 +14,9 @@ void startGame(Player& p1, Player& p2) {
     }
 }
 
+
+GameState::GameState(Player& p1, Player& p2)
+{
+    player1 = p1;
+    player2 = p2;
+}

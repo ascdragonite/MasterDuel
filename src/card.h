@@ -2,8 +2,9 @@
 #define CARD_H
 
 #include <string>
+#include "json.hpp"
 using namespace std;
-
+using json = nlohmann::json;
 class Card{
     protected:
     string name;
@@ -17,7 +18,12 @@ class Card{
     string getDescription() const;
     string getType() const;
 
+    void SetName(string n);
+    void SetDescription(string d);
+    void SetType(string t);
+
     virtual void showInfo() const = 0;
+    virtual json toJson() const = 0;
 
     virtual ~Card(){}
 };

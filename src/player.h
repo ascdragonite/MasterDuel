@@ -25,16 +25,20 @@ class Player{
 
     void takeDamage(int amount);
     int getHp() const;
+    void setHp(int hp);
 
     void loadDeckDarkMagician();
     void loadDeckBlueEyes();
     void shuffleDeck();
 
-    vector<Card*>& getDeck();
-    vector<Card*>& getField();
-    vector<Card*>& getHand();
+    vector<Card*> getDeck() const;
+    vector<Card*> getField() const;
+    vector<Card*> getHand() const;
 
-    vector<string> getHandInfo() const;  
-    vector<string> getFieldInfo() const;
+    void setDeck(vector<Card*> newDeck);
+    void setField(vector<Card*> newField);
+    void setHand(vector<Card*> newHand);
+
+    ~Player();
 };
 #endif

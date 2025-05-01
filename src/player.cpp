@@ -1,4 +1,5 @@
 #include "player.h"
+#include "card.h"
 #include "monstercard.h"
 #include "spellcard.h"
 #include "trapcard.h"
@@ -7,10 +8,27 @@
 #include <random>
 #include <vector>
 #include <ctime>
+
 using namespace std;
 
 Player :: Player(){
     hp = 4000;
+}
+
+Player::~Player()
+{
+    for(Card* card : deck)
+    {
+        delete card;
+    }
+    for(Card* card : field)
+    {
+        delete card;
+    }
+    for(Card*card : hand)
+    {
+        delete card;
+    }
 }
 
 void Player :: drawCard(){
@@ -21,7 +39,7 @@ void Player :: drawCard(){
 }
 
 void Player::playMonster(int handIndex, bool defenseMode) {
-    if (handIndex >= 0 && handIndex < hand.size()) {
+    if (handIndex >= 0 && handIndex < static_cast<int>(hand.size())) {
         MonsterCard* m = dynamic_cast<MonsterCard*>(hand[handIndex]);
         if (m) {
             m->setDefenseMode(defenseMode);
@@ -32,7 +50,7 @@ void Player::playMonster(int handIndex, bool defenseMode) {
 }
 
 void Player::switchPosition(int fieldIndex) {
-    if (fieldIndex >= 0 && fieldIndex < field.size()) {
+    if (fieldIndex >= 0 && fieldIndex < static_cast<int>(field.size())) {
         MonsterCard* m = dynamic_cast<MonsterCard*>(field[fieldIndex]);
         if (m) {
             if (m->isFacedown()) {
@@ -45,7 +63,7 @@ void Player::switchPosition(int fieldIndex) {
 }
 
 void Player :: activateSpell(int handIndex){
-    if(handIndex >= 0 && handIndex < hand.size()){
+    if(handIndex >= 0 && handIndex < static_cast<int>(hand.size())){
         if(dynamic_cast<SpellCard*>(hand[handIndex])){
             field.push_back(hand[handIndex]);
             hand.erase(hand.begin() + handIndex);
@@ -54,14 +72,14 @@ void Player :: activateSpell(int handIndex){
 }
 
 void Player :: setTrap(int handIndex){
-    if(handIndex >= 0 && handIndex < hand.size()){
+    if(handIndex >= 0 && handIndex < static_cast<int>(hand.size())){
         if(dynamic_cast<TrapCard*>(hand[handIndex])){
             field.push_back(hand[handIndex]);
             hand.erase(hand.begin() + handIndex);
         }
     }
 }
-
+/* 
 vector<string> Player :: getHandInfo() const{
     vector<string> info;
     for(auto card : hand){
@@ -76,7 +94,7 @@ vector<string> Player::getFieldInfo() const {
         info.push_back(card->getName());
     }
     return info;
-}
+} */
 
 void Player :: takeDamage(int amount){
     hp -= amount;
@@ -87,17 +105,54 @@ int Player :: getHp() const{
     return hp;
 }
 
-vector<Card*>& Player::getHand() {
+vector<Card*> Player::getHand() const {
     return hand;
 }
 
-vector<Card*>& Player :: getDeck(){
+vector<Card*> Player :: getDeck() const {
     return deck;
 }
 
-vector<Card*>& Player :: getField(){
+vector<Card*> Player :: getField() const{
     return field;
 }
+
+void Player::setHand(vector<Card*> newHand)
+{
+    for(Card* card : hand)
+    {
+        delete card;
+    }
+    hand.clear();
+
+    hand = newHand;
+}
+
+void Player::setField(vector<Card*> newField)
+{
+    for(Card* card : field)
+    {
+        delete card;
+    }
+    field.clear();
+
+    field = newField;
+}
+void Player::setDeck(vector<Card*> newDeck)
+{
+    for(Card* card : deck)
+    {
+        delete card;
+    }
+    deck.clear();
+
+    deck = newDeck;
+}
+void Player::setHp(int hp)
+{
+    this -> hp = hp; 
+}
+
 
 void Player :: loadDeckDarkMagician(){
     deck.push_back(new MonsterCard("Dark Magician", 2500, 2100, "The ultimate wizard in term of attack and defense."));
@@ -125,8 +180,8 @@ void Player :: loadDeckDarkMagician(){
 void Player :: loadDeckBlueEyes(){
     deck.push_back(new MonsterCard("Blue-Eyes White Dragon", 3000, 2500, "This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale."));
     deck.push_back(new MonsterCard("Blue-Eyes White Dragon", 3000, 2500, "This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale."));
-    deck.push_back(new MonsterCard("T+pazolite", 1750, 200, "A crystal dragon born from solidified molten lava. T+pazolite’s scales shimmer like gemstones, absorbing and reflecting light to confuse enemies on the battlefield."));
-    deck.push_back(new MonsterCard("Morimori Atsush", 1800, 0, "A nomadic dragon god wandering through the eastern forests. With no defensive armor, it relies on immense speed and broad wings to outmaneuver and strike down any who dare approach."));
+    deck.push_back(new MonsterCard("T+pazolite", 1750, 200, "A crystal dragon born from solidified molten lava. T+pazolite's scales shimmer like gemstones, absorbing and reflecting light to confuse enemies on the battlefield."));
+    deck.push_back(new MonsterCard("Morimori Atsushi", 1800, 0, "A nomadic dragon god wandering through the eastern forests. With no defensive armor, it relies on immense speed and broad wings to outmaneuver and strike down any who dare approach."));
     deck.push_back(new MonsterCard("Feryquitous", 1500, 400, "A young flame dragon constantly yearning to prove its might. Its immature blue flames often ignite unexpected wildfires across the land."));
     deck.push_back(new MonsterCard("Kuroma", 2100, 700, "A shadow dragon, slender yet deadly. Kuroma hides within dark clouds, striking without warning and bringing silent destruction to its prey."));
     deck.push_back(new MonsterCard("Laur", 1450, 1000, "An ancient dragon that once guarded sacred lands. Though its strength has waned with time, Laur’s unwavering spirit remains, ready to sacrifice itself to halt any invader’s advance."));
@@ -138,7 +193,7 @@ void Player :: loadDeckBlueEyes(){
     deck.push_back(new SpellCard("Disorted Fate", "Look at your full deck and place a card you like at the top of the deck."));
     deck.push_back(new SpellCard("Oshama Scramble", "Shuffle your opponent's deck when this card is activated."));
     deck.push_back(new SpellCard("Flower Snow Drum'n'Bass", "Flip coin, winner gets draw 2 cards"));
-    deck.push_back(new SpellCard("WorldVanquisher", "Buff a monster attack by 200 when this card is activated."));
+    deck.push_back(new SpellCard("World Vanquisher", "Buff a monster attack by 200 when this card is activated."));
     deck.push_back(new SpellCard("Dragon United", "Buff a monster attack and defense by 100 for each faceup monster you control when this card is activated."));
     deck.push_back(new SpellCard("Burst Stream of Destruction", "If you controll a Blue eye white dragon destroy all card your opponent controll but skip your next 2 battle phase."));
     deck.push_back(new SpellCard("Rage of the blue eyes", "Sacrifice 2/3 of your lifepoint, “Blue Eyes White Dragon” you controll can now attack twice in a turn ( can not active “Re:End of a dream” the turn you activate this card).")); 
@@ -148,6 +203,7 @@ void Player::shuffleDeck(){
     auto rng = default_random_engine(time(0));
     shuffle(deck.begin(), deck.end(), rng);
 }
+
 
 
 

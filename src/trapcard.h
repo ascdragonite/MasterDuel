@@ -1,6 +1,10 @@
 #ifndef TRAPCARD_H
 #define TRAPCARD_H
 #include "card.h"
+#include "json.hpp"
+using namespace std;
+using json = nlohmann::json;
+
 class TrapCard : public Card{
     public:
 
@@ -10,5 +14,6 @@ class TrapCard : public Card{
 
     void showInfo() const override;
 
+    json toJson() const override;
 };
 #endif

@@ -17,3 +17,16 @@ string Card::getDescription() const{
 string Card::getType() const{
     return type;
 }
+
+void Card::SetName(string n){
+    name = n;
+}
+
+void Card::SetDescription(string d)
+{
+    description = d;
+}
+void Card::SetType(string t)
+{
+    type = t;
+}

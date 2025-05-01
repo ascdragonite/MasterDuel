@@ -13,3 +13,12 @@ void SpellCard :: showInfo() const{
     cout << "Description: " << getDescription() << endl;
 }
 
+
+json SpellCard::toJson() const 
+{
+    json j;
+    j["type"] = type;
+    j["name"] = name;
+    j["description"] = description;
+    return j;
+}

@@ -13,3 +13,12 @@ void TrapCard :: showInfo() const{
     cout << "Description: " << getDescription() << endl;
 }
 
+
+json TrapCard::toJson() const 
+{
+    json j;
+    j["type"] = type;
+    j["name"] = name;
+    j["description"] = description;
+    return j;
+}

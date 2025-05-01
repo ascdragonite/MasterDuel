@@ -1,5 +1,6 @@
 #include <iostream>
 #include "card.h"
+#include "game.h"
 #include "monstercard.h"
 #include "spellcard.h"
 #include "trapcard.h"
@@ -11,10 +12,14 @@
 #include <chrono>
 #include <string>
 #include "json.hpp" // <-- include nlohmann/json (one header file)
+#include "serialize.h"
 
 using namespace std;
 
 using json = nlohmann::json;
+
+
+
 
 void writeToFile(const json& j) {
     ofstream out("game_state.json");
@@ -57,10 +62,18 @@ int main() {
 
     if (player == "1") {
         json j;
+        Player* player1 = new Player();
+        Player* player2 = new Player();
+        player1 -> loadDeckBlueEyes(); //TODO: add deck selection
+        player2 ->loadDeckDarkMagician();
+        j["Player1"] = *player1;
+        j["Player2"] = *player2;
+        
         j["turn"] = "PLAYER1";
         j["last_message"] = "";
         writeToFile(j);
     }
+
 
     while (true) {
         json state = readFromFile();

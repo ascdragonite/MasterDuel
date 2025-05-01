@@ -42,4 +42,14 @@ bool MonsterCard :: isFacedown() const{
     return isSet;
 }
 
+json MonsterCard::toJson() const 
+{
+    json j;
+    j["type"] = type;
+    j["name"] = name;
+    j["atk"] = atk;
+    j["def"] = def;
+    j["description"] = description;
+    return j;
+}
 
