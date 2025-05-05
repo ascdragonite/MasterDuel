@@ -20,7 +20,14 @@ class Player{
     void playMonster(int handIndex, bool defenseMode);
     void activateSpell(int handIndex);
     void setTrap(int handIndex);
+    int countSpellTrapOnField() const;
 
+    vector<bool> attackedThisTurn;
+    void resetAttackFlags();
+    bool hasAttacked(int fieldIndex) const;
+    void setAttacked(int fieldIndex);
+
+    void revealMonster(int fieldIndex);
     void switchPosition(int fieldIndex);
 
     void takeDamage(int amount);

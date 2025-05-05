@@ -40,6 +40,16 @@ void Player :: drawCard(){
 
 void Player::playMonster(int handIndex, bool defenseMode) {
     if (handIndex >= 0 && handIndex < static_cast<int>(hand.size())) {
+
+        int monsterCount = 0;
+        for (Card* card : field) {
+            if (card->getType() == "Monster") {
+                monsterCount++;
+            }
+        }
+
+        if (monsterCount >= 5) return;
+
         MonsterCard* m = dynamic_cast<MonsterCard*>(hand[handIndex]);
         if (m) {
             m->setDefenseMode(defenseMode);
@@ -49,31 +59,68 @@ void Player::playMonster(int handIndex, bool defenseMode) {
     }
 }
 
+void Player::resetAttackFlags() {
+    attackedThisTurn = vector<bool>(field.size(), false);
+}
+
+bool Player::hasAttacked(int index) const {
+    return index >= 0 && index < attackedThisTurn.size() && attackedThisTurn[index];
+}
+
+void Player::setAttacked(int index) {
+    if(index >= 0 && index < attackedThisTurn.size())
+        attackedThisTurn[index] = true;
+}
+
+
 void Player::switchPosition(int fieldIndex) {
-    if (fieldIndex >= 0 && fieldIndex < static_cast<int>(field.size())) {
+    if (fieldIndex >= 0 && fieldIndex < field.size()) {
         MonsterCard* m = dynamic_cast<MonsterCard*>(field[fieldIndex]);
-        if (m) {
-            if (m->isFacedown()) {
-                m->reveal(); 
-            } else {
-                m->setDefenseMode(!m->isInDefense()); 
+        if (m && !m->isFacedown()) {
+            if (hasAttacked(fieldIndex)) {
+                return;
             }
+            m->setDefenseMode(!m->isInDefense());
         }
     }
 }
 
-void Player :: activateSpell(int handIndex){
-    if(handIndex >= 0 && handIndex < static_cast<int>(hand.size())){
-        if(dynamic_cast<SpellCard*>(hand[handIndex])){
+void Player::revealMonster(int fieldIndex) {
+    if (fieldIndex >= 0 && fieldIndex < field.size()) {
+        MonsterCard* m = dynamic_cast<MonsterCard*>(field[fieldIndex]);
+        if (m && m->isFacedown()) {
+            m->reveal();                       
+            m->setDefenseMode(false);          
+            m->showInfo();
+        }
+    }
+}
+
+int Player::countSpellTrapOnField() const {
+    int count = 0;
+    for (Card* card : field) {
+        string type = card->getType();
+        if (type == "Spell" || type == "Trap") count++;
+    }
+    return count;
+}
+
+void Player::activateSpell(int handIndex) {
+    if (handIndex >= 0 && handIndex < static_cast<int>(hand.size())) {
+        if (countSpellTrapOnField() >= 5) return; 
+
+        if (dynamic_cast<SpellCard*>(hand[handIndex])) {
             field.push_back(hand[handIndex]);
             hand.erase(hand.begin() + handIndex);
         }
     }
 }
 
-void Player :: setTrap(int handIndex){
-    if(handIndex >= 0 && handIndex < static_cast<int>(hand.size())){
-        if(dynamic_cast<TrapCard*>(hand[handIndex])){
+void Player::setTrap(int handIndex) {
+    if (handIndex >= 0 && handIndex < static_cast<int>(hand.size())) {
+        if (countSpellTrapOnField() >= 5) return;  // ⛔ sân đủ 5 spell/trap
+
+        if (dynamic_cast<TrapCard*>(hand[handIndex])) {
             field.push_back(hand[handIndex]);
             hand.erase(hand.begin() + handIndex);
         }

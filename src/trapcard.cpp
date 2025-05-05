@@ -4,7 +4,7 @@ using namespace std;
 TrapCard :: TrapCard(string name, string description) : Card(name, "Trap", description){}
 
 void TrapCard :: activateEffect(){
-    cout << "Activating spell: " << getName() << endl;
+    cout << "Activating trap: " << getName() << endl;
 }
 
 void TrapCard :: showInfo() const{
