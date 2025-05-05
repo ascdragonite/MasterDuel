@@ -7,67 +7,108 @@
 #include <random>
 #include <ctime>
 #include <iostream>
+#include <thread>
+#include <chrono>
 
-void GameState::startGame(Player& p1, Player& p2) {
-    p1.shuffleDeck();
-    p2.shuffleDeck();
+void GameState::ConsoleClear()
+{
+    cout << "\033[2J\033[H";
+}
+
+GameState::GameState(Player& p1, Player& p2) 
+{
+    // Initialize players
+    player1.loadDeckDarkMagician();
+    player2.loadDeckBlueEyes();
+}
+
+void GameState::startGame() {
+    player1.shuffleDeck();
+    player2.shuffleDeck();
 
     for (int i = 0; i < 5; ++i) {
-        p1.drawCard();
-        p2.drawCard();
+        player1.drawCard();
+        player2.drawCard();
     }
 }
 
-void GameState :: playerTurn(Player& self, Player& opponent, bool isFirstTurn, const vector<pair<int, int>>& actionPlan){
+void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
     bool hasSummoned = false;
     bool hasBattled = false;
 
     self.resetAttackFlags();
     if (!isFirstTurn) {
         self.drawCard();
-    } //turn 1 ko draw card
+    }
 
-    for(const auto& action : actionPlan){
-        int code = action.first;
-        int index = action.second;
+    while (true) {
+        ConsoleClear();
+        cout << "\nChoose an action:\n";
+        cout << "0: End Turn\n";
+        cout << "1: Summon Monster\n";
+        cout << "2: Activate Spell\n";
+        cout << "3: Set Trap\n";
+        cout << "4: Switch Monster Position\n";
+        cout << "5: Attack\n";
+        cout << "6: Reveal Monster\n";
+        cout << "Enter your choice: ";
 
-        switch(code){
+        int code, index = -1;
+        cin >> code;
+
+        if (code != 0) {
+            cout << "Enter the index of the card: ";
+            cin >> index;
+        }
+
+        switch (code) {
             case 0:
-            return; //endturn
+                return; // End turn
 
             case 1:
-            if(!hasSummoned && !hasBattled){
-                self.playMonster(index, false);
-                hasSummoned = true;
-            }
-            break;
+                if (!hasSummoned && !hasBattled) {
+                    self.playMonster(index, false);
+                    hasSummoned = true;
+                } else {
+                    cout << "You cannot summon after battling or summon more than once per turn.\n";
+                }
+                break;
 
             case 2:
-            self.activateSpell(index);
-            break;
+                self.activateSpell(index);
+                break;
 
             case 3:
-            self.setTrap(index);
-            break;
+                self.setTrap(index);
+                break;
 
             case 4:
-            self.switchPosition(index);
-            break;
+                self.switchPosition(index);
+                break;
 
             case 5:
-            if (!hasBattled) {
-                battlePhase(self, opponent, index, index);
-                hasBattled = true;
-            }
-            break;
+                if (!hasBattled) {
+                    int defendIndex;
+                    cout << "Enter the index of the opponent's card to attack: ";
+                    cin >> defendIndex;
+                    battlePhase(self, opponent, index, defendIndex);
+                    hasBattled = true;
+                } else {
+                    cout << "You can only battle once per turn.\n";
+                }
+                break;
 
             case 6:
-            self.revealMonster(index);
-            break;
+                self.revealMonster(index);
+                break;
 
             default:
-            break;
+                cout << "Invalid action. Try again.\n";
+                break;
         }
+
+        // Pause to let the player see the result of their action
+        this_thread::sleep_for(std::chrono::milliseconds(500));
     }
 }
 

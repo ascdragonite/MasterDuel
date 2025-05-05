@@ -8,8 +8,15 @@
 #include <random>
 #include <vector>
 #include <ctime>
+#include "serialize.h"
 
 using namespace std;
+
+void DumpInfo(Player& player)
+{
+    json j;
+    to_json(j, player);
+}
 
 Player :: Player(){
     hp = 4000;
@@ -36,6 +43,7 @@ void Player :: drawCard(){
         hand.push_back(deck.back());
         deck.pop_back();
     }
+    DumpInfo(*this);
 }
 
 void Player::playMonster(int handIndex, bool defenseMode) {
@@ -57,6 +65,7 @@ void Player::playMonster(int handIndex, bool defenseMode) {
             hand.erase(hand.begin() + handIndex);
         }
     }
+    DumpInfo(*this);
 }
 
 void Player::resetAttackFlags() {
@@ -83,6 +92,7 @@ void Player::switchPosition(int fieldIndex) {
             m->setDefenseMode(!m->isInDefense());
         }
     }
+    DumpInfo(*this);
 }
 
 void Player::revealMonster(int fieldIndex) {
@@ -94,6 +104,7 @@ void Player::revealMonster(int fieldIndex) {
             m->showInfo();
         }
     }
+    DumpInfo(*this);
 }
 
 int Player::countSpellTrapOnField() const {
@@ -113,7 +124,13 @@ void Player::activateSpell(int handIndex) {
             field.push_back(hand[handIndex]);
             hand.erase(hand.begin() + handIndex);
         }
+        else 
+        {
+            cout << "Not a Spell Card" << endl;
+            return;
+        }
     }
+    DumpInfo(*this);
 }
 
 void Player::setTrap(int handIndex) {
@@ -125,6 +142,7 @@ void Player::setTrap(int handIndex) {
             hand.erase(hand.begin() + handIndex);
         }
     }
+    DumpInfo(*this);
 }
 /* 
 vector<string> Player :: getHandInfo() const{
@@ -173,6 +191,7 @@ void Player::setHand(vector<Card*> newHand)
     hand.clear();
 
     hand = newHand;
+    DumpInfo(*this);
 }
 
 void Player::setField(vector<Card*> newField)
@@ -184,6 +203,7 @@ void Player::setField(vector<Card*> newField)
     field.clear();
 
     field = newField;
+    DumpInfo(*this);
 }
 void Player::setDeck(vector<Card*> newDeck)
 {
@@ -194,10 +214,12 @@ void Player::setDeck(vector<Card*> newDeck)
     deck.clear();
 
     deck = newDeck;
+    DumpInfo(*this);
 }
 void Player::setHp(int hp)
 {
     this -> hp = hp; 
+    DumpInfo(*this);
 }
 
 

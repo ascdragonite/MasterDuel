@@ -22,7 +22,6 @@ void MonsterCard::showInfo() const{
         cout << "Name: " << getName() << endl;
         cout << "Type: " << getType() << endl;
         cout << "Atk: " << atk << " Def: " << def << endl;
-        cout << "Description: " << getDescription() << endl;
     }
 }
 void MonsterCard :: setDefenseMode(bool mode){
@@ -49,6 +48,8 @@ json MonsterCard::toJson() const
     j["name"] = name;
     j["atk"] = atk;
     j["def"] = def;
+    j["isSet"] = isSet;
+    j["defenseMode"] = defenseMode;
     j["description"] = description;
     return j;
 }

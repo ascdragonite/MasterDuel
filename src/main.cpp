@@ -42,10 +42,6 @@ json readFromFile() {
     return j;
 }
 
-void ConsoleClear()
-{
-    cout << "\033[2J\033[H";
-}
 
 int main() {
     string player;
@@ -60,20 +56,19 @@ int main() {
 
     std::cout << "You are Player " << player << ".\n";
 
+
+    Player* player1 = new Player();
+    Player* player2 = new Player();
+    GameState gameState = GameState(*player1, *player2);
+
     if (player == "1") {
+
         json j;
-        Player* player1 = new Player();
-        Player* player2 = new Player();
-        player1 -> loadDeckBlueEyes(); //TODO: add deck selection
-        player2 ->loadDeckDarkMagician();
         j["Player1"] = *player1;
         j["Player2"] = *player2;
-        
         j["turn"] = "PLAYER1";
-        j["last_message"] = "";
         writeToFile(j);
     }
-
 
     while (true) {
         json state = readFromFile();
@@ -86,24 +81,40 @@ int main() {
         bool myTurn = (state["turn"] == "PLAYER" + player);
 
         if (myTurn) {
-            if (!state["last_message"].get<std::string>().empty()) {
-                cout << "Opponent says: " << state["last_message"] << "\n";
+            gameState.ConsoleClear();
+            cout << "It's your turn!\n";
+
+            if (player == "1") {
+                gameState.playerTurn(*player1, *player2, false);
+            } else {
+                gameState.playerTurn(*player2, *player1, false);
             }
-            cout << "It's your turn! Enter a message: ";
-            string message;
-            getline(std::cin, message);
 
-            string nextPlayer = (player == "1") ? "2" : "1";
+            // Check for victory
+            if (gameState.checkVictory(*player1, *player2)) {
+                cout << "Game Over! ";
+                if (player1->getHp() <= 0 || player1->getDeck().empty()) {
+                    cout << "Player 2 wins!\n";
+                } else {
+                    cout << "Player 1 wins!\n";
+                }
+                break;
+            }
 
-            state["last_message"] = message;
-            state["turn"] = "PLAYER" + nextPlayer;
+            // Update JSON state
+            state["Player1"] = *player1;
+            state["Player2"] = *player2;
+            state["turn"] = "PLAYER" + string((player == "1") ? "2" : "1");
             writeToFile(state);
-            
         } else {
-            ConsoleClear();
+            gameState.ConsoleClear();
             cout << "Waiting for your turn...\n";
             this_thread::sleep_for(std::chrono::milliseconds(1000));
         }
     }
+
+    delete player1;
+    delete player2;
+    return 0;
 }
 

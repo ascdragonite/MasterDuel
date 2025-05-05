@@ -84,7 +84,8 @@ void to_json(json& j, const Player& p)
         {"hp", p.getHp()},
         {"deck", SerializeDeck(p.getDeck())},
         {"hand", SerializeDeck(p.getHand())},
-        {"field", SerializeDeck(p.getField())}
+        {"field", SerializeDeck(p.getField())},
+        {"attackedThisTurn", p.attackedThisTurn}
     };
 }
 void from_json(json& j, Player& p)
