@@ -47,9 +47,10 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
         ConsoleClear();
         cout << "Hand: ";
         int i = 0;
-        for (Card* card : self.getHand()) {
-            cout << i << ". " << card->getName() << "     |     ";
-            i++;
+        for (int i = 0; i < self.getHand().size(); ++i) {
+            cout << "Index " << i << ":\n";
+            self.getHand()[i]->showInfo();
+            cout << "-----------------------------\n";
         }
         cout << "\nField: ";
         for (int i = 0; i < self.getField().size(); ++i) {
@@ -78,11 +79,11 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
                 return; // End turn
 
             case 1:
-                if (!hasSummoned && !hasBattled) {
+                if (!hasSummoned) {
                     self.Summon(index);
                     hasSummoned = true;
                 } else {
-                    cout << "You cannot summon after battling or summon more than once per turn.\n";
+                    cout << "You cannot summon more than once per turn.\n";
                 }
                 break;
             case 2:
@@ -90,15 +91,16 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
                 break;
 
             case 3:
-                if (!hasBattled) {
+                if (!self.hasAttacked(index)) {
                     int defendIndex;
                     cout << "Enter the index of the opponent's card to attack: ";
                     cin >> defendIndex;
                     battlePhase(self, opponent, index, defendIndex);
                     hasBattled = true;
                 } else {
-                    cout << "You can only battle once per turn.\n";
+                    cout << "This monster already battle.\n";
                 }
+            
                 break;
 
             case 4:
@@ -111,25 +113,37 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
         }
 
         // Pause to let the player see the result of their action
-        this_thread::sleep_for(std::chrono::milliseconds(500));
+        this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
 }
 
 void GameState :: battlePhase(Player& attacker, Player& defender, int attackIndex, int defendIndex){
-    if (attacker.hasAttacked(attackIndex)) return;
+    if (attacker.hasAttacked(attackIndex)){
+        cout << "This monster already battle" << endl;
+        return;
+    }
 
     vector<Card*> atkField = attacker.getField();
     vector<Card*> defField = defender.getField();
 
-    if(attackIndex >= atkField.size() || defendIndex >= defField.size()) return;
+    if(attackIndex >= atkField.size() || defendIndex >= defField.size()){
+        cout << "Invalid indexes" << endl;
+        return;
+    }
 
     MonsterCard* atkCard = dynamic_cast<MonsterCard*>(atkField[attackIndex]);
     MonsterCard* defCard = dynamic_cast<MonsterCard*>(defField[defendIndex]);
 
-    if(!atkCard || !defCard) return;
+    if(!atkCard || !defCard){
+        cout << "Invalid cards for battle" << endl;
+        return;
+    }
+
+    cout << atkCard->getName() << " attacks " << defCard->getName() << endl;
 
     if(defCard -> isFacedown()){
         defCard -> reveal();
+        cout << "The defending card was face-down. It is now revealed: ";
         defCard -> showInfo();
     }
 
@@ -160,6 +174,9 @@ void GameState :: battlePhase(Player& attacker, Player& defender, int attackInde
             field.erase(field.begin() + defendIndex);
             defender.setField(field);
         }
+        if (defender.getField().empty()) {
+            cout << "Opponent has no more monsters on the field!\n";
+        }
         else if(atkValue < defValue){
             attacker.takeDamage(defValue - atkValue);
             auto field = attacker.getField();
@@ -179,6 +196,9 @@ void GameState :: battlePhase(Player& attacker, Player& defender, int attackInde
             defender.setField(field2);
         }
     }
+
+    attacker.setAttacked(attackIndex);
+    this_thread::sleep_for(chrono::milliseconds(800));
 }
 
 bool GameState :: checkVictory(const Player& p1, const Player& p2){
