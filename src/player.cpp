@@ -4,6 +4,7 @@
 #include "spellcard.h"
 #include "trapcard.h"
 #include <iostream>
+#include <fstream>
 #include <algorithm>
 #include <random>
 #include <vector>
@@ -12,13 +13,26 @@
 
 using namespace std;
 
+int Player::getIndex() const
+{
+    return index;
+}
+
 void DumpInfo(Player& player)
 {
     json j;
-    to_json(j, player);
+    j["Player" + player.getIndex()] = player;
+    ofstream out("game_state.json");
+    if (!out) {
+        cerr << "Error opening file for writing.\n";
+        return;
+    }
+    out << j.dump(4) << std::endl; // Pretty print with indent
+    out.close();
 }
 
-Player :: Player(){
+Player :: Player(int i){
+    index = i;
     hp = 4000;
 }
 

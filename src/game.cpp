@@ -17,18 +17,20 @@ void GameState::ConsoleClear()
 
 GameState::GameState(Player& p1, Player& p2) 
 {
-    // Initialize players
-    player1.loadDeckDarkMagician();
-    player2.loadDeckBlueEyes();
+    player1 = &p1;
+    player2 = &p2;
+    player1 -> loadDeckDarkMagician();
+    player2 -> loadDeckBlueEyes();
 }
 
 void GameState::startGame() {
-    player1.shuffleDeck();
-    player2.shuffleDeck();
+    player1 -> shuffleDeck();
+    player2 -> shuffleDeck();
+    cout << "Game started!\n";
 
-    for (int i = 0; i < 5; ++i) {
-        player1.drawCard();
-        player2.drawCard();
+    for (int i = 0; i < 4; i++) {
+        player1 -> drawCard();
+        player2 -> drawCard();
     }
 }
 
@@ -44,8 +46,10 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
     while (true) {
         ConsoleClear();
         cout << "Hand: ";
-        for (int i = 0; i < self.getHand().size(); ++i) {
-            cout << i << ". " << self.getHand()[i]->getName() << " | ";
+        int i = 0;
+        for (Card* card : self.getHand()) {
+            cout << i << ". " << card->getName() << "     |     ";
+            i++;
         }
         cout << "\nField: ";
         for (int i = 0; i < self.getField().size(); ++i) {

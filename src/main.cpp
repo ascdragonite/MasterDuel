@@ -18,9 +18,6 @@ using namespace std;
 
 using json = nlohmann::json;
 
-
-
-
 void writeToFile(const json& j) {
     ofstream out("game_state.json");
     if (!out) {
@@ -57,8 +54,8 @@ int main() {
     std::cout << "You are Player " << player << ".\n";
 
 
-    Player* player1 = new Player();
-    Player* player2 = new Player();
+    Player* player1 = new Player(1);
+    Player* player2 = new Player(2);
     GameState gameState = GameState(*player1, *player2);
 
     if (player == "1") {

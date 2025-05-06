@@ -8,13 +8,14 @@ using namespace std;
 
 class Player{
     private:
+    int index;
     vector<Card*> deck;
     vector<Card*> hand;
     vector<Card*> field;
     int hp;
 
     public:
-    Player();
+    Player(int i);
 
     void drawCard();
     void Summon(int handIndex);
@@ -35,6 +36,7 @@ class Player{
     void loadDeckBlueEyes();
     void shuffleDeck();
 
+    int getIndex() const;
     vector<Card*> getDeck() const;
     vector<Card*> getField() const;
     vector<Card*> getHand() const;

@@ -4,8 +4,8 @@
 
 class GameState{
     public:
-        Player player1;
-        Player player2;
+        Player* player1;
+        Player* player2;
         GameState(Player& p1, Player& p2);
         void startGame();
         void ConsoleClear();
