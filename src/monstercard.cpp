@@ -41,7 +41,7 @@ bool MonsterCard :: isFacedown() const{
     return isSet;
 }
 
-void MonsterCard::PlayCard(vector<Card*> field)
+void MonsterCard::PlayCard(vector<Card*>& field)
 {
     int monsterCount = 0;
     for (Card* card : field) {

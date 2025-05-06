@@ -13,7 +13,7 @@ void SpellCard :: showInfo() const{
     cout << "Description: " << getDescription() << endl;
 }
 
-void SpellCard::PlayCard(vector<Card*> field)
+void SpellCard::PlayCard(vector<Card*>& field)
 {
     int count = 0;
     for (Card* card : field) {

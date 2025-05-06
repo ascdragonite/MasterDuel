@@ -24,7 +24,7 @@ class Card{
 
     virtual void showInfo() const = 0;
     virtual json toJson() const = 0;
-    virtual void PlayCard(vector<Card*> field) = 0;
+    virtual void PlayCard(vector<Card*>& field) = 0;
 
     virtual ~Card();
 };

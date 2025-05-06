@@ -23,7 +23,7 @@ class MonsterCard : public Card{
         bool isInDefense() const;
         void reveal();
         bool isFacedown() const;
-        void PlayCard(vector<Card*> field) override;
+        void PlayCard(vector<Card*>& field) override;
         
         json toJson() const override;
 };

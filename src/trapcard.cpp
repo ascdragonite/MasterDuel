@@ -13,7 +13,7 @@ void TrapCard :: showInfo() const{
     cout << "Description: " << getDescription() << endl;
 }
 
-void TrapCard::PlayCard(vector<Card*> field)
+void TrapCard::PlayCard(vector<Card*>& field)
 {
     int count = 0;
     for (Card* card : field) {

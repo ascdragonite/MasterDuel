@@ -14,7 +14,7 @@ class SpellCard : public Card{
 
     void showInfo() const override;
 
-    void PlayCard(vector<Card*> field) override;
+    void PlayCard(vector<Card*>& field) override;
     
     json toJson() const override;
 
