@@ -34,7 +34,7 @@ void GameState::startGame() {
 
 void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
     bool hasSummoned = false;
-    bool hasBattled = false;
+    bool hasBattled = false; 
 
     self.resetAttackFlags();
     if (!isFirstTurn) {
@@ -43,15 +43,23 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
 
     while (true) {
         ConsoleClear();
+        cout << "Hand: ";
+        for (int i = 0; i < self.getHand().size(); ++i) {
+            cout << i << ". " << self.getHand()[i]->getName() << " | ";
+        }
+        cout << "\nField: ";
+        for (int i = 0; i < self.getField().size(); ++i) {
+            cout << i << ". " << self.getField()[i]->getName() << " | ";
+        }
+
         cout << "\nChoose an action:\n";
         cout << "0: End Turn\n";
-        cout << "1: Summon Monster\n";
-        cout << "2: Activate Spell\n";
-        cout << "3: Set Trap\n";
-        cout << "4: Switch Monster Position\n";
-        cout << "5: Attack\n";
-        cout << "6: Reveal Monster\n";
+        cout << "1: Play Card\n";
+        cout << "2: Switch Monster Position\n";
+        cout << "3: Attack\n";
+        cout << "4: Reveal Monster\n";
         cout << "Enter your choice: ";
+
 
         int code, index = -1;
         cin >> code;
@@ -67,26 +75,17 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
 
             case 1:
                 if (!hasSummoned && !hasBattled) {
-                    self.playMonster(index, false);
+                    self.Summon(index);
                     hasSummoned = true;
                 } else {
                     cout << "You cannot summon after battling or summon more than once per turn.\n";
                 }
                 break;
-
             case 2:
-                self.activateSpell(index);
-                break;
-
-            case 3:
-                self.setTrap(index);
-                break;
-
-            case 4:
                 self.switchPosition(index);
                 break;
 
-            case 5:
+            case 3:
                 if (!hasBattled) {
                     int defendIndex;
                     cout << "Enter the index of the opponent's card to attack: ";
@@ -98,7 +97,7 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
                 }
                 break;
 
-            case 6:
+            case 4:
                 self.revealMonster(index);
                 break;
 

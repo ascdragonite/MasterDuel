@@ -13,6 +13,8 @@ class SpellCard : public Card{
     virtual void activateEffect();
 
     void showInfo() const override;
+
+    void PlayCard(vector<Card*> field) override;
     
     json toJson() const override;
 

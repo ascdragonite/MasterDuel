@@ -46,24 +46,10 @@ void Player :: drawCard(){
     DumpInfo(*this);
 }
 
-void Player::playMonster(int handIndex, bool defenseMode) {
+void Player::Summon(int handIndex) {
     if (handIndex >= 0 && handIndex < static_cast<int>(hand.size())) {
-
-        int monsterCount = 0;
-        for (Card* card : field) {
-            if (card->getType() == "Monster") {
-                monsterCount++;
-            }
-        }
-
-        if (monsterCount >= 5) return;
-
-        MonsterCard* m = dynamic_cast<MonsterCard*>(hand[handIndex]);
-        if (m) {
-            m->setDefenseMode(defenseMode);
-            field.push_back(m);
-            hand.erase(hand.begin() + handIndex);
-        }
+        hand[handIndex]->PlayCard(field);
+        hand.erase(hand.begin() + handIndex);
     }
     DumpInfo(*this);
 }
@@ -107,43 +93,9 @@ void Player::revealMonster(int fieldIndex) {
     DumpInfo(*this);
 }
 
-int Player::countSpellTrapOnField() const {
-    int count = 0;
-    for (Card* card : field) {
-        string type = card->getType();
-        if (type == "Spell" || type == "Trap") count++;
-    }
-    return count;
-}
 
-void Player::activateSpell(int handIndex) {
-    if (handIndex >= 0 && handIndex < static_cast<int>(hand.size())) {
-        if (countSpellTrapOnField() >= 5) return; 
 
-        if (dynamic_cast<SpellCard*>(hand[handIndex])) {
-            field.push_back(hand[handIndex]);
-            hand.erase(hand.begin() + handIndex);
-        }
-        else 
-        {
-            cout << "Not a Spell Card" << endl;
-            return;
-        }
-    }
-    DumpInfo(*this);
-}
 
-void Player::setTrap(int handIndex) {
-    if (handIndex >= 0 && handIndex < static_cast<int>(hand.size())) {
-        if (countSpellTrapOnField() >= 5) return;  // ⛔ sân đủ 5 spell/trap
-
-        if (dynamic_cast<TrapCard*>(hand[handIndex])) {
-            field.push_back(hand[handIndex]);
-            hand.erase(hand.begin() + handIndex);
-        }
-    }
-    DumpInfo(*this);
-}
 /* 
 vector<string> Player :: getHandInfo() const{
     vector<string> info;

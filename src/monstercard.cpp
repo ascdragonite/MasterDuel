@@ -41,6 +41,34 @@ bool MonsterCard :: isFacedown() const{
     return isSet;
 }
 
+void MonsterCard::PlayCard(vector<Card*> field)
+{
+    int monsterCount = 0;
+    for (Card* card : field) {
+        if (card->getType() == "Monster") {
+            monsterCount++;
+        }
+    }
+
+    if (monsterCount < 5)
+    {
+        char answer;
+        cout << "Defense mode? [y/n]";
+        cin >> answer;
+        if (answer == 'y' || answer == 'Y') {
+            defenseMode = true;
+        } else if (answer == 'n' || answer == 'N') {
+            defenseMode = false;
+        }
+        field.push_back(this);
+        cout << "Monster card played: " << getName() << endl;
+    }
+    else
+    {
+        cout << "Cannot play monster card. Field is full." << endl;
+    }
+}
+
 json MonsterCard::toJson() const 
 {
     json j;

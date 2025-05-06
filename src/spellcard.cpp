@@ -13,6 +13,24 @@ void SpellCard :: showInfo() const{
     cout << "Description: " << getDescription() << endl;
 }
 
+void SpellCard::PlayCard(vector<Card*> field)
+{
+    int count = 0;
+    for (Card* card : field) {
+        string type = card->getType();
+        if (type == "Spell" || type == "Trap") count++;
+    }
+    if (count < 5)
+    {
+        field.push_back(this);
+        cout << "Spell card played: " << getName() << endl;
+    }
+    else
+    {
+        cout << "Cannot play spell card. Field is full." << endl;
+    }
+}
+
 
 json SpellCard::toJson() const 
 {

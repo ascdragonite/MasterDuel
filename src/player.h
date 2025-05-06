@@ -17,10 +17,7 @@ class Player{
     Player();
 
     void drawCard();
-    void playMonster(int handIndex, bool defenseMode);
-    void activateSpell(int handIndex);
-    void setTrap(int handIndex);
-    int countSpellTrapOnField() const;
+    void Summon(int handIndex);
 
     vector<bool> attackedThisTurn;
     void resetAttackFlags();

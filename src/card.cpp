@@ -30,3 +30,8 @@ void Card::SetType(string t)
 {
     type = t;
 }
+
+Card::~Card()
+{
+    cout << "Card destroyed: " << name << endl;
+}

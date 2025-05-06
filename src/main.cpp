@@ -82,6 +82,7 @@ int main() {
 
         if (myTurn) {
             gameState.ConsoleClear();
+            gameState.startGame();
             cout << "It's your turn!\n";
 
             if (player == "1") {
