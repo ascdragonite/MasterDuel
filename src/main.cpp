@@ -24,6 +24,7 @@ void writeToFile(const json& j) {
         cerr << "Error opening file for writing.\n";
         return;
     }
+    cout << "writeing to file\n" << j.dump(4) << std::endl; // Pretty print with indent
     out << j.dump(4) << std::endl; // Pretty print with indent
     out.close();
 }
@@ -59,13 +60,14 @@ int main() {
     GameState gameState = GameState(*player1, *player2);
 
     if (player == "1") {
-
+        gameState.startGame();
         json j;
-        j["Player1"] = *player1;
-        j["Player2"] = *player2;
+        j["Player1"] = json(*player1);
+        j["Player2"] = json(*player2);
         j["turn"] = "PLAYER1";
         writeToFile(j);
     }
+    
 
     while (true) {
         json state = readFromFile();
@@ -76,15 +78,17 @@ int main() {
         }
 
         bool myTurn = (state["turn"] == "PLAYER" + player);
-
         if (myTurn) {
+            
             gameState.ConsoleClear();
-            gameState.startGame();
+            
             cout << "It's your turn!\n";
 
             if (player == "1") {
+                from_json(state["Player1"], *player1);
                 gameState.playerTurn(*player1, *player2, false);
             } else {
+                from_json(state["Player2"], *player2);
                 gameState.playerTurn(*player2, *player1, false);
             }
 

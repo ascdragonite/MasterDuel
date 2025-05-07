@@ -60,22 +60,6 @@ vector<Card*> DeserializeDeck(const json deckJson)
 }
 
 
-void to_json(json& j, const Card& c)
-{
-    j = {
-        {"name", c.getName()},
-        {"description", c.getDescription()},
-        {"type", c.getType()}
-    };
-}
-
-void from_json(const json& j, Card& c)
-{
-    c.SetName(j.at("name"));
-    c.SetDescription(j.at("description"));
-    c.SetType(j.at("type"));
-}
-
 
 void to_json(json& j, const Player& p)
 {
@@ -88,10 +72,15 @@ void to_json(json& j, const Player& p)
         {"attackedThisTurn", p.attackedThisTurn}
     };
 }
-void from_json(json& j, Player& p)
+void from_json(const json& j, Player& p)
 {
     p.setHp(j.at("hp"));
     p.setDeck(DeserializeDeck(j.at("deck")));
     p.setHand(DeserializeDeck(j.at("hand")));
     p.setField(DeserializeDeck(j.at("field")));
+    vector<bool> attackedThisTurnJson;
+    for (const auto& value : j.at("attackedThisTurn")) {
+        attackedThisTurnJson.push_back(value.get<bool>());
+    }
+    p.attackedThisTurn = attackedThisTurnJson;
 }

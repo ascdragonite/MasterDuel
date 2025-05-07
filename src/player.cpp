@@ -21,7 +21,15 @@ int Player::getIndex() const
 void DumpInfo(Player& player)
 {
     json j;
-    j["Player" + player.getIndex()] = player;
+    ifstream in("game_state.json");
+    if (in) {
+        in >> j;
+        in.close();
+    }
+    
+    cout << j.dump(4) << endl;
+
+    j["Player" + to_string(player.getIndex())] = player;
     ofstream out("game_state.json");
     if (!out) {
         cerr << "Error opening file for writing.\n";
