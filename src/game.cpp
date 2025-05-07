@@ -12,7 +12,7 @@
 
 void GameState::ConsoleClear()
 {
-    //cout << "\033[2J\033[H\033[3J";
+    cout << "\033[2J\033[H\033[3J";
 }
 
 GameState::GameState(Player& p1, Player& p2) 
@@ -51,6 +51,10 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
             cout << "Index " << i << ":\n";
             self.getHand()[i]->showInfo();
             cout << "-----------------------------\n";
+        }
+        cout << "\n Enemy Field: ";
+        for (int i = 0; i < opponent.getField().size(); ++i) {
+            cout << i << ". " << opponent.getField()[i]->getName() << " | ";
         }
         cout << "\nField: ";
         for (int i = 0; i < self.getField().size(); ++i) {

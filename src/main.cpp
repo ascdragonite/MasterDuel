@@ -84,11 +84,12 @@ int main() {
             
             cout << "It's your turn!\n";
 
+            from_json(state["Player1"], *player1);
+            from_json(state["Player2"], *player2);
+
             if (player == "1") {
-                from_json(state["Player1"], *player1);
                 gameState.playerTurn(*player1, *player2, false);
             } else {
-                from_json(state["Player2"], *player2);
                 gameState.playerTurn(*player2, *player1, false);
             }
 
