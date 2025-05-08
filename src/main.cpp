@@ -54,13 +54,11 @@ int main() {
 
     std::cout << "You are Player " << player << ".\n";
 
-
-    Player* player1 = new Player(1);
-    Player* player2 = new Player(2);
-    GameState gameState = GameState(*player1, *player2);
-
+    GameState* gameState = GameState::getInstance();
+    auto player1 = gameState->getPlayer(1);
+    auto player2 = gameState->getPlayer(2);
     if (player == "1") {
-        gameState.startGame();
+        gameState->startGame();
         json j;
         j["Player1"] = json(*player1);
         j["Player2"] = json(*player2);
@@ -80,7 +78,7 @@ int main() {
         bool myTurn = (state["turn"] == "PLAYER" + player);
         if (myTurn) {
             
-            gameState.ConsoleClear();
+            gameState -> ConsoleClear();
             
             cout << "It's your turn!\n";
 
@@ -88,13 +86,13 @@ int main() {
             from_json(state["Player2"], *player2);
 
             if (player == "1") {
-                gameState.playerTurn(*player1, *player2, false);
+                gameState -> playerTurn(*player1, *player2, false);
             } else {
-                gameState.playerTurn(*player2, *player1, false);
+                gameState -> playerTurn(*player2, *player1, false);
             }
 
             // Check for victory
-            if (gameState.checkVictory(*player1, *player2)) {
+            if (gameState -> checkVictory(*player1, *player2)) {
                 cout << "Game Over! ";
                 if (player1->getHp() <= 0 || player1->getDeck().empty()) {
                     cout << "Player 2 wins!\n";
@@ -110,7 +108,7 @@ int main() {
             state["turn"] = "PLAYER" + string((player == "1") ? "2" : "1");
             writeToFile(state);
         } else {
-            gameState.ConsoleClear();
+            gameState -> ConsoleClear();
             cout << "Waiting for your turn...\n";
             this_thread::sleep_for(std::chrono::milliseconds(1000));
         }

@@ -26,9 +26,6 @@ void DumpInfo(Player& player)
         in >> j;
         in.close();
     }
-    
-    cout << j.dump(4) << endl;
-
     j["Player" + to_string(player.getIndex())] = player;
     ofstream out("game_state.json");
     if (!out) {
@@ -198,16 +195,17 @@ void Player::setHp(int hp)
 
 
 void Player :: loadDeckDarkMagician(){
-    deck.push_back(new MonsterCard("Dark Magician", 2500, 2100, "The ultimate wizard in term of attack and defense."));
-    deck.push_back(new MonsterCard("Dark Magician", 2500, 2100, "The ultimate wizard in term of attack and defense."));
-    deck.push_back(new MonsterCard("Dark Magician Girl", 2000, 1700, "Dark Magician favourite student."));
-    deck.push_back(new MonsterCard("Kuriboh", 0, 0, "Little fluffy ball that like to help others."));
-    deck.push_back(new MonsterCard("Giant Soldier of Stone", 1300, 2000, "Little fluffy ball that like to help others."));
-    deck.push_back(new MonsterCard("Mammoth Graveyard", 1200, 800, "A mammoth that protects the graves of its pack and is absolutely merciless when facing grave-robbers."));
-    deck.push_back(new MonsterCard("Curse of Dragon", 2000, 1500, "A wicked dragon that taps into dark forces to execute a powerful attack."));
-    deck.push_back(new MonsterCard("Griffore", 1200, 1500, "This monster's tough hide deflects almost any attack."));
-    deck.push_back(new MonsterCard("Beaver Warrior", 1200, 1500, "What this creature lacks in size it makes up for in defense when battling in the prairie."));
-    deck.push_back(new MonsterCard("Mystical Elf", 800, 2000, "A delicate elf that lacks offense, but has a terrific defense backed by mystical power."));
+    cout << "Loading deck for player " << index << endl;
+    deck.push_back(new MonsterCard("Dark Magician", 2500, 2100, "The ultimate wizard in term of attack and defense.", index));
+    deck.push_back(new MonsterCard("Dark Magician", 2500, 2100, "The ultimate wizard in term of attack and defense.", index));
+    deck.push_back(new MonsterCard("Dark Magician Girl", 2000, 1700, "Dark Magician favourite student.", index));
+    deck.push_back(new MonsterCard("Kuriboh", 0, 0, "Little fluffy ball that like to help others.", index));
+    deck.push_back(new MonsterCard("Giant Soldier of Stone", 1300, 2000, "Little fluffy ball that like to help others.", index));
+    deck.push_back(new MonsterCard("Mammoth Graveyard", 1200, 800, "A mammoth that protects the graves of its pack and is absolutely merciless when facing grave-robbers.", index));
+    deck.push_back(new MonsterCard("Curse of Dragon", 2000, 1500, "A wicked dragon that taps into dark forces to execute a powerful attack.", index));
+    deck.push_back(new MonsterCard("Griffore", 1200, 1500, "This monster's tough hide deflects almost any attack.", index));
+    deck.push_back(new MonsterCard("Beaver Warrior", 1200, 1500, "What this creature lacks in size it makes up for in defense when battling in the prairie.", index));
+    deck.push_back(new MonsterCard("Mystical Elf", 800, 2000, "A delicate elf that lacks offense, but has a terrific defense backed by mystical power.", index));
     deck.push_back(new SpellCard("Re:End of a dream", "If and only if your lifepoint is lower or equal to 500 you can activate this card. When this card is activated, you can conduct anorther turn"));
     deck.push_back(new SpellCard("Disorted Fate", "Look at your full deck and place a card you like at the top of the deck."));
     deck.push_back(new SpellCard("Oshama Scramble", "Shuffle your opponent's deck when this card is activated."));
@@ -221,17 +219,18 @@ void Player :: loadDeckDarkMagician(){
 }
 
 void Player :: loadDeckBlueEyes(){
-    deck.push_back(new MonsterCard("Blue-Eyes White Dragon", 3000, 2500, "This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale."));
-    deck.push_back(new MonsterCard("Blue-Eyes White Dragon", 3000, 2500, "This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale."));
-    deck.push_back(new MonsterCard("T+pazolite", 1750, 200, "A crystal dragon born from solidified molten lava. T+pazolite's scales shimmer like gemstones, absorbing and reflecting light to confuse enemies on the battlefield."));
-    deck.push_back(new MonsterCard("Morimori Atsushi", 1800, 0, "A nomadic dragon god wandering through the eastern forests. With no defensive armor, it relies on immense speed and broad wings to outmaneuver and strike down any who dare approach."));
-    deck.push_back(new MonsterCard("Feryquitous", 1500, 400, "A young flame dragon constantly yearning to prove its might. Its immature blue flames often ignite unexpected wildfires across the land."));
-    deck.push_back(new MonsterCard("Kuroma", 2100, 700, "A shadow dragon, slender yet deadly. Kuroma hides within dark clouds, striking without warning and bringing silent destruction to its prey."));
-    deck.push_back(new MonsterCard("Laur", 1450, 1000, "An ancient dragon that once guarded sacred lands. Though its strength has waned with time, Laur’s unwavering spirit remains, ready to sacrifice itself to halt any invader’s advance."));
-    deck.push_back(new MonsterCard("Sasakure", 1900, 0, "A razorwind dragon whose translucent body leaves only trails of slashing winds. Without any defenses, it relies entirely on blinding speed and lethal precision."));
-    deck.push_back(new MonsterCard("BlackY", 1500, 500, "A black dragon born from the ashes of fallen stars. Though not powerful in offense, BlackY possesses the stubborn will to rise from ruins and survive every battle."));
-    deck.push_back(new MonsterCard("Camellia", 2000, 1600, "A divine flower dragon, rare and mesmerizing. Camellia commands deadly blossoms, blending beauty with fatal poison in a delicate yet deadly dance."));
-    deck.push_back(new MonsterCard("Sakuzyo", 2300, 900, "A sonic dragon traveling across dimensions through ultrasonic waves. Sakuzyo’s roar can shatter metal, and those who hear it often lose their sense of direction completely."));
+    cout << "Loading deck for player " << index << endl;
+    deck.push_back(new MonsterCard("Blue-Eyes White Dragon", 3000, 2500, "This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale.", index));
+    deck.push_back(new MonsterCard("Blue-Eyes White Dragon", 3000, 2500, "This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale.", index));
+    deck.push_back(new MonsterCard("T+pazolite", 1750, 200, "A crystal dragon born from solidified molten lava. T+pazolite's scales shimmer like gemstones, absorbing and reflecting light to confuse enemies on the battlefield.", index));
+    deck.push_back(new MonsterCard("Morimori Atsushi", 1800, 0, "A nomadic dragon god wandering through the eastern forests. With no defensive armor, it relies on immense speed and broad wings to outmaneuver and strike down any who dare approach.", index));
+    deck.push_back(new MonsterCard("Feryquitous", 1500, 400, "A young flame dragon constantly yearning to prove its might. Its immature blue flames often ignite unexpected wildfires across the land.", index));
+    deck.push_back(new MonsterCard("Kuroma", 2100, 700, "A shadow dragon, slender yet deadly. Kuroma hides within dark clouds, striking without warning and bringing silent destruction to its prey.", index));
+    deck.push_back(new MonsterCard("Laur", 1450, 1000, "An ancient dragon that once guarded sacred lands. Though its strength has waned with time, Laur’s unwavering spirit remains, ready to sacrifice itself to halt any invader’s advance.", index));
+    deck.push_back(new MonsterCard("Sasakure", 1900, 0, "A razorwind dragon whose translucent body leaves only trails of slashing winds. Without any defenses, it relies entirely on blinding speed and lethal precision.", index));
+    deck.push_back(new MonsterCard("BlackY", 1500, 500, "A black dragon born from the ashes of fallen stars. Though not powerful in offense, BlackY possesses the stubborn will to rise from ruins and survive every battle.", index));
+    deck.push_back(new MonsterCard("Camellia", 2000, 1600, "A divine flower dragon, rare and mesmerizing. Camellia commands deadly blossoms, blending beauty with fatal poison in a delicate yet deadly dance.", index));
+    deck.push_back(new MonsterCard("Sakuzyo", 2300, 900, "A sonic dragon traveling across dimensions through ultrasonic waves. Sakuzyo’s roar can shatter metal, and those who hear it often lose their sense of direction completely.", index));
     deck.push_back(new SpellCard("Re:End of a dream", "If and only if your lifepoint is lower or equal to 500 you can activate this card. When this card is activated, you can conduct anorther turn"));
     deck.push_back(new SpellCard("Disorted Fate", "Look at your full deck and place a card you like at the top of the deck."));
     deck.push_back(new SpellCard("Oshama Scramble", "Shuffle your opponent's deck when this card is activated."));

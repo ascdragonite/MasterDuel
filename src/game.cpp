@@ -10,9 +10,31 @@
 #include <thread>
 #include <chrono>
 
+GameState* GameState::instance = nullptr;
+
 void GameState::ConsoleClear()
 {
-    cout << "\033[2J\033[H\033[3J";
+    //cout << "\033[2J\033[H\033[3J";
+}
+
+GameState* GameState::getInstance() {
+    if (!instance) {
+        Player* player1 = new Player(1);
+        Player* player2 = new Player(2);
+        instance = new GameState(*player1, *player2);
+        cout << "GameState instance created.\n";
+    }
+    return instance;
+}
+
+Player* GameState::getPlayer(int id) {
+    if (id == 1) {
+        return player1;
+    } else if (id == 2) {
+        return player2;
+    } else {
+        return nullptr; // Invalid player ID
+    }
 }
 
 GameState::GameState(Player& p1, Player& p2) 
@@ -127,9 +149,13 @@ void GameState :: battlePhase(Player& attacker, Player& defender, int attackInde
         return;
     }
 
+
     vector<Card*> atkField = attacker.getField();
     vector<Card*> defField = defender.getField();
-
+    if (defField.empty()) {
+        cout << "Opponent has no more monsters on the field!\n";
+        return;
+    }
     if(attackIndex >= atkField.size() || defendIndex >= defField.size()){
         cout << "Invalid indexes" << endl;
         return;
@@ -151,57 +177,8 @@ void GameState :: battlePhase(Player& attacker, Player& defender, int attackInde
         defCard -> showInfo();
     }
 
-    int atkValue = atkCard -> getAtk();
-    int defValue = defCard -> isInDefense() ? defCard -> getDef() : defCard -> getAtk();
+    *atkCard += *defCard;
 
-    if(defCard -> isInDefense()){
-        if(atkValue > defValue){
-            auto field = defender.getField();
-            delete field[defendIndex];
-            field.erase(field.begin() + defendIndex);
-            defender.setField(field);
-        }
-        else if(atkValue < defValue){
-            attacker.takeDamage(defValue - atkValue);
-        }
-        else{
-            //atk = def
-            return;
-        }
-    }
-
-    else{
-        if(atkValue > defValue){
-            defender.takeDamage(atkValue - defValue);
-            auto field = defender.getField();
-            delete field[defendIndex];
-            field.erase(field.begin() + defendIndex);
-            defender.setField(field);
-        }
-        if (defender.getField().empty()) {
-            cout << "Opponent has no more monsters on the field!\n";
-        }
-        else if(atkValue < defValue){
-            attacker.takeDamage(defValue - atkValue);
-            auto field = attacker.getField();
-            delete field[attackIndex];
-            field.erase(field.begin() + attackIndex);
-            attacker.setField(field);
-        }
-        else{
-            //atk = atk
-            auto field1 = attacker.getField();
-            auto field2 = defender.getField();
-            delete field1[attackIndex];
-            delete field2[defendIndex];
-            field1.erase(field1.begin() + attackIndex);
-            field2.erase(field2.begin() + defendIndex);
-            attacker.setField(field1);
-            defender.setField(field2);
-        }
-    }
-
-    attacker.setAttacked(attackIndex);
     this_thread::sleep_for(chrono::milliseconds(800));
 }
 

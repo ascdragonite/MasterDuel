@@ -7,6 +7,7 @@
 #include "trapcard.h"
 #include <stdexcept>
 #include <vector>
+#include "game.h"
 
 using json = nlohmann::json;
 using namespace std;
@@ -27,10 +28,20 @@ vector<json> SerializeDeck(const vector<Card*> deck)
 
 Card* CardFromJson(const json j)
 {
+    GameState* gameState = GameState::getInstance();
     string type = j.at("type");
+
     if(type == "Monster")
     {
-        return new MonsterCard(j.at("name"), j.at("atk"), j.at("def"), j.at("description"));
+        return new MonsterCard(
+            j.at("name"), 
+            j.at("atk"), 
+            j.at("def"), 
+            j.at("description"),
+            j.at("owner"),
+            j.at("defenseMode"),
+            j.at("isSet")
+        );
     }
     else if(type == "Spell")
     {

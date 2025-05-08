@@ -3,9 +3,13 @@
 #include "player.h"
 
 class GameState{
-    public:
+    private:
+        static GameState* instance;
         Player* player1;
         Player* player2;
+    public:
+        static GameState* getInstance();
+        Player* getPlayer(int id);
         GameState(Player& p1, Player& p2);
         void startGame();
         void ConsoleClear();
