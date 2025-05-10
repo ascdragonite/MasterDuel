@@ -221,3 +221,7 @@ json MonsterCard::toJson() const
     return j;
 }
 
+bool MonsterCard::activateEffect(Player& self, Player& opponent) {
+    cout << "[Monstercard] No effect defined.\n";
+    return false;
+}

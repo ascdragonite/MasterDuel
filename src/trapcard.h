@@ -1,6 +1,7 @@
 #ifndef TRAPCARD_H
 #define TRAPCARD_H
 #include "card.h"
+#include "player.h"
 #include "json.hpp"
 using namespace std;
 using json = nlohmann::json;
@@ -10,7 +11,7 @@ class TrapCard : public Card{
 
     TrapCard(string name, string description);
 
-    virtual void activateEffect();
+    bool activateEffect(Player& self, Player& opponent) override;
 
     void showInfo() const override;
 

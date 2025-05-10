@@ -215,6 +215,18 @@ void Player::setHp(int hp)
     DumpInfo(*this);
 }
 
+vector<Card*>& Player::getHandRef() {
+    return hand;
+}
+
+vector<Card*>& Player::getFieldRef() {
+    return field;
+}
+
+vector<Card*>& Player::getDeckRef() {
+    return deck;
+}
+
 
 void Player :: loadDeckDarkMagician(){
     cout << "Loading deck for player " << index << endl;

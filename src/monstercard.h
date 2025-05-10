@@ -31,7 +31,9 @@ class MonsterCard : public Card{
         bool isFacedown() const;
         void PlayCard(vector<Card*>& field) override;
         bool isJustSummoned() const;     
-        void clearSummonFlag();   
+        void clearSummonFlag();  
+        
+        bool activateEffect(Player& self, Player& opponent) override;
         
         json toJson() const override;
 };

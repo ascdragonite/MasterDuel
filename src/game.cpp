@@ -126,13 +126,36 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
                 return; // End turn
 
             case 1:
-                if (!hasSummoned) {
-                    self.Summon(index);
-                    hasSummoned = true;
-                } else {
-                    cout << "You cannot summon more than once per turn.\n";
-                }
-                break;
+            if (index >= 0 && index < self.getHand().size()) {
+              Card* card = self.getHand()[index];
+              string type = card->getType();
+
+              if (type == "Monster") {
+                if (!hasSummoned) { 
+                self.Summon(index);
+                hasSummoned = true;
+              } else {
+                cout << "You cannot summon more than once per turn.\n";
+              }
+            } 
+            else if (type == "Spell" || type == "Trap") {
+                 bool success = card->activateEffect(self, opponent);
+                 if (success) {
+                    delete card;
+                    auto& hand = self.getHandRef(); 
+                    hand.erase(hand.begin() + index);
+                 } else {
+                     cout << "[Spell/Trap] Effect was not activated. Card remains in hand.\n";
+                 }
+            } 
+            else {
+              cout << "Unsupported card type.\n";
+            }
+            } else {
+              cout << "Invalid index.\n";
+            } 
+            break;
+
             case 2:
                 self.switchPosition(index);
                 break;

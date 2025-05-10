@@ -1,6 +1,7 @@
 #ifndef SPELLCARD_H
 #define SPELLCARD_H
 #include "card.h"
+#include "player.h"
 #include "json.hpp"
 using namespace std;
 using json = nlohmann::json;
@@ -10,7 +11,7 @@ class SpellCard : public Card{
 
     SpellCard(string name, string description);
 
-    virtual void activateEffect();
+    bool activateEffect(Player& self, Player& opponent) override;
 
     void showInfo() const override;
 

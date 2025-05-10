@@ -41,6 +41,10 @@ class Player{
     vector<Card*> getField() const;
     vector<Card*> getHand() const;
 
+    vector<Card*>& getHandRef();
+    vector<Card*>& getFieldRef();
+    vector<Card*>& getDeckRef();
+
     void setDeck(vector<Card*> newDeck);
     void setField(vector<Card*> newField);
     void setHand(vector<Card*> newHand);
