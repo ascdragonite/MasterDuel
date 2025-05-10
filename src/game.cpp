@@ -117,17 +117,37 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
                 break;
 
             case 3:
-                if (!self.hasAttacked(index)) {
+            if (!self.hasAttacked(index)) {
+                if (opponent.getField().empty()) {
+                    cout << "Opponent has no monsters.\n";
+                    cout << "Do you want to attack directly with " << self.getField()[index]->getName() << "? (y/n): ";
+                    char choice;
+                    cin >> choice;
+        
+                    if (choice == 'y' || choice == 'Y') {
+                        MonsterCard* atkCard = dynamic_cast<MonsterCard*>(self.getField()[index]);
+                        if (!atkCard) {
+                            cout << "Invalid attacker card.\n";
+                            break;
+                        }
+        
+                        int damage = atkCard -> getAtk();
+                        opponent.takeDamage(damage);
+                        cout << atkCard->getName() << " attacks directly! Opponent loses " << damage << " HP!\n";
+                        self.setAttacked(index); 
+                        hasBattled = true;
+                    }
+                } else {
                     int defendIndex;
                     cout << "Enter the index of the opponent's card to attack: ";
                     cin >> defendIndex;
                     battlePhase(self, opponent, index, defendIndex);
                     hasBattled = true;
-                } else {
-                    cout << "This monster already battle.\n";
                 }
-            
-                break;
+            } else {
+                cout << "This monster already battle.\n";
+            }
+            break;
 
             case 4:
                 self.revealMonster(index);
@@ -152,10 +172,7 @@ void GameState :: battlePhase(Player& attacker, Player& defender, int attackInde
 
     vector<Card*> atkField = attacker.getField();
     vector<Card*> defField = defender.getField();
-    if (defField.empty()) {
-        cout << "Opponent has no more monsters on the field!\n";
-        return;
-    }
+
     if(attackIndex >= atkField.size() || defendIndex >= defField.size()){
         cout << "Invalid indexes" << endl;
         return;

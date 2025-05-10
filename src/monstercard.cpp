@@ -53,7 +53,14 @@ MonsterCard& MonsterCard::operator+=(MonsterCard& other) {
     int attackIndex = find(atkField.begin(), atkField.end(), this) - atkField.begin();
     int defendIndex = find(defField.begin(), defField.end(), &other) - defField.begin();
     
-    
+    if (defField.empty()) {
+        cout << this->getName() << " attacks directly!" << endl;
+        target->takeDamage(this->getAtk());
+        cout << "Attacker HP: " << self->getHp() << endl;
+        cout << "Defender HP: " << target->getHp() << endl;
+        return *this;
+    }
+
     if(other.isInDefense()){
         if(atk > defValue){
             auto field = defField;
@@ -64,6 +71,8 @@ MonsterCard& MonsterCard::operator+=(MonsterCard& other) {
         }
         else if(atk < defValue){
             self -> takeDamage(defValue - atk);
+            cout << "Attacker HP: " << self -> getHp() << endl;
+            cout << "Attacker HP: " << target -> getHp() << endl;
             return *this;
         }
         else{
@@ -76,6 +85,8 @@ MonsterCard& MonsterCard::operator+=(MonsterCard& other) {
 
         if(atk > defValue){
             target->takeDamage(atk - defValue);
+            cout << "Attacker HP: " << self -> getHp() << endl;
+            cout << "Attacker HP: " << target -> getHp() << endl;
             auto field = defField;
             field.erase(field.begin() + defendIndex);
             target->setField(field);
@@ -99,6 +110,7 @@ MonsterCard& MonsterCard::operator+=(MonsterCard& other) {
             target->setField(field2);
             return *this;
         }
+        
     }
 }
 
