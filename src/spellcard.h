@@ -10,11 +10,11 @@ class SpellCard : public Card{
 
     SpellCard(string name, string description);
 
-    virtual void activateEffect();
-
     void showInfo() const override;
 
     void PlayCard(vector<Card*>& field) override;
+
+    bool activateEffect(Player& self, Player& opponent) override;
     
     json toJson() const override;
 

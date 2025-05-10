@@ -3,10 +3,6 @@
 using namespace std;
 TrapCard :: TrapCard(string name, string description) : Card(name, "Trap", description){}
 
-void TrapCard :: activateEffect(){
-    cout << "Activating trap: " << getName() << endl;
-}
-
 void TrapCard :: showInfo() const{
     cout << "Name: " << getName() << endl;
     cout << "Type: " << getType() << endl;
@@ -38,4 +34,8 @@ json TrapCard::toJson() const
     j["name"] = name;
     j["description"] = description;
     return j;
+}
+
+bool TrapCard::activateEffect(Player& self, Player& opponent) {
+    cout << "[TrapCard] No effect has been implemented yet.\n";
 }

@@ -169,6 +169,26 @@ bool MonsterCard :: isFacedown() const{
     return isSet;
 }
 
+void MonsterCard::setAtk(int newAtk) {
+    atk = newAtk;
+}
+
+void MonsterCard::setDef(int d) {
+    def = d;
+}
+
+int MonsterCard::getAttacksThisTurn() const {
+    return attacksThisTurn;
+}
+
+void MonsterCard::setAttacksThisTurn(int count) {
+    attacksThisTurn = count;
+}
+
+bool MonsterCard::canAttackThisTurn() const {
+    return (extraAttackThisTurn && attacksThisTurn < 2) || (!extraAttackThisTurn && attacksThisTurn < 1);
+}
+
 void MonsterCard::PlayCard(vector<Card*>& field)
 {
     int monsterCount = 0;
@@ -205,6 +225,10 @@ bool MonsterCard::isJustSummoned() const {
 
 void MonsterCard::clearSummonFlag() {
     justSummoned = false;
+}
+
+bool MonsterCard::activateEffect(Player& self, Player& opponent) {
+    cout << "[MonsterCard] has no effect to activate.\n";
 }
 
 json MonsterCard::toJson() const 

@@ -57,6 +57,7 @@ void GameState::startGame() {
 }
 
 void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
+    self.setCannotUseReEndThisTurn(false);
     for (Card* card : self.getField()) {
         MonsterCard* mc = dynamic_cast<MonsterCard*>(card);
         if (mc) mc->clearSummonFlag();
@@ -72,7 +73,7 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
     self.resetAttackFlags();
     if (!isFirstTurn) {
         self.drawCard();
-        cout << "Player " << self.getId() << " draws a card.\n";
+        cout << "Draws a card.\n";
     }
 
     while (true) {
@@ -123,50 +124,102 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
 
         switch (code) {
             case 0:
-                return; // End turn
+            for (Card* c : self.getField()) {
+             MonsterCard* mc = dynamic_cast<MonsterCard*>(c);
+              if (mc && mc->originalAtk != -1) {
+               mc->setAtk(mc->originalAtk);
+               mc->originalAtk = -1;
+               cout << "[Effect Ended] " << mc->getName() << " returns to original ATK.\n";
+               }
+            }
+
+            for (Card* c : self.getField()) {
+            MonsterCard* mc = dynamic_cast<MonsterCard*>(c);
+            if (mc) {
+            mc->setAttacksThisTurn(0);
+            mc->setExtraAttackThisTurn(false);
+            }
+        }   
+
+            return; // End turn
 
             case 1:
-                if (!hasSummoned) {
-                    self.Summon(index);
-                    hasSummoned = true;
-                } else {
-                    cout << "You cannot summon more than once per turn.\n";
-                }
-                break;
+            if (index >= 0 && index < self.getHand().size()) {
+              Card* card = self.getHand()[index];
+              string type = card->getType();
+
+              if (type == "Monster") {
+                if (!hasSummoned) { 
+                self.Summon(index);
+                hasSummoned = true;
+              } else {
+                cout << "You cannot summon more than once per turn.\n";
+              }
+            } 
+            else if (type == "Spell" || type == "Trap") {
+                 bool success = card->activateEffect(self, opponent);
+                 if (success) {
+                    delete card;
+                    self.getHand().erase(self.getHand().begin() + index);
+                 } else {
+                     cout << "[Spell/Trap] Effect was not activated. Card remains in hand.\n";
+                 }
+            } 
+            else {
+              cout << "Unsupported card type.\n";
+            }
+            } else {
+              cout << "Invalid index.\n";
+            } 
+            break;
+
             case 2:
                 self.switchPosition(index);
                 break;
 
             case 3:
-            if (!self.hasAttacked(index)) {
-                if (opponent.getField().empty()) {
-                    cout << "Opponent has no monsters.\n";
-                    cout << "Do you want to attack directly with " << self.getField()[index]->getName() << "? (y/n): ";
-                    char choice;
-                    cin >> choice;
+            if (self.skipBattlePhaseCount > 0) {
+                cout << "You must skip this battle phase due to a card effect.\n";
+                self.skipBattlePhaseCount--;
+                break;
+            }
         
-                    if (choice == 'y' || choice == 'Y') {
-                        MonsterCard* atkCard = dynamic_cast<MonsterCard*>(self.getField()[index]);
-                        if (!atkCard) {
-                            cout << "Invalid attacker card.\n";
-                            break;
-                        }
-        
-                        int damage = atkCard -> getAtk();
-                        opponent.takeDamage(damage);
-                        cout << atkCard->getName() << " attacks directly! Opponent loses " << damage << " HP!\n";
-                        self.setAttacked(index); 
-                        hasBattled = true;
-                    }
-                } else {
-                    int defendIndex;
-                    cout << "Enter the index of the opponent's card to attack: ";
-                    cin >> defendIndex;
-                    battlePhase(self, opponent, index, defendIndex);
-                    hasBattled = true;
-                }
+            if (index < 0 || index >= self.getField().size()) {
+                cout << "Invalid index.\n";
+                break;
+            }
+
+            MonsterCard* atkCard = dynamic_cast<MonsterCard*>(self.getField()[index]);
+            if (!atkCard) {
+               cout << "This is not a monster card.\n";
+               break;
+            }      
+
+            if (!atkCard->canAttackThisTurn()) {
+               cout << atkCard->getName() << " cannot attack anymore this turn.\n";
+               break;
+            }
+
+            if (opponent.getField().empty()) {
+               cout << "Opponent has no monsters.\n";
+               cout << "Do you want to attack directly with " << atkCard->getName() << "? (y/n): ";
+               char choice;
+               cin >> choice;
+
+            if (choice == 'y' || choice == 'Y') {
+               int damage = atkCard->getAtk();
+               opponent.takeDamage(damage);
+               cout << atkCard->getName() << " attacks directly! Opponent loses " << damage << " HP!\n";
+               atkCard->setAttacksThisTurn(atkCard->getAttacksThisTurn() + 1);
+               hasBattled = true;
+            }
             } else {
-                cout << "This monster already battle.\n";
+                 int defendIndex;
+                 cout << "Enter the index of the opponent's card to attack: ";
+                 cin >> defendIndex;
+                 battlePhase(self, opponent, index, defendIndex);
+                 atkCard->setAttacksThisTurn(atkCard->getAttacksThisTurn() + 1);
+                  hasBattled = true;
             }
             break;
 

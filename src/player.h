@@ -13,8 +13,12 @@ class Player{
     vector<Card*> hand;
     vector<Card*> field;
     int hp;
+    bool extraTurn = false;
+    bool cannotUseReEndThisTurn = false;
 
     public:
+    int skipBattlePhaseCount;
+
     Player(int i);
 
     void drawCard();
@@ -24,6 +28,10 @@ class Player{
     void resetAttackFlags();
     bool hasAttacked(int fieldIndex) const;
     void setAttacked(int fieldIndex);
+    bool hasExtraTurn() const;
+    void setExtraTurn(bool val);
+    bool getCannotUseReEndThisTurn() const;
+    void setCannotUseReEndThisTurn(bool value);
 
     void revealMonster(int fieldIndex);
     void switchPosition(int fieldIndex);
@@ -40,6 +48,8 @@ class Player{
     vector<Card*> getDeck() const;
     vector<Card*> getField() const;
     vector<Card*> getHand() const;
+    vector<Card*>& getDeckRef();
+    vector<Card*>& getFieldRef();
 
     void setDeck(vector<Card*> newDeck);
     void setField(vector<Card*> newField);

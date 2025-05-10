@@ -39,6 +39,7 @@ void DumpInfo(Player& player)
 Player :: Player(int i){
     index = i;
     hp = 4000;
+    skipBattlePhaseCount = 0; 
 }
 
 Player::~Player()
@@ -81,11 +82,26 @@ bool Player::hasAttacked(int index) const {
     return index >= 0 && index < attackedThisTurn.size() && attackedThisTurn[index];
 }
 
+bool Player::hasExtraTurn() const {
+    return extraTurn;
+}
+
+void Player::setExtraTurn(bool val) {
+    extraTurn = val;
+}
+
 void Player::setAttacked(int index) {
     if(index >= 0 && index < attackedThisTurn.size())
         attackedThisTurn[index] = true;
 }
 
+bool Player::getCannotUseReEndThisTurn() const {
+    return cannotUseReEndThisTurn;
+}
+
+void Player::setCannotUseReEndThisTurn(bool value) {
+    cannotUseReEndThisTurn = value;
+}
 
 void Player::switchPosition(int fieldIndex) {
     if (fieldIndex < 0 || fieldIndex >= field.size()) {
@@ -100,7 +116,7 @@ void Player::switchPosition(int fieldIndex) {
     }
 
     if (m->isFacedown()) {
-        cout << "You cannot switch position of a facedown monster.\n";
+        cout << "Please use function reveal monster to switch a position of a facedown monster.\n";
         return;
     }
 
@@ -209,6 +225,15 @@ void Player::setDeck(vector<Card*> newDeck)
     deck = newDeck;
     DumpInfo(*this);
 }
+
+vector<Card*>& Player::getDeckRef() {
+    return deck;
+}
+
+vector<Card*>& Player::getFieldRef() {
+    return field;
+}
+
 void Player::setHp(int hp)
 {
     this -> hp = hp; 

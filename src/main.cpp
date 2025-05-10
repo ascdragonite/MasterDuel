@@ -138,6 +138,15 @@ int main() {
             // Update JSON state
             state["Player1"] = *player1;
             state["Player2"] = *player2;
+            bool hasExtra = (player == "1") ? player1->hasExtraTurn() : player2->hasExtraTurn();
+            if (hasExtra) {
+               if (player == "1") player1->setExtraTurn(false);
+               else player2->setExtraTurn(false);
+
+               cout << "[Extra Turn] You get to play another turn!\n";
+               writeToFile(state); 
+               continue;
+            }
             state["turn"] = "PLAYER" + string((player == "1") ? "2" : "1");
             writeToFile(state);
         } else {
