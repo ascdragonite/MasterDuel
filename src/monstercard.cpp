@@ -162,6 +162,7 @@ bool MonsterCard :: isInDefense() const{
 void MonsterCard :: reveal(){
     isSet = false;
     defenseMode = false;
+    justSummoned = true;
 }
 
 bool MonsterCard :: isFacedown() const{

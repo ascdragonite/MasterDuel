@@ -29,16 +29,49 @@ void writeToFile(const json& j) {
     out.close();
 }
 
+
+//json readFromFile() {
+    //ifstream in("game_state.json");
+    //if (!in) {
+        //return json(); // empty json
+    //}
+    //json j;
+    //in >> j;
+    //in.close();
+    //return j;
+//}
+
 json readFromFile() {
     ifstream in("game_state.json");
     if (!in) {
-        return json(); // empty json
+        cerr << "Error: save file not found.\n";
+        return json(); 
     }
+
+    if (in.peek() == ifstream::traits_type::eof()) {
+        cerr << "Error: save file is empty.\n";
+        return json(); // không đọc gì cả
+    }
+
     json j;
-    in >> j;
+    try {
+        in >> j;
+    } catch (json::parse_error& e) {
+        cerr << "JSON Parse Error: " << e.what() << endl;
+        return json(); 
+    }
+
     in.close();
     return j;
+
+    if (!in) {
+    ofstream out("game_state.json");
+    out << "{}";
+    out.close();
+    return json();
 }
+}
+
 
 
 int main() {
