@@ -62,15 +62,17 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
         if (mc) mc->clearSummonFlag();
     }
 
+    cout << "\n[Start of Turn Status]\n";
+    cout << "Player 1 HP: " << player1->getHp() << " | Deck: " << player1->getDeck().size() << endl;
+    cout << "Player 2 HP: " << player2->getHp() << " | Deck: " << player2->getDeck().size() << endl;
+
     bool hasSummoned = false;
     bool hasBattled = false; 
 
     self.resetAttackFlags();
     if (!isFirstTurn) {
         self.drawCard();
-        cout << "\n[Status After Draw]\n";
-        cout << "Player 1 HP: " << player1->getHp() << " | Deck: " << player1->getDeck().size() << endl;
-        cout << "Player 2 HP: " << player2->getHp() << " | Deck: " << player2->getDeck().size() << endl;
+        cout << "Player " << self.getId() << " draws a card.\n";
     }
 
     while (true) {
@@ -95,7 +97,7 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
 
         cout << " | ";
         }     
-        cout << "\nField: ";
+        cout << "\n Your Field: ";
         for (int i = 0; i < self.getField().size(); ++i) {
             cout << i << ". ";
             self.getField()[i]->showInfo();
@@ -251,3 +253,8 @@ void GameState :: battlePhase(Player& attacker, Player& defender, int attackInde
     this_thread::sleep_for(chrono::milliseconds(800));
 }
 
+bool GameState::checkVictory(const Player& p1, const Player& p2) {
+    if (p1.getHp() <= 0 || p1.getDeck().empty()) return true;
+    if (p2.getHp() <= 0 || p2.getDeck().empty()) return true;
+    return false;
+}
