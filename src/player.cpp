@@ -88,16 +88,38 @@ void Player::setAttacked(int index) {
 
 
 void Player::switchPosition(int fieldIndex) {
-    if (fieldIndex >= 0 && fieldIndex < field.size()) {
-        MonsterCard* m = dynamic_cast<MonsterCard*>(field[fieldIndex]);
-        if (m && !m->isFacedown()) {
-            if (hasAttacked(fieldIndex)) {
-                return;
-            }
-            m->setDefenseMode(!m->isInDefense());
-        }
+    if (fieldIndex < 0 || fieldIndex >= field.size()) {
+        cout << "Invalid index.\n";
+        return;
     }
-    DumpInfo(*this);
+
+    MonsterCard* m = dynamic_cast<MonsterCard*>(field[fieldIndex]);
+    if (!m) {
+        cout << "This is not a monster card.\n";
+        return;
+    }
+
+    if (m->isFacedown()) {
+        cout << "You cannot switch position of a facedown monster.\n";
+        return;
+    }
+
+    if (hasAttacked(fieldIndex)) {
+        cout << "This monster already attacked this turn.\n";
+        return;
+    }
+
+    if (m->isJustSummoned()) {
+        cout << "You cannot switch position of a monster summoned this turn.\n";
+        return;
+    }
+
+    // Toggle position
+    bool newPos = !m->isInDefense();
+    m->setDefenseMode(newPos);
+    cout << m->getName() << " switched to " << (newPos ? "Defense" : "Attack") << " position.\n";
+
+    DumpInfo(*this); 
 }
 
 void Player::revealMonster(int fieldIndex) {

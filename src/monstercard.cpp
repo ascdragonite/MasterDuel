@@ -10,6 +10,8 @@ MonsterCard :: MonsterCard(string name, int atk, int def, string description, in
     this -> isSet = false;
     this -> defenseMode = false;
     this -> owner = owner;
+    this -> justSummoned = false;
+    
 }
 
 MonsterCard :: MonsterCard(string name, int atk, int def, string description, int owner, bool defenseMode, bool isSet) : Card(name, "Monster", description){
@@ -18,6 +20,34 @@ MonsterCard :: MonsterCard(string name, int atk, int def, string description, in
     this -> isSet = isSet;
     this -> defenseMode = defenseMode;
     this -> owner = owner;
+    this -> justSummoned = false;
+}
+
+void MonsterCard::showInfo() const {
+    cout << "Name: " << getName() << endl;
+    cout << "Type: " << getType() << endl;
+    cout << "Atk: " << atk << " Def: " << def << endl;
+
+    cout << "Position: ";
+    if (defenseMode) {
+        cout << "Defense";
+    } else {
+        cout << "Attack";
+    }
+
+    if (isSet) {
+        cout << " (Facedown)";
+    }
+
+    cout << endl;
+}
+
+void MonsterCard::showInfoHidden() const {
+    if (isSet) {
+        cout << "Facedown Defense Position Monster";
+    } else {
+        showInfo(); 
+    }
 }
 
 int MonsterCard::getOwner() const{
@@ -120,19 +150,9 @@ int MonsterCard::getAtk() const{
 int MonsterCard::getDef() const{
     return def;
 }
-void MonsterCard::showInfo() const{
-    if (isSet) {
-        cout << "Facedown Defense Position Monster" << endl;
-    } 
-    else {
-        cout << "Name: " << getName() << endl;
-        cout << "Type: " << getType() << endl;
-        cout << "Atk: " << atk << " Def: " << def << endl;
-    }
-}
+
 void MonsterCard :: setDefenseMode(bool mode){
     defenseMode = mode;
-    isSet = true;
 }
 
 bool MonsterCard :: isInDefense() const{
@@ -141,6 +161,7 @@ bool MonsterCard :: isInDefense() const{
 
 void MonsterCard :: reveal(){
     isSet = false;
+    defenseMode = false;
 }
 
 bool MonsterCard :: isFacedown() const{
@@ -163,16 +184,26 @@ void MonsterCard::PlayCard(vector<Card*>& field)
         cin >> answer;
         if (answer == 'y' || answer == 'Y') {
             defenseMode = true;
+            isSet = true;
         } else if (answer == 'n' || answer == 'N') {
             defenseMode = false;
         }
         field.push_back(this);
+        this->justSummoned = true;
         cout << "Monster card played: " << getName() << endl;
     }
     else
     {
         cout << "Cannot play monster card. Field is full." << endl;
     }
+}
+
+bool MonsterCard::isJustSummoned() const {
+    return justSummoned;
+}
+
+void MonsterCard::clearSummonFlag() {
+    justSummoned = false;
 }
 
 json MonsterCard::toJson() const 

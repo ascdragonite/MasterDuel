@@ -57,6 +57,11 @@ void GameState::startGame() {
 }
 
 void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
+    for (Card* card : self.getField()) {
+        MonsterCard* mc = dynamic_cast<MonsterCard*>(card);
+        if (mc) mc->clearSummonFlag();
+    }
+
     bool hasSummoned = false;
     bool hasBattled = false; 
 
@@ -76,11 +81,22 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
         }
         cout << "\n Enemy Field: ";
         for (int i = 0; i < opponent.getField().size(); ++i) {
-            cout << i << ". " << opponent.getField()[i]->getName() << " | ";
+            cout << i << ". ";
+
+        MonsterCard* mc = dynamic_cast<MonsterCard*>(opponent.getField()[i]);
+        if (mc) {
+        mc->showInfoHidden();
+        } else {
+        opponent.getField()[i]->showInfo(); // Cho spell/trap hoặc card khác
         }
+
+        cout << " | ";
+        }     
         cout << "\nField: ";
         for (int i = 0; i < self.getField().size(); ++i) {
-            cout << i << ". " << self.getField()[i]->getName() << " | ";
+            cout << i << ". ";
+            self.getField()[i]->showInfo();
+            cout << " | ";
         }
 
         cout << "\nChoose an action:\n";
@@ -150,16 +166,38 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
             break;
 
             case 4:
-                self.revealMonster(index);
-                break;
+            if (index >= 0 && index < self.getField().size()) {
+            MonsterCard* mc = dynamic_cast<MonsterCard*>(self.getField()[index]);
+            if (!mc) {
+             cout << "This is not a monster card.\n";
+             break;
+            }
 
+            if (!mc->isFacedown()) {
+             cout << mc->getName() << " is already face-up.\n";
+             break;
+            }
+
+            if (mc->isJustSummoned()) {
+             cout << "You cannot reveal a monster that was summoned this turn.\n";
+             break;
+            }
+
+            mc->reveal();        // lật ngửa + chuyển sang attack
+            mc->showInfo();      // in đầy đủ thông tin
+
+           } else {
+           cout << "Invalid index.\n";
+           }
+           break;
+           
             default:
                 cout << "Invalid action. Try again.\n";
                 break;
         }
 
         // Pause to let the player see the result of their action
-        this_thread::sleep_for(std::chrono::milliseconds(1000));
+        this_thread::sleep_for(std::chrono::milliseconds(3000));
     }
 }
 

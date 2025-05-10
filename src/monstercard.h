@@ -13,6 +13,7 @@ class MonsterCard : public Card{
         bool defenseMode;
         bool isSet;
         int owner;
+        bool justSummoned;
     public:
         MonsterCard(string name, int atk, int def, string description, int owner);
         MonsterCard(string name, int atk, int def, string description, int owner, bool defenseMode, bool isSet);
@@ -23,11 +24,14 @@ class MonsterCard : public Card{
 
         MonsterCard& operator+=(MonsterCard& other);
         void showInfo() const override;
+        void showInfoHidden() const;
         void setDefenseMode(bool mode);
         bool isInDefense() const;
         void reveal();
         bool isFacedown() const;
         void PlayCard(vector<Card*>& field) override;
+        bool isJustSummoned() const;     
+        void clearSummonFlag();   
         
         json toJson() const override;
 };
