@@ -14,8 +14,9 @@ class MonsterCard : public Card{
         bool isSet;
         int owner;
         bool justSummoned;
-        bool extraAttackThisTurn = false;
+        int extraAttackThisTurn = 0;
         int attacksThisTurn = 0;
+        int extraAttacksRemaining = 0;
     public:
         MonsterCard(string name, int atk, int def, string description, int owner);
         MonsterCard(string name, int atk, int def, string description, int owner, bool defenseMode, bool isSet);
@@ -35,10 +36,13 @@ class MonsterCard : public Card{
         bool isJustSummoned() const;     
         void clearSummonFlag();
         bool activateEffect(Player& self, Player& opponent) override;
+
         void setExtraAttackThisTurn(bool val);
         int getAttacksThisTurn() const;
         void setAttacksThisTurn(int count);
         bool canAttackThisTurn() const;
+        int getExtraAttacksRemaining() const;
+        void setExtraAttacksRemaining(int count);
         
         int originalAtk = -1; 
         int originalDef = -1; 

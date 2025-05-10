@@ -219,7 +219,7 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
                  cin >> defendIndex;
                  battlePhase(self, opponent, index, defendIndex);
                  atkCard->setAttacksThisTurn(atkCard->getAttacksThisTurn() + 1);
-                  hasBattled = true;
+                 hasBattled = true;
             }
             break;
 

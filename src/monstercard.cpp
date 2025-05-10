@@ -177,16 +177,16 @@ void MonsterCard::setDef(int d) {
     def = d;
 }
 
-int MonsterCard::getAttacksThisTurn() const {
-    return attacksThisTurn;
+int MonsterCard::getExtraAttacksRemaining() const {
+    return extraAttacksRemaining;
 }
 
-void MonsterCard::setAttacksThisTurn(int count) {
-    attacksThisTurn = count;
+void MonsterCard::setExtraAttacksRemaining(int count) {
+    extraAttacksRemaining = count;
 }
 
 bool MonsterCard::canAttackThisTurn() const {
-    return (extraAttackThisTurn && attacksThisTurn < 2) || (!extraAttackThisTurn && attacksThisTurn < 1);
+    return extraAttacksRemaining > 0;
 }
 
 void MonsterCard::PlayCard(vector<Card*>& field)
