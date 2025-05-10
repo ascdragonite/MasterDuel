@@ -72,7 +72,7 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
     self.resetAttackFlags();
     if (!isFirstTurn) {
         self.drawCard();
-        cout << "Player " << self.getId() << " draws a card.\n";
+        cout << " draws a card.\n";
     }
 
     while (true) {
