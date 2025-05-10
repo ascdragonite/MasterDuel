@@ -68,6 +68,9 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
     self.resetAttackFlags();
     if (!isFirstTurn) {
         self.drawCard();
+        cout << "\n[Status After Draw]\n";
+        cout << "Player 1 HP: " << player1->getHp() << " | Deck: " << player1->getDeck().size() << endl;
+        cout << "Player 2 HP: " << player2->getHp() << " | Deck: " << player2->getDeck().size() << endl;
     }
 
     while (true) {
@@ -195,8 +198,19 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
                 cout << "Invalid action. Try again.\n";
                 break;
         }
+        
+        if (checkVictory(*player1, *player2)) {
+            if (player1->getHp() <= 0 || player1->getDeck().empty()) {
+                cout << "\nPlayer 2 wins!\n";
+            } else if (player2->getHp() <= 0 || player2->getDeck().empty()) {
+                cout << "\nPlayer 1 wins!\n";
+            } else {
+                cout << "\nIt's a draw!\n";
+            }
+            cout << "Game Over.\n";
+            exit(0); 
+        };
 
-        // Pause to let the player see the result of their action
         this_thread::sleep_for(std::chrono::milliseconds(3000));
     }
 }
@@ -237,8 +251,3 @@ void GameState :: battlePhase(Player& attacker, Player& defender, int attackInde
     this_thread::sleep_for(chrono::milliseconds(800));
 }
 
-bool GameState :: checkVictory(const Player& p1, const Player& p2){
-    if(p1.getHp() <= 0 || p1.getDeck().empty()) return true;
-    if(p2.getHp() <= 0 || p2.getDeck().empty()) return true;
-    return false;
-}
