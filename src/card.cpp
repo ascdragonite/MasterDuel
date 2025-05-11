@@ -34,4 +34,4 @@ void Card::SetType(string t)
 Card::~Card()
 {
     cout << "Card destroyed: " << name << endl;
-} //test cmt
+} 
