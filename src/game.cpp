@@ -113,7 +113,7 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
         cout << "1: Play Card\n";
         cout << "2: Switch Monster Position\n";
         cout << "3: Attack\n";
-        cout << "4: Reveal Monster\n";
+        cout << "4: Flip summon\n";
         cout << "Enter your choice: ";
 
 
@@ -229,14 +229,14 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
             }
 
             if (mc->isJustSummoned()) {
-             cout << "You cannot reveal a monster that was summoned this turn.\n";
+             cout << "You cannot flip summon a monster that was summoned this turn.\n";
              break;
             }
 
-            mc->reveal();        // lật ngửa + chuyển sang attack
+            mc->flipSummon();        // lật ngửa + chuyển sang attack
             mc->showInfo();      // in đầy đủ thông tin
 
-            writeLog("Opponent revealed their monster: " + mc->getName());
+            writeLog("Opponent flip summon their monster: " + mc->getName());
 
            } else {
            cout << "Invalid index.\n";
@@ -291,12 +291,11 @@ void GameState :: battlePhase(Player& attacker, Player& defender, int attackInde
 
     if(defCard -> isFacedown()){
         defCard -> reveal();
-        cout << "The defending card was face-down. It is now revealed: ";
+        cout << "The defending card was face-down. It is now flip summon: ";
         defCard -> showInfo();
     }
 
     *atkCard += *defCard;
-
     this_thread::sleep_for(chrono::milliseconds(800));
 }
 

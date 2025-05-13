@@ -92,29 +92,32 @@ MonsterCard& MonsterCard::operator+=(MonsterCard& other) {
         return *this;
     }
 
-    if(other.isInDefense()){
-        if(atk > defValue){
-            writeLog(this->getName() + " destroyed a defending monster: " + other.getName());
-            auto field = defField;
-            field.erase(field.begin() + defendIndex);
-            target -> setField(field);
-            other.setOwner(-1);
-            return *this;
-        }
-        else if(atk < defValue){
-            int loss = defValue - atk;
-            self -> takeDamage(loss);
-            writeLog(this->getName() + " failed to destroy " + other.getName() + " in defense. Took " + to_string(loss) + " damage.");
-            cout << "Attacker HP: " << self -> getHp() << endl;
-            cout << "Attacker HP: " << target -> getHp() << endl;
-            return *this;
-        }
-        else{
-            //atk = def
-            writeLog(this->getName() + " attacked " + other.getName() + " in defense. Equal ATK and DEF, no one was destroyed.");
-            return *this;
-        }
+    if (other.isInDefense()) {
+    if (other.isFacedown()) {
+        other.reveal();
     }
+
+    if (atk > defValue) {
+        writeLog(this->getName() + " destroyed a defending monster: " + other.getName());
+        auto field = defField;
+        field.erase(field.begin() + defendIndex);
+        target->setField(field);
+        other.setOwner(-1);
+        return *this;
+    }
+    else if (atk < defValue) {
+        int loss = defValue - atk;
+        self->takeDamage(loss);
+        writeLog(this->getName() + " failed to destroy " + other.getName() + " in defense. Took " + to_string(loss) + " damage.");
+        cout << "Attacker HP: " << self->getHp() << endl;
+        cout << "Attacker HP: " << target->getHp() << endl;
+        return *this;
+    }
+    else {
+        writeLog(this->getName() + " attacked " + other.getName() + " in defense. Equal ATK and DEF, no card was destroyed.");
+        return *this;
+    }
+}
 
     else{
 
@@ -171,8 +174,15 @@ bool MonsterCard :: isInDefense() const{
 
 void MonsterCard :: reveal(){
     isSet = false;
-    defenseMode = false;
     justSummoned = true;
+}
+
+void MonsterCard::flipSummon() {
+    if (isSet && defenseMode) {
+        isSet = false;
+        defenseMode = false; 
+        justSummoned = true;
+    }
 }
 
 bool MonsterCard :: isFacedown() const{
