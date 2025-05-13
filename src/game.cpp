@@ -297,7 +297,7 @@ void GameState :: battlePhase(Player& attacker, Player& defender, int attackInde
 
     if(defCard -> isFacedown()){
         defCard -> reveal();
-        cout << "The defending card was face-down. It is now flip summon: ";
+        cout << "The defending card was face-down. It is now reveal: ";
         defCard -> showInfo();
     }
 
