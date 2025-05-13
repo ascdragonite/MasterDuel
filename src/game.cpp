@@ -9,6 +9,7 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include "log_utilis.h"
 
 GameState* GameState::instance = nullptr;
 
@@ -57,6 +58,9 @@ void GameState::startGame() {
 }
 
 void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
+    ofstream clearLog("log.txt");
+    clearLog.close();
+    
     for (Card* card : self.getField()) {
         MonsterCard* mc = dynamic_cast<MonsterCard*>(card);
         if (mc) mc->clearSummonFlag();
@@ -134,6 +138,11 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
                 if (!hasSummoned) { 
                 self.Summon(index);
                 hasSummoned = true;
+
+                MonsterCard* mc = dynamic_cast<MonsterCard*>(card);
+                if (mc) {
+                    writeLog("Opponent summoned a monster in " + string(mc->isInDefense() ? "face-down defense" : "attack") + " position.");
+                }
               } else {
                 cout << "You cannot summon more than once per turn.\n";
               }
@@ -141,6 +150,7 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
             else if (type == "Spell" || type == "Trap") {
                  bool success = card->activateEffect(self, opponent);
                  if (success) {
+                    writeLog("Opponent activated a " + type + " card: " + card->getName());
                     delete card;
                     auto& hand = self.getHandRef(); 
                     hand.erase(hand.begin() + index);
@@ -157,8 +167,18 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
             break;
 
             case 2:
-                self.switchPosition(index);
-                break;
+            self.switchPosition(index);
+
+            // Ghi log nếu switch hợp lệ
+            if (index >= 0 && index < self.getField().size()) {
+            MonsterCard* m = dynamic_cast<MonsterCard*>(self.getField()[index]);
+            if (m && !m->isFacedown() && !self.hasAttacked(index) && !m->isJustSummoned()) {
+            string pos = m->isInDefense() ? "Defense" : "Attack";
+            writeLog("Opponent switched position of " + m->getName() + " to " + pos + " position.");
+            }
+            }
+
+            break;
 
             case 3:
             if (!self.hasAttacked(index)) {
@@ -178,6 +198,7 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
                         int damage = atkCard -> getAtk();
                         opponent.takeDamage(damage);
                         cout << atkCard->getName() << " attacks directly! Opponent loses " << damage << " HP!\n";
+                        writeLog("Opponent attacked directly with " + atkCard->getName() + " for " + to_string(damage) + " damage.");
                         self.setAttacked(index); 
                         hasBattled = true;
                     }
@@ -185,6 +206,7 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
                     int defendIndex;
                     cout << "Enter the index of the opponent's card to attack: ";
                     cin >> defendIndex;
+                    writeLog("Opponent declared an attack from " + self.getField()[index]->getName() + " targeting opponent's card at index " + to_string(defendIndex) + ".");
                     battlePhase(self, opponent, index, defendIndex);
                     hasBattled = true;
                 }
@@ -213,6 +235,8 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
 
             mc->reveal();        // lật ngửa + chuyển sang attack
             mc->showInfo();      // in đầy đủ thông tin
+
+            writeLog("Opponent revealed their monster: " + mc->getName());
 
            } else {
            cout << "Invalid index.\n";
