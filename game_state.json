@@ -3,78 +3,23 @@
         "attackedThisTurn": [],
         "deck": [
             {
-                "atk": 2500,
-                "def": 2100,
-                "defenseMode": false,
-                "description": "The ultimate wizard in term of attack and defense.",
-                "isSet": false,
-                "name": "Dark Magician",
-                "owner": 1,
-                "type": "Monster"
-            },
-            {
-                "atk": 0,
-                "def": 0,
-                "defenseMode": false,
-                "description": "Little fluffy ball that like to help others.",
-                "isSet": false,
-                "name": "Kuriboh",
-                "owner": 1,
-                "type": "Monster"
-            },
-            {
-                "description": "If you controll a “Dark Magician”, special summon from your deck a dark magician girl but skip your battle phase",
-                "name": "Bond Between the teacher and student",
+                "description": "If and only if your lifepoint is lower or equal to 500 you can activate this card. When this card is activated, you can conduct anorther turn",
+                "name": "Re:End of a dream",
                 "type": "Spell"
             },
             {
-                "description": "Look at your full deck and place a card you like at the top of the deck.",
-                "name": "Disorted Fate",
-                "type": "Spell"
-            },
-            {
-                "atk": 1200,
-                "def": 800,
-                "defenseMode": false,
-                "description": "A mammoth that protects the graves of its pack and is absolutely merciless when facing grave-robbers.",
-                "isSet": false,
-                "name": "Mammoth Graveyard",
-                "owner": 1,
-                "type": "Monster"
-            },
-            {
-                "atk": 1200,
+                "atk": 2000,
                 "def": 1500,
                 "defenseMode": false,
-                "description": "This monster's tough hide deflects almost any attack.",
+                "description": "A wicked dragon that taps into dark forces to execute a powerful attack.",
                 "isSet": false,
-                "name": "Griffore",
+                "name": "Curse of Dragon",
                 "owner": 1,
                 "type": "Monster"
             },
             {
-                "description": "When an opponent's monster declares an attack: Destroy all your opponent's Attack Position monsters.",
-                "name": "Mirror force",
-                "type": "Trap"
-            },
-            {
-                "atk": 800,
-                "def": 2000,
-                "defenseMode": false,
-                "description": "A delicate elf that lacks offense, but has a terrific defense backed by mystical power.",
-                "isSet": false,
-                "name": "Mystical Elf",
-                "owner": 1,
-                "type": "Monster"
-            },
-            {
-                "description": "Combine all of your faceup monster atk to 1 single card in this turn.",
-                "name": "The Power of Friendship",
-                "type": "Spell"
-            },
-            {
-                "description": "If you control a “Dark Magician”, “Dark magician girl” you can destroy all of your oponent card but skip your 2 battle phase",
-                "name": "Dark Burning Magic",
+                "description": "Shuffle your opponent's deck when this card is activated.",
+                "name": "Oshama Scramble",
                 "type": "Spell"
             },
             {
@@ -88,13 +33,13 @@
                 "type": "Monster"
             },
             {
-                "description": " If you controll a “Dark Magician” monster, destroy all spell and trap card your opponent controll.",
-                "name": "Dark Magic",
+                "description": "Combine all of your faceup monster atk to 1 single card in this turn.",
+                "name": "The Power of Friendship",
                 "type": "Spell"
             },
             {
-                "description": "Shuffle your opponent's deck when this card is activated.",
-                "name": "Oshama Scramble",
+                "description": "If you controll a “Dark Magician”, special summon from your deck a dark magician girl but skip your battle phase",
+                "name": "Bond Between the teacher and student",
                 "type": "Spell"
             },
             {
@@ -103,38 +48,39 @@
                 "type": "Trap"
             },
             {
-                "description": "If and only if your lifepoint is lower or equal to 500 you can activate this card. When this card is activated, you can conduct anorther turn",
-                "name": "Re:End of a dream",
-                "type": "Spell"
-            }
-        ],
-        "field": [
-            {
-                "atk": 2000,
-                "def": 1500,
-                "defenseMode": true,
-                "description": "A wicked dragon that taps into dark forces to execute a powerful attack.",
-                "isSet": true,
-                "name": "Curse of Dragon",
-                "owner": 1,
-                "type": "Monster"
-            }
-        ],
-        "hand": [
-            {
-                "atk": 2000,
-                "def": 1700,
+                "atk": 0,
+                "def": 0,
                 "defenseMode": false,
-                "description": "Dark Magician favourite student.",
+                "description": "Little fluffy ball that like to help others.",
                 "isSet": false,
-                "name": "Dark Magician Girl",
+                "name": "Kuriboh",
                 "owner": 1,
                 "type": "Monster"
             },
             {
-                "description": "When an opponent's monster declares an attack: Negate the attack and end the battle phase.",
-                "name": "Tsunagite",
-                "type": "Trap"
+                "atk": 800,
+                "def": 2000,
+                "defenseMode": false,
+                "description": "A delicate elf that lacks offense, but has a terrific defense backed by mystical power.",
+                "isSet": false,
+                "name": "Mystical Elf",
+                "owner": 1,
+                "type": "Monster"
+            },
+            {
+                "description": "If you control a “Dark Magician”, “Dark magician girl” you can destroy all of your oponent card but skip your 2 battle phase",
+                "name": "Dark Burning Magic",
+                "type": "Spell"
+            },
+            {
+                "atk": 1200,
+                "def": 800,
+                "defenseMode": false,
+                "description": "A mammoth that protects the graves of its pack and is absolutely merciless when facing grave-robbers.",
+                "isSet": false,
+                "name": "Mammoth Graveyard",
+                "owner": 1,
+                "type": "Monster"
             },
             {
                 "atk": 1300,
@@ -155,6 +101,60 @@
                 "name": "Dark Magician",
                 "owner": 1,
                 "type": "Monster"
+            },
+            {
+                "atk": 2000,
+                "def": 1700,
+                "defenseMode": false,
+                "description": "Dark Magician favourite student.",
+                "isSet": false,
+                "name": "Dark Magician Girl",
+                "owner": 1,
+                "type": "Monster"
+            },
+            {
+                "atk": 2500,
+                "def": 2100,
+                "defenseMode": false,
+                "description": "The ultimate wizard in term of attack and defense.",
+                "isSet": false,
+                "name": "Dark Magician",
+                "owner": 1,
+                "type": "Monster"
+            }
+        ],
+        "field": [
+            {
+                "atk": 1200,
+                "def": 1500,
+                "defenseMode": true,
+                "description": "This monster's tough hide deflects almost any attack.",
+                "isSet": true,
+                "name": "Griffore",
+                "owner": 1,
+                "type": "Monster"
+            }
+        ],
+        "hand": [
+            {
+                "description": "When an opponent's monster declares an attack: Destroy all your opponent's Attack Position monsters.",
+                "name": "Mirror force",
+                "type": "Trap"
+            },
+            {
+                "description": "When an opponent's monster declares an attack: Negate the attack and end the battle phase.",
+                "name": "Tsunagite",
+                "type": "Trap"
+            },
+            {
+                "description": " If you controll a “Dark Magician” monster, destroy all spell and trap card your opponent controll.",
+                "name": "Dark Magic",
+                "type": "Spell"
+            },
+            {
+                "description": "Look at your full deck and place a card you like at the top of the deck.",
+                "name": "Disorted Fate",
+                "type": "Spell"
             }
         ],
         "hp": 4000
@@ -163,12 +163,52 @@
         "attackedThisTurn": [],
         "deck": [
             {
+                "description": "If and only if your lifepoint is lower or equal to 500 you can activate this card. When this card is activated, you can conduct anorther turn",
+                "name": "Re:End of a dream",
+                "type": "Spell"
+            },
+            {
+                "atk": 1900,
+                "def": 0,
+                "defenseMode": false,
+                "description": "A razorwind dragon whose translucent body leaves only trails of slashing winds. Without any defenses, it relies entirely on blinding speed and lethal precision.",
+                "isSet": false,
+                "name": "Sasakure",
+                "owner": 2,
+                "type": "Monster"
+            },
+            {
+                "description": "Shuffle your opponent's deck when this card is activated.",
+                "name": "Oshama Scramble",
+                "type": "Spell"
+            },
+            {
                 "atk": 2300,
                 "def": 900,
                 "defenseMode": false,
                 "description": "A sonic dragon traveling across dimensions through ultrasonic waves. Sakuzyo’s roar can shatter metal, and those who hear it often lose their sense of direction completely.",
                 "isSet": false,
                 "name": "Sakuzyo",
+                "owner": 2,
+                "type": "Monster"
+            },
+            {
+                "description": "If you controll a Blue eye white dragon destroy all card your opponent controll but skip your next 2 battle phase.",
+                "name": "Burst Stream of Destruction",
+                "type": "Spell"
+            },
+            {
+                "description": "Buff a monster attack by 200 when this card is activated.",
+                "name": "World Vanquisher",
+                "type": "Spell"
+            },
+            {
+                "atk": 1750,
+                "def": 200,
+                "defenseMode": false,
+                "description": "A crystal dragon born from solidified molten lava. T+pazolite's scales shimmer like gemstones, absorbing and reflecting light to confuse enemies on the battlefield.",
+                "isSet": false,
+                "name": "T+pazolite",
                 "owner": 2,
                 "type": "Monster"
             },
@@ -183,8 +223,61 @@
                 "type": "Monster"
             },
             {
-                "description": "Buff a monster attack by 200 when this card is activated.",
-                "name": "World Vanquisher",
+                "atk": 1500,
+                "def": 400,
+                "defenseMode": false,
+                "description": "A young flame dragon constantly yearning to prove its might. Its immature blue flames often ignite unexpected wildfires across the land.",
+                "isSet": false,
+                "name": "Feryquitous",
+                "owner": 2,
+                "type": "Monster"
+            },
+            {
+                "atk": 1450,
+                "def": 1000,
+                "defenseMode": false,
+                "description": "An ancient dragon that once guarded sacred lands. Though its strength has waned with time, Laur’s unwavering spirit remains, ready to sacrifice itself to halt any invader’s advance.",
+                "isSet": false,
+                "name": "Laur",
+                "owner": 2,
+                "type": "Monster"
+            },
+            {
+                "description": "Flip coin, winner gets draw 2 cards",
+                "name": "Flower Snow Drum'n'Bass",
+                "type": "Spell"
+            },
+            {
+                "description": "Sacrifice 2/3 of your lifepoint, “Blue Eyes White Dragon” you controll can now attack twice in a turn ( can not active “Re:End of a dream” the turn you activate this card).",
+                "name": "Rage of the blue eyes",
+                "type": "Spell"
+            },
+            {
+                "atk": 3000,
+                "def": 2500,
+                "defenseMode": false,
+                "description": "This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale.",
+                "isSet": false,
+                "name": "Blue-Eyes White Dragon",
+                "owner": 2,
+                "type": "Monster"
+            },
+            {
+                "atk": 1800,
+                "def": 0,
+                "defenseMode": false,
+                "description": "A nomadic dragon god wandering through the eastern forests. With no defensive armor, it relies on immense speed and broad wings to outmaneuver and strike down any who dare approach.",
+                "isSet": false,
+                "name": "Morimori Atsushi",
+                "owner": 2,
+                "type": "Monster"
+            }
+        ],
+        "field": [],
+        "hand": [
+            {
+                "description": "Look at your full deck and place a card you like at the top of the deck.",
+                "name": "Disorted Fate",
                 "type": "Spell"
             },
             {
@@ -198,14 +291,9 @@
                 "type": "Monster"
             },
             {
-                "atk": 1900,
-                "def": 0,
-                "defenseMode": false,
-                "description": "A razorwind dragon whose translucent body leaves only trails of slashing winds. Without any defenses, it relies entirely on blinding speed and lethal precision.",
-                "isSet": false,
-                "name": "Sasakure",
-                "owner": 2,
-                "type": "Monster"
+                "description": "Buff a monster attack and defense by 100 for each faceup monster you control when this card is activated.",
+                "name": "Dragon United",
+                "type": "Spell"
             },
             {
                 "atk": 3000,
@@ -216,26 +304,6 @@
                 "name": "Blue-Eyes White Dragon",
                 "owner": 2,
                 "type": "Monster"
-            },
-            {
-                "description": "Look at your full deck and place a card you like at the top of the deck.",
-                "name": "Disorted Fate",
-                "type": "Spell"
-            },
-            {
-                "atk": 1500,
-                "def": 400,
-                "defenseMode": false,
-                "description": "A young flame dragon constantly yearning to prove its might. Its immature blue flames often ignite unexpected wildfires across the land.",
-                "isSet": false,
-                "name": "Feryquitous",
-                "owner": 2,
-                "type": "Monster"
-            },
-            {
-                "description": "If you controll a Blue eye white dragon destroy all card your opponent controll but skip your next 2 battle phase.",
-                "name": "Burst Stream of Destruction",
-                "type": "Spell"
             },
             {
                 "atk": 2100,
@@ -244,75 +312,6 @@
                 "description": "A shadow dragon, slender yet deadly. Kuroma hides within dark clouds, striking without warning and bringing silent destruction to its prey.",
                 "isSet": false,
                 "name": "Kuroma",
-                "owner": 2,
-                "type": "Monster"
-            },
-            {
-                "atk": 1750,
-                "def": 200,
-                "defenseMode": false,
-                "description": "A crystal dragon born from solidified molten lava. T+pazolite's scales shimmer like gemstones, absorbing and reflecting light to confuse enemies on the battlefield.",
-                "isSet": false,
-                "name": "T+pazolite",
-                "owner": 2,
-                "type": "Monster"
-            },
-            {
-                "description": "Flip coin, winner gets draw 2 cards",
-                "name": "Flower Snow Drum'n'Bass",
-                "type": "Spell"
-            },
-            {
-                "description": "Buff a monster attack and defense by 100 for each faceup monster you control when this card is activated.",
-                "name": "Dragon United",
-                "type": "Spell"
-            },
-            {
-                "description": "Shuffle your opponent's deck when this card is activated.",
-                "name": "Oshama Scramble",
-                "type": "Spell"
-            }
-        ],
-        "field": [
-            {
-                "atk": 3000,
-                "def": 2500,
-                "defenseMode": false,
-                "description": "This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale.",
-                "isSet": false,
-                "name": "Blue-Eyes White Dragon",
-                "owner": 2,
-                "type": "Monster"
-            }
-        ],
-        "hand": [
-            {
-                "atk": 1800,
-                "def": 0,
-                "defenseMode": false,
-                "description": "A nomadic dragon god wandering through the eastern forests. With no defensive armor, it relies on immense speed and broad wings to outmaneuver and strike down any who dare approach.",
-                "isSet": false,
-                "name": "Morimori Atsushi",
-                "owner": 2,
-                "type": "Monster"
-            },
-            {
-                "description": "Sacrifice 2/3 of your lifepoint, “Blue Eyes White Dragon” you controll can now attack twice in a turn ( can not active “Re:End of a dream” the turn you activate this card).",
-                "name": "Rage of the blue eyes",
-                "type": "Spell"
-            },
-            {
-                "description": "If and only if your lifepoint is lower or equal to 500 you can activate this card. When this card is activated, you can conduct anorther turn",
-                "name": "Re:End of a dream",
-                "type": "Spell"
-            },
-            {
-                "atk": 1450,
-                "def": 1000,
-                "defenseMode": false,
-                "description": "An ancient dragon that once guarded sacred lands. Though its strength has waned with time, Laur’s unwavering spirit remains, ready to sacrifice itself to halt any invader’s advance.",
-                "isSet": false,
-                "name": "Laur",
                 "owner": 2,
                 "type": "Monster"
             }

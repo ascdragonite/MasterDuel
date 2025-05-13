@@ -58,6 +58,10 @@ void GameState::startGame() {
 }
 
 void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
+    #ifdef _WIN32
+    system("cls"); // Windows
+    #endif
+    
     ofstream clearLog("log.txt");
     clearLog.close();
     

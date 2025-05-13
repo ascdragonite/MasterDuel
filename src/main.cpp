@@ -25,7 +25,7 @@ void writeToFile(const json& j) {
         cerr << "Error opening file for writing.\n";
         return;
     }
-    cout << "writeing to file\n" << j.dump(4) << std::endl; // Pretty print with indent
+    cout << "writing to file\n" << j.dump(4) << std::endl; // Pretty print with indent
     out << j.dump(4) << std::endl; // Pretty print with indent
     out.close();
 }
