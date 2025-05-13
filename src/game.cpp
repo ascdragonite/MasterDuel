@@ -12,6 +12,7 @@
 #include "log_utilis.h"
 
 GameState* GameState::instance = nullptr;
+//commit
 
 void GameState::ConsoleClear()
 {
