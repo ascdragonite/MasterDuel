@@ -61,7 +61,7 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
     #ifdef _WIN32
     system("cls"); // Windows
     #endif
-    
+
     ofstream clearLog("log.txt");
     clearLog.close();
     
@@ -131,6 +131,8 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
 
         switch (code) {
             case 0:
+                cout << "Ending your turn..." << endl;
+                this_thread::sleep_for(chrono::milliseconds(800));  
                 return; // End turn
 
             case 1:
