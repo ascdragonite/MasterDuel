@@ -2,6 +2,7 @@
 #include "player.h"
 #include <iostream>
 #include "game.h"
+#include "log_utilis.h"
 using namespace std;
 
 MonsterCard :: MonsterCard(string name, int atk, int def, string description, int owner) : Card(name, "Monster", description){
@@ -93,6 +94,7 @@ MonsterCard& MonsterCard::operator+=(MonsterCard& other) {
 
     if(other.isInDefense()){
         if(atk > defValue){
+            writeLog(this->getName() + " destroyed a defending monster: " + other.getName());
             auto field = defField;
             field.erase(field.begin() + defendIndex);
             target -> setField(field);
@@ -100,13 +102,16 @@ MonsterCard& MonsterCard::operator+=(MonsterCard& other) {
             return *this;
         }
         else if(atk < defValue){
-            self -> takeDamage(defValue - atk);
+            int loss = defValue - atk;
+            self -> takeDamage(loss);
+            writeLog(this->getName() + " failed to destroy " + other.getName() + " in defense. Took " + to_string(loss) + " damage.");
             cout << "Attacker HP: " << self -> getHp() << endl;
             cout << "Attacker HP: " << target -> getHp() << endl;
             return *this;
         }
         else{
             //atk = def
+            writeLog(this->getName() + " attacked " + other.getName() + " in defense. Equal ATK and DEF, no one was destroyed.");
             return *this;
         }
     }
@@ -114,7 +119,9 @@ MonsterCard& MonsterCard::operator+=(MonsterCard& other) {
     else{
 
         if(atk > defValue){
-            target->takeDamage(atk - defValue);
+            int loss = atk - defValue;
+            target->takeDamage(loss);
+            writeLog(this->getName() + " destroyed " + other.getName() + " and dealt " + to_string(loss) + " damage.");
             cout << "Attacker HP: " << self -> getHp() << endl;
             cout << "Attacker HP: " << target -> getHp() << endl;
             auto field = defField;
@@ -124,7 +131,9 @@ MonsterCard& MonsterCard::operator+=(MonsterCard& other) {
             return *this;
         }
         else if(atk < defValue){
-            self->takeDamage(defValue - atk);
+            int loss = defValue - atk;
+            self->takeDamage(loss);
+            writeLog(this->getName() + " was destroyed by " + other.getName() + " and took " + to_string(loss) + " damage.");
             auto field = atkField;
             field.erase(field.begin() + attackIndex);
             self->setField(field);
@@ -132,6 +141,7 @@ MonsterCard& MonsterCard::operator+=(MonsterCard& other) {
         }
         else{
             //atk = atk
+            writeLog(this->getName() + " and " + other.getName() + " destroyed each other in battle.");
             auto field1 = atkField;
             auto field2 = defField;
             field1.erase(field1.begin() + attackIndex);

@@ -13,6 +13,7 @@
 #include <string>
 #include "json.hpp" // <-- include nlohmann/json (one header file)
 #include "serialize.h"
+#include "log_utilis.h"
 
 using namespace std;
 
@@ -141,10 +142,18 @@ int main() {
             state["turn"] = "PLAYER" + string((player == "1") ? "2" : "1");
             writeToFile(state);
         } else {
-            gameState -> ConsoleClear();
-            cout << "Waiting for your turn...\n";
-            this_thread::sleep_for(std::chrono::milliseconds(1000));
-        }
+    static bool printed = false;
+    static int linesSeen = 0;
+
+    if (!printed) {
+        gameState -> ConsoleClear();
+        cout << "Waiting for your turn...\n";
+        printed = true;
+    }
+
+    monitorLog(linesSeen);
+    this_thread::sleep_for(std::chrono::milliseconds(1000));
+   }
     }
 
     delete player1;
