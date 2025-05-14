@@ -4,6 +4,9 @@
 #include <vector>
 #include <string>
 #include "card.h"
+
+class TrapCard;
+
 using namespace std;
 
 class Player{
@@ -17,6 +20,7 @@ class Player{
     bool cannotUseReEndThisTurn = false;
 
     public:
+    TrapCard* canTrap = nullptr;
     int skipBattlePhaseCount;
 
     Player(int i);

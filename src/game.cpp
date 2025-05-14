@@ -10,6 +10,11 @@
 #include <thread>
 #include <chrono>
 #include "log_utilis.h"
+#include "serialize.h"
+#include "json.hpp" // <-- include nlohmann/json (one header file)
+
+using namespace std;
+using json = nlohmann::json;
 
 GameState* GameState::instance = nullptr;
 //commit
@@ -27,6 +32,15 @@ GameState* GameState::getInstance() {
         cout << "GameState instance created.\n";
     }
     return instance;
+}
+void writeToFile(const json& j) {
+    ofstream out("game_state.json");
+    if (!out) {
+        cerr << "Error opening file for writing.\n";
+        return;
+    }
+    out << j.dump(4) << std::endl; // Pretty print with indent
+    out.close();
 }
 
 Player* GameState::getPlayer(int id) {
@@ -57,11 +71,37 @@ void GameState::startGame() {
         player2 -> drawCard();
     }
 }
+json readFromFile() {
+    ifstream in("game_state.json");
+    if (!in) {
+        cerr << "Error: save file not found.\n";
+        return json(); 
+    }
 
+    if (in.peek() == ifstream::traits_type::eof()) {
+        cerr << "Error: save file is empty.\n";
+        return json(); // không đọc gì cả
+    }
+
+    json j;
+    try {
+        in >> j;
+    } catch (json::parse_error& e) {
+        cerr << "JSON Parse Error: " << e.what() << endl;
+        return json(); 
+    }
+
+    in.close();
+    return j;
+
+    if (!in) {
+    ofstream out("game_state.json");
+    out << "{}";
+    out.close();
+    return json();
+    }
+}
 void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
-    #ifdef _WIN32
-    system("cls"); // Windows
-    #endif
 
     ofstream clearLog("log.txt");
     clearLog.close();
@@ -85,6 +125,15 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
     }
 
     while (true) {
+        json j = readFromFile();
+        from_json(j["Player1"], *player1);
+        from_json(j["Player2"], *player2);
+        cout << opponent.canTrap << endl;
+        if(opponent.canTrap){
+            this_thread::sleep_for(std::chrono::milliseconds(1000));
+            cout << opponent.canTrap << endl;
+            continue;
+        }
         ConsoleClear();
         cout << "Hand: ";
         int i = 0;
@@ -266,7 +315,9 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
             cout << "Game Over.\n";
             exit(0); 
         };
-
+        j["Player1"] = json(*player1);
+        j["Player2"] = json(*player2);
+        writeToFile(j); 
         this_thread::sleep_for(std::chrono::milliseconds(3000));
     }
 }
