@@ -2,6 +2,7 @@
 #include "player.h"
 #include <iostream>
 #include "game.h"
+#include "log_utilis.h"
 using namespace std;
 
 MonsterCard :: MonsterCard(string name, int atk, int def, string description, int owner) : Card(name, "Monster", description){
@@ -91,30 +92,39 @@ MonsterCard& MonsterCard::operator+=(MonsterCard& other) {
         return *this;
     }
 
-    if(other.isInDefense()){
-        if(atk > defValue){
-            auto field = defField;
-            field.erase(field.begin() + defendIndex);
-            target -> setField(field);
-            other.setOwner(-1);
-            return *this;
-        }
-        else if(atk < defValue){
-            self -> takeDamage(defValue - atk);
-            cout << "Attacker HP: " << self -> getHp() << endl;
-            cout << "Attacker HP: " << target -> getHp() << endl;
-            return *this;
-        }
-        else{
-            //atk = def
-            return *this;
-        }
+    if (other.isInDefense()) {
+    if (other.isFacedown()) {
+        other.reveal();
     }
+
+    if (atk > defValue) {
+        writeLog(this->getName() + " destroyed a defending monster: " + other.getName());
+        auto field = defField;
+        field.erase(field.begin() + defendIndex);
+        target->setField(field);
+        other.setOwner(-1);
+        return *this;
+    }
+    else if (atk < defValue) {
+        int loss = defValue - atk;
+        self->takeDamage(loss);
+        writeLog(this->getName() + " failed to destroy " + other.getName() + " in defense. Took " + to_string(loss) + " damage.");
+        cout << "Attacker HP: " << self->getHp() << endl;
+        cout << "Attacker HP: " << target->getHp() << endl;
+        return *this;
+    }
+    else {
+        writeLog(this->getName() + " attacked " + other.getName() + " in defense. Equal ATK and DEF, no card was destroyed.");
+        return *this;
+    }
+}
 
     else{
 
         if(atk > defValue){
-            target->takeDamage(atk - defValue);
+            int loss = atk - defValue;
+            target->takeDamage(loss);
+            writeLog(this->getName() + " destroyed " + other.getName() + " and dealt " + to_string(loss) + " damage.");
             cout << "Attacker HP: " << self -> getHp() << endl;
             cout << "Attacker HP: " << target -> getHp() << endl;
             auto field = defField;
@@ -124,7 +134,9 @@ MonsterCard& MonsterCard::operator+=(MonsterCard& other) {
             return *this;
         }
         else if(atk < defValue){
-            self->takeDamage(defValue - atk);
+            int loss = defValue - atk;
+            self->takeDamage(loss);
+            writeLog(this->getName() + " was destroyed by " + other.getName() + " and took " + to_string(loss) + " damage.");
             auto field = atkField;
             field.erase(field.begin() + attackIndex);
             self->setField(field);
@@ -132,6 +144,7 @@ MonsterCard& MonsterCard::operator+=(MonsterCard& other) {
         }
         else{
             //atk = atk
+            writeLog(this->getName() + " and " + other.getName() + " destroyed each other in battle.");
             auto field1 = atkField;
             auto field2 = defField;
             field1.erase(field1.begin() + attackIndex);
@@ -161,8 +174,15 @@ bool MonsterCard :: isInDefense() const{
 
 void MonsterCard :: reveal(){
     isSet = false;
-    defenseMode = false;
     justSummoned = true;
+}
+
+void MonsterCard::flipSummon() {
+    if (isSet && defenseMode) {
+        isSet = false;
+        defenseMode = false; 
+        justSummoned = true;
+    }
 }
 
 bool MonsterCard :: isFacedown() const{
@@ -245,3 +265,7 @@ json MonsterCard::toJson() const
     return j;
 }
 
+bool MonsterCard::activateEffect(Player& self, Player& opponent) {
+    cout << "[Monstercard] No effect defined.\n";
+    return false;
+}

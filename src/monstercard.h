@@ -31,23 +31,13 @@ class MonsterCard : public Card{
         void setDefenseMode(bool mode);
         bool isInDefense() const;
         void reveal();
+        void flipSummon();
         bool isFacedown() const;
         void PlayCard(vector<Card*>& field) override;
         bool isJustSummoned() const;     
-        void clearSummonFlag();
-        bool activateEffect(Player& self, Player& opponent) override;
-
-        void setExtraAttackThisTurn(bool val);
-        int getAttacksThisTurn() const;
-        void setAttacksThisTurn(int count);
-        bool canAttackThisTurn() const;
-        int getExtraAttacksRemaining() const;
-        void setExtraAttacksRemaining(int count);
+        void clearSummonFlag();  
         
-        int originalAtk = -1; 
-        int originalDef = -1; 
-        void setAtk(int newAtk);
-        void setDef(int d); 
+        bool activateEffect(Player& self, Player& opponent) override;
         
         json toJson() const override;
 };

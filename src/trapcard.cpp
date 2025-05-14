@@ -1,4 +1,5 @@
 #include "trapcard.h"
+#include "player.h"
 #include <iostream>
 using namespace std;
 TrapCard :: TrapCard(string name, string description) : Card(name, "Trap", description){}
@@ -35,7 +36,7 @@ json TrapCard::toJson() const
     j["description"] = description;
     return j;
 }
-
 bool TrapCard::activateEffect(Player& self, Player& opponent) {
-    cout << "[TrapCard] No effect has been implemented yet.\n";
+    cout << "[TrapCard Effect] No effect defined.\n";
+    return false;
 }

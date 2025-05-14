@@ -9,8 +9,10 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include "log_utilis.h"
 
 GameState* GameState::instance = nullptr;
+//commit
 
 void GameState::ConsoleClear()
 {
@@ -57,7 +59,13 @@ void GameState::startGame() {
 }
 
 void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
-    self.setCannotUseReEndThisTurn(false);
+    #ifdef _WIN32
+    system("cls"); // Windows
+    #endif
+
+    ofstream clearLog("log.txt");
+    clearLog.close();
+    
     for (Card* card : self.getField()) {
         MonsterCard* mc = dynamic_cast<MonsterCard*>(card);
         if (mc) mc->clearSummonFlag();
@@ -73,7 +81,7 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
     self.resetAttackFlags();
     if (!isFirstTurn) {
         self.drawCard();
-        cout << "Draws a card.\n";
+        cout << " draws a card.\n";
     }
 
     while (true) {
@@ -110,7 +118,7 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
         cout << "1: Play Card\n";
         cout << "2: Switch Monster Position\n";
         cout << "3: Attack\n";
-        cout << "4: Reveal Monster\n";
+        cout << "4: Flip summon\n";
         cout << "Enter your choice: ";
 
 
@@ -124,24 +132,9 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
 
         switch (code) {
             case 0:
-            for (Card* c : self.getField()) {
-             MonsterCard* mc = dynamic_cast<MonsterCard*>(c);
-              if (mc && mc->originalAtk != -1) {
-               mc->setAtk(mc->originalAtk);
-               mc->originalAtk = -1;
-               cout << "[Effect Ended] " << mc->getName() << " returns to original ATK.\n";
-               }
-            }
-
-            for (Card* c : self.getField()) {
-            MonsterCard* mc = dynamic_cast<MonsterCard*>(c);
-            if (mc) {
-            mc->setAttacksThisTurn(0);
-            mc->setExtraAttackThisTurn(false);
-            }
-        }   
-
-            return; // End turn
+                cout << "Ending your turn..." << endl;
+                this_thread::sleep_for(chrono::milliseconds(800));  
+                return; // End turn
 
             case 1:
             if (index >= 0 && index < self.getHand().size()) {
@@ -152,6 +145,11 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
                 if (!hasSummoned) { 
                 self.Summon(index);
                 hasSummoned = true;
+
+                MonsterCard* mc = dynamic_cast<MonsterCard*>(card);
+                if (mc) {
+                    writeLog("Opponent summoned a monster in " + string(mc->isInDefense() ? "face-down defense" : "attack") + " position.");
+                }
               } else {
                 cout << "You cannot summon more than once per turn.\n";
               }
@@ -159,8 +157,10 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
             else if (type == "Spell" || type == "Trap") {
                  bool success = card->activateEffect(self, opponent);
                  if (success) {
+                    writeLog("Opponent activated a " + type + " card: " + card->getName());
                     delete card;
-                    self.getHand().erase(self.getHand().begin() + index);
+                    auto& hand = self.getHandRef(); 
+                    hand.erase(hand.begin() + index);
                  } else {
                      cout << "[Spell/Trap] Effect was not activated. Card remains in hand.\n";
                  }
@@ -174,52 +174,51 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
             break;
 
             case 2:
-                self.switchPosition(index);
-                break;
+            self.switchPosition(index);
+
+            // Ghi log nếu switch hợp lệ
+            if (index >= 0 && index < self.getField().size()) {
+            MonsterCard* m = dynamic_cast<MonsterCard*>(self.getField()[index]);
+            if (m && !m->isFacedown() && !self.hasAttacked(index) && !m->isJustSummoned()) {
+            string pos = m->isInDefense() ? "Defense" : "Attack";
+            writeLog("Opponent switched position of " + m->getName() + " to " + pos + " position.");
+            }
+            }
+
+            break;
 
             case 3:
-            if (self.skipBattlePhaseCount > 0) {
-                cout << "You must skip this battle phase due to a card effect.\n";
-                self.skipBattlePhaseCount--;
-                break;
-            }
+            if (!self.hasAttacked(index)) {
+                if (opponent.getField().empty()) {
+                    cout << "Opponent has no monsters.\n";
+                    cout << "Do you want to attack directly with " << self.getField()[index]->getName() << "? (y/n): ";
+                    char choice;
+                    cin >> choice;
         
-            if (index < 0 || index >= self.getField().size()) {
-                cout << "Invalid index.\n";
-                break;
-            }
-
-            MonsterCard* atkCard = dynamic_cast<MonsterCard*>(self.getField()[index]);
-            if (!atkCard) {
-               cout << "This is not a monster card.\n";
-               break;
-            }      
-
-            if (!atkCard->canAttackThisTurn()) {
-               cout << atkCard->getName() << " cannot attack anymore this turn.\n";
-               break;
-            }
-
-            if (opponent.getField().empty()) {
-               cout << "Opponent has no monsters.\n";
-               cout << "Do you want to attack directly with " << atkCard->getName() << "? (y/n): ";
-               char choice;
-               cin >> choice;
-
-            if (choice == 'y' || choice == 'Y') {
-               int damage = atkCard->getAtk();
-               opponent.takeDamage(damage);
-               cout << atkCard->getName() << " attacks directly! Opponent loses " << damage << " HP!\n";
-               atkCard->setAttacksThisTurn(atkCard->getAttacksThisTurn() + 1);
-               hasBattled = true;
-            }
+                    if (choice == 'y' || choice == 'Y') {
+                        MonsterCard* atkCard = dynamic_cast<MonsterCard*>(self.getField()[index]);
+                        if (!atkCard) {
+                            cout << "Invalid attacker card.\n";
+                            break;
+                        }
+        
+                        int damage = atkCard -> getAtk();
+                        opponent.takeDamage(damage);
+                        cout << atkCard->getName() << " attacks directly! Opponent loses " << damage << " HP!\n";
+                        writeLog("Opponent attacked directly with " + atkCard->getName() + " for " + to_string(damage) + " damage.");
+                        self.setAttacked(index); 
+                        hasBattled = true;
+                    }
+                } else {
+                    int defendIndex;
+                    cout << "Enter the index of the opponent's card to attack: ";
+                    cin >> defendIndex;
+                    writeLog("Opponent declared an attack from " + self.getField()[index]->getName() + " targeting opponent's card at index " + to_string(defendIndex) + ".");
+                    battlePhase(self, opponent, index, defendIndex);
+                    hasBattled = true;
+                }
             } else {
-                 int defendIndex;
-                 cout << "Enter the index of the opponent's card to attack: ";
-                 cin >> defendIndex;
-                 battlePhase(self, opponent, index, defendIndex);
-                 atkCard->setAttacksThisTurn(atkCard->getAttacksThisTurn() + 1);
-                 hasBattled = true;
+                cout << "This monster already battle.\n";
             }
             break;
 
@@ -237,12 +236,14 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
             }
 
             if (mc->isJustSummoned()) {
-             cout << "You cannot reveal a monster that was summoned this turn.\n";
+             cout << "You cannot flip summon a monster that was summoned this turn.\n";
              break;
             }
 
-            mc->reveal();        // lật ngửa + chuyển sang attack
+            mc->flipSummon();        // lật ngửa + chuyển sang attack
             mc->showInfo();      // in đầy đủ thông tin
+
+            writeLog("Opponent flip summon their monster: " + mc->getName());
 
            } else {
            cout << "Invalid index.\n";
@@ -297,12 +298,11 @@ void GameState :: battlePhase(Player& attacker, Player& defender, int attackInde
 
     if(defCard -> isFacedown()){
         defCard -> reveal();
-        cout << "The defending card was face-down. It is now revealed: ";
+        cout << "The defending card was face-down. It is now reveal: ";
         defCard -> showInfo();
     }
 
     *atkCard += *defCard;
-
     this_thread::sleep_for(chrono::milliseconds(800));
 }
 
