@@ -8,6 +8,7 @@
 #include <stdexcept>
 #include <vector>
 #include "game.h"
+#include <iostream>
 
 using json = nlohmann::json;
 using namespace std;
@@ -74,14 +75,16 @@ vector<Card*> DeserializeDeck(const json deckJson)
 
 void to_json(json& j, const Player& p)
 {
-    
+    vector<Card*> field = p.getField();
     j = {
         {"hp", p.getHp()},
         {"deck", SerializeDeck(p.getDeck())},
         {"hand", SerializeDeck(p.getHand())},
-        {"field", SerializeDeck(p.getField())},
-        {"attackedThisTurn", p.attackedThisTurn}
+        {"field", SerializeDeck(field)},
+        {"attackedThisTurn", p.attackedThisTurn},
+        {"canTrap", find(field.begin(), field.end(), p.canTrap) - field.begin()}
     };
+    cout << find(field.begin(), field.end(), p.canTrap) - field.begin() << endl;
 }
 void from_json(const json& j, Player& p)
 {
@@ -92,6 +95,14 @@ void from_json(const json& j, Player& p)
     vector<bool> attackedThisTurnJson;
     for (const auto& value : j.at("attackedThisTurn")) {
         attackedThisTurnJson.push_back(value.get<bool>());
+    }
+    int trapIndex = j.at("canTrap");
+    if (trapIndex >= 0 && trapIndex < p.getField().size()) {
+        p.canTrap = dynamic_cast<TrapCard*>(p.getField()[trapIndex]);
+        cout << "Trap card index: " << trapIndex << endl;
+    } else {
+        cout << "Invalid trap card index: " << trapIndex << endl;
+        p.canTrap = nullptr; // Set to nullptr if the index is invalid
     }
     p.attackedThisTurn = attackedThisTurnJson;
 }

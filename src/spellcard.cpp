@@ -4,7 +4,10 @@
 
 #include <iostream>
 using namespace std;
-SpellCard :: SpellCard(string name, string description) : Card(name, "Spell", description){}
+SpellCard :: SpellCard(string name, string description) : Card(name, "Spell", description)
+{
+  this -> spell = getEffectInstance(name);
+}
 
 void SpellCard :: showInfo() const{
     cout << "Name: " << getName() << endl;
@@ -40,38 +43,30 @@ json SpellCard::toJson() const
     return j;
 }
 
-bool SpellCard::activateEffect(Player& self, Player& opponent) {
-    if (name == "Dark Magic") {
-        // B1: Kiểm tra xem player có điều khiển "Dark Magician" không
-        bool hasDarkMagician = false;
-        for (Card* c : self.getField()) {
-            if (MonsterCard* m = dynamic_cast<MonsterCard*>(c)) {
-                if (m->getName() == "Dark Magician") {
-                    hasDarkMagician = true;
-                    break;
-                }
-            }
-        }
+bool SpellCard::activateEffect(Player& self, Player& opponent) 
+{
+    cout << "Spell card activated: " << getName() << endl;
+    return spell->ActivateEffect(self, opponent);
+}
+shared_ptr<Spell> SpellCard::getEffectInstance(const std::string& type) {
+    static unordered_map<string, shared_ptr<Spell>> effectCache;
 
-        if (!hasDarkMagician) {
-            cout << "[Dark Magic] Activation failed: You do not control a Dark Magician.\n";
-            return false;
-        }
-
-        // B2: Tiêu diệt toàn bộ monster bên opponent
-        vector<Card*> newField;
-        for (Card* c : opponent.getField()) {
-            if (c->getType() != "Monster") {
-                newField.push_back(c); // Giữ lại các lá khác
-            } else {
-                if (c != nullptr) {
-                    cout << "[Dark Magic] Destroyed: " << c->getName() << endl;
-                    delete c;
-                }
-            }
-        }
-
-        opponent.setField(newField); // Cập nhật lại field
-        return true;
+    auto it = effectCache.find(type);
+    if (it != effectCache.end()) {
+        return it->second;
     }
+
+    std::shared_ptr<Spell> effect;
+
+    if (type == "Oshama Scramble") effect = std::make_shared<OshamaScramble>();
+    else if (type == "Dark Magic") effect = std::make_shared<DarkMagic>();
+    else if (type == "Re:End Of A Dream") effect = std::make_shared<ReEndOfADream>(); //Step 3: add spell effect names here
+    else 
+    {
+        cout << "Unknown effect type: " << type << endl;
+        return nullptr;
+    };
+
+    effectCache[type] = effect; 
+    return effect;
 }

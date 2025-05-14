@@ -19,60 +19,6 @@ using namespace std;
 
 using json = nlohmann::json;
 
-void writeToFile(const json& j) {
-    ofstream out("game_state.json");
-    if (!out) {
-        cerr << "Error opening file for writing.\n";
-        return;
-    }
-    cout << "writing to file\n" << j.dump(4) << std::endl; // Pretty print with indent
-    out << j.dump(4) << std::endl; // Pretty print with indent
-    out.close();
-}
-
-
-//json readFromFile() {
-    //ifstream in("game_state.json");
-    //if (!in) {
-        //return json(); // empty json
-    //}
-    //json j;
-    //in >> j;
-    //in.close();
-    //return j;
-//}
-
-json readFromFile() {
-    ifstream in("game_state.json");
-    if (!in) {
-        cerr << "Error: save file not found.\n";
-        return json(); 
-    }
-
-    if (in.peek() == ifstream::traits_type::eof()) {
-        cerr << "Error: save file is empty.\n";
-        return json(); // không đọc gì cả
-    }
-
-    json j;
-    try {
-        in >> j;
-    } catch (json::parse_error& e) {
-        cerr << "JSON Parse Error: " << e.what() << endl;
-        return json(); 
-    }
-
-    in.close();
-    return j;
-
-    if (!in) {
-    ofstream out("game_state.json");
-    out << "{}";
-    out.close();
-    return json();
-}
-}
-
 
 
 int main() {
@@ -150,23 +96,35 @@ int main() {
             }
             state["turn"] = "PLAYER" + string((player == "1") ? "2" : "1");
             writeToFile(state);
-        } else {
-    static bool printed = false;
-    static int linesSeen = 0;
+        }
+        else 
+        {
+            Player* self = (player == "1") ? player2 : player1;
+            if (self->canTrap)
+            {
+                string input;
+                cout << "Activate trap card? (y/n): ";
+                cin >> input;
+                if (input == "y" || input == "Y") {
+                    self->canTrap = nullptr;
+                    // 
+                    cout << "Trap card activated!\n";
+                } else {
+                    cout << "Trap card not activated.\n";
+                }
+                self->canTrap = nullptr;
+            }
+            static int linesSeen = 0;
+            gameState -> ConsoleClear();
+            cout << "Waiting for your turn...\n";
 
-    if (!printed) {
-        gameState -> ConsoleClear();
-        cout << "Waiting for your turn...\n";
-        printed = true;
+            monitorLog(linesSeen);
+            this_thread::sleep_for(std::chrono::milliseconds(1000));
+        }
     }
-
-    monitorLog(linesSeen);
-    this_thread::sleep_for(std::chrono::milliseconds(1000));
-   }
-    }
-
     delete player1;
     delete player2;
     return 0;
+    
 }
 

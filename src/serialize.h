@@ -7,6 +7,8 @@
 #include <vector>
 
 // Forward declarations for to_json and from_json
+void writeToFile(const json& j);
+json readFromFile();
 void to_json(nlohmann::json& j, const Player& player);
 void from_json(const nlohmann::json& j, Player& player);
 vector<json> SerializeDeck(const vector<Card*> deck);
