@@ -59,8 +59,11 @@ shared_ptr<Spell> SpellCard::getEffectInstance(const std::string& type) {
     std::shared_ptr<Spell> effect;
 
     if (type == "Oshama Scramble") effect = std::make_shared<OshamaScramble>();
-    else if (type == "Dark Magic") effect = std::make_shared<DarkMagic>();
-    else if (type == "Re:End Of A Dream") effect = std::make_shared<ReEndOfADream>(); //Step 3: add spell effect names here
+    //else if (type == "Dark Magic") effect = std::make_shared<DarkMagic>();
+    /*else if (type == "Re:End Of A Dream") effect = std::make_shared<Destroyer>();
+    else if (type == "Re:End Of A Dream") effect = std::make_shared<RageOfTheBlueEyes>();*/
+    else if (type == "Re:End Of A Dream") effect = std::make_shared<ReEndOfADream>();
+  //Step 3: add spell effect names here
     else 
     {
         cout << "Unknown effect type: " << type << endl;
