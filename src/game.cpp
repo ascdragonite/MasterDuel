@@ -16,7 +16,7 @@ GameState* GameState::instance = nullptr;
 
 void GameState::ConsoleClear()
 {
-    cout << "\033[2J\033[H\033[3J";
+    //cout << "\033[2J\033[H\033[3J";
 }
 
 GameState* GameState::getInstance() {
