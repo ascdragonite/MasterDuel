@@ -244,13 +244,6 @@ vector<Card*>& Player::getHandRef() {
     return hand;
 }
 
-vector<Card*>& Player::getFieldRef() {
-    return field;
-}
-
-vector<Card*>& Player::getDeckRef() {
-    return deck;
-}
 
 
 void Player :: loadDeckDarkMagician(){

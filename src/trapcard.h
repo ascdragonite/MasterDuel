@@ -17,8 +17,6 @@ class TrapCard : public Card{
 
     void PlayCard(vector<Card*>& field) override;
 
-    bool activateEffect(Player& self, Player& opponent) override;
-
     json toJson() const override;
 };
 #endif

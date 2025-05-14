@@ -16,8 +16,6 @@ class SpellCard : public Card{
     void showInfo() const override;
 
     void PlayCard(vector<Card*>& field) override;
-
-    bool activateEffect(Player& self, Player& opponent) override;
     
     json toJson() const override;
 
