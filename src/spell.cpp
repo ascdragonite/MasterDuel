@@ -65,11 +65,9 @@ else if(self.getCannotUseReEndThisTurn()==true){
     cout << "[Re:End of A Dream] Activation failed : You already use this spell" << endl;
     return false;
 }
-else{
     self.setExtraTurn(true);
     cout << "[Re:End of A Dream] successfully gained you an extra turn" << endl;
     self.setCannotUseReEndThisTurn(true);
-}
     
     //logic card
 
@@ -79,9 +77,12 @@ else{
 bool Destroyer::ActivateEffect(Player& self, Player& opponent) { // xử 1 lá ở thế thủ (k quan tâm stat)
 
 }
-
+*//*
 
 bool RageOfTheBlueEyes ::ActivateEffect(Player& self, Player& opponent) { // hi sinh 2/3 hp khiến rồng xanh tấn công 2 lần/turn
 
 }
-*/
+
+bool WorldVanquisher::ActivateEffect(Player& self, Player& opponent){ //buff 200 atk
+
+} */
