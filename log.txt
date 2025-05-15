@@ -1,1 +1,2 @@
-[Thu May 15 08:51:11 2025] Opponent activated a Spell card: Oshama Scramble
+[Thu May 15 13:40:48 2025] Opponent summoned a monster in attack position.
+[Thu May 15 13:40:55 2025] Opponent declared an attack from Sasakure targeting opponent's card at index 0.

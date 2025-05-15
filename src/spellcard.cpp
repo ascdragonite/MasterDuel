@@ -66,7 +66,6 @@ shared_ptr<Spell> SpellCard::getEffectInstance(const std::string& type) {
   //Step 3: add spell effect names here
     else 
     {
-        cout << "Unknown effect type: " << type << endl;
         return nullptr;
     };
 

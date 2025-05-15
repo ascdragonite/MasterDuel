@@ -1,25 +1,49 @@
-#include <iostream>
 #include "card.h"
 #include "game.h"
+#include "json.hpp" // <-- include nlohmann/json (one header file)
+#include "log_utilis.h"
 #include "monstercard.h"
+#include "player.h"
+#include "serialize.h"
 #include "spellcard.h"
 #include "trapcard.h"
-#include "player.h"
-#include <vector>
-#include <iostream>
-#include <fstream>
-#include <thread>
 #include <chrono>
+#include <fstream>
+#include <iostream>
 #include <string>
-#include "json.hpp" // <-- include nlohmann/json (one header file)
-#include "serialize.h"
-#include "log_utilis.h"
+#include <thread>
+#include <vector>
 
 using namespace std;
 
 using json = nlohmann::json;
 
-
+void ActivateTrapCards(vector<int> indexes, Player &self, Player &opponent) {
+    int i = 1;
+    auto field = self.getField();
+    for (int index : indexes) {
+        cout << i << ". " << field[index]->getName() << endl;
+        i++;
+    }
+    i = 1;
+    cout << "Select trap card to activate (0 to cancel) [0/";
+    for (int index : indexes) {
+        cout << i << "/";
+        i++;
+    }
+    cout << "]: " << endl;
+    int choice;
+    cin >> choice;
+    if (choice == 0) {
+        cout << "Trap card activation canceled.\n";
+        return;
+    } else if (choice > 0 && choice <= indexes.size()) {
+        int trapIndex = indexes[choice - 1];
+        TrapCard *trapCard = dynamic_cast<TrapCard *>(field[trapIndex]);
+        trapCard->activateEffect(self, opponent);
+        return;
+    }
+}
 
 int main() {
     string player;
@@ -34,7 +58,7 @@ int main() {
 
     std::cout << "You are Player " << player << ".\n";
 
-    GameState* gameState = GameState::getInstance();
+    GameState *gameState = GameState::getInstance();
     auto player1 = gameState->getPlayer(1);
     auto player2 = gameState->getPlayer(2);
     if (player == "1") {
@@ -45,7 +69,6 @@ int main() {
         j["turn"] = "PLAYER1";
         writeToFile(j);
     }
-    
 
     while (true) {
         json state = readFromFile();
@@ -57,22 +80,22 @@ int main() {
 
         bool myTurn = (state["turn"] == "PLAYER" + player);
         if (myTurn) {
-            
-            gameState -> ConsoleClear();
-            
+
+            gameState->ConsoleClear();
+
             cout << "It's your turn!\n";
 
             from_json(state["Player1"], *player1);
             from_json(state["Player2"], *player2);
 
             if (player == "1") {
-                gameState -> playerTurn(*player1, *player2, false);
+                gameState->playerTurn(*player1, *player2, false);
             } else {
-                gameState -> playerTurn(*player2, *player1, false);
+                gameState->playerTurn(*player2, *player1, false);
             }
 
             // Check for victory
-            if (gameState -> checkVictory(*player1, *player2)) {
+            if (gameState->checkVictory(*player1, *player2)) {
                 cout << "Game Over! ";
                 if (player1->getHp() <= 0 || player1->getDeck().empty()) {
                     cout << "Player 2 wins!\n";
@@ -85,46 +108,43 @@ int main() {
             // Update JSON state
             state["Player1"] = *player1;
             state["Player2"] = *player2;
-            bool hasExtra = (player == "1") ? player1->hasExtraTurn() : player2->hasExtraTurn();
+            bool hasExtra =
+                (player == "1") ? player1->hasExtraTurn() : player2->hasExtraTurn();
             if (hasExtra) {
-               if (player == "1") player1->setExtraTurn(false);
-               else player2->setExtraTurn(false);
+                if (player == "1")
+                    player1->setExtraTurn(false);
+                else
+                    player2->setExtraTurn(false);
 
-               cout << "[Extra Turn] You get to play another turn!\n";
-               writeToFile(state); 
-               continue;
+                cout << "[Extra Turn] You get to play another turn!\n";
+                writeToFile(state);
+                continue;
             }
             state["turn"] = "PLAYER" + string((player == "1") ? "2" : "1");
             writeToFile(state);
-        }
-        else 
-        {
-            Player* self = (player == "1") ? player2 : player1;
-            if (self->canTrap)
-            {
-                string input;
-                cout << "Activate trap card? (y/n): ";
-                cin >> input;
-                if (input == "y" || input == "Y") {
-                    self->canTrap = nullptr;
-                    // 
-                    cout << "Trap card activated!\n";
-                } else {
-                    cout << "Trap card not activated.\n";
-                }
-                self->canTrap = nullptr;
-            }
-            static int linesSeen = 0;
-            gameState -> ConsoleClear();
-            cout << "Waiting for your turn...\n";
+        } else {
+            from_json(state["Player1"], *player1);
+            from_json(state["Player2"], *player2);
+            Player *self = (player == "1") ? player1 : player2;
+            Player *opponent = (player == "1") ? player2 : player1;
+            if (!self->canTrap.empty()) {
+                ActivateTrapCards(self->canTrap, *self, *opponent);
+                self->canTrap.clear();
+                json j = readFromFile();
+                j["Player1"] = *player1;
+                j["Player2"] = *player2;
+                writeToFile(j);
+            } else {
+                static int linesSeen = 0;
+                gameState->ConsoleClear();
+                cout << "Waiting for your turn...\n";
 
-            monitorLog(linesSeen);
-            this_thread::sleep_for(std::chrono::milliseconds(1000));
+                monitorLog(linesSeen);
+                this_thread::sleep_for(std::chrono::milliseconds(1000));
+            }
         }
     }
     delete player1;
     delete player2;
     return 0;
-    
 }
-

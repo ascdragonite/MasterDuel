@@ -29,7 +29,6 @@ vector<json> SerializeDeck(const vector<Card*> deck)
 
 Card* CardFromJson(const json j)
 {
-    GameState* gameState = GameState::getInstance();
     string type = j.at("type");
 
     if(type == "Monster")
@@ -82,9 +81,9 @@ void to_json(json& j, const Player& p)
         {"hand", SerializeDeck(p.getHand())},
         {"field", SerializeDeck(field)},
         {"attackedThisTurn", p.attackedThisTurn},
-        {"canTrap", find(field.begin(), field.end(), p.canTrap) - field.begin()}
+        {"canTrap", p.canTrap}
     };
-    cout << find(field.begin(), field.end(), p.canTrap) - field.begin() << endl;
+
 }
 void from_json(const json& j, Player& p)
 {
@@ -96,13 +95,10 @@ void from_json(const json& j, Player& p)
     for (const auto& value : j.at("attackedThisTurn")) {
         attackedThisTurnJson.push_back(value.get<bool>());
     }
-    int trapIndex = j.at("canTrap");
-    if (trapIndex >= 0 && trapIndex < p.getField().size()) {
-        p.canTrap = dynamic_cast<TrapCard*>(p.getField()[trapIndex]);
-        cout << "Trap card index: " << trapIndex << endl;
-    } else {
-        cout << "Invalid trap card index: " << trapIndex << endl;
-        p.canTrap = nullptr; // Set to nullptr if the index is invalid
+    vector<int> canTrapJson;
+    for (const auto& value : j.at("canTrap")) {
+        canTrapJson.push_back(value.get<int>());
     }
     p.attackedThisTurn = attackedThisTurnJson;
+    p.canTrap = canTrapJson;
 }

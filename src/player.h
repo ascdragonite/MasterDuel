@@ -20,7 +20,7 @@ class Player{
     bool cannotUseReEndThisTurn = false;
 
     public:
-    TrapCard* canTrap = nullptr;
+    vector<int> canTrap;
     int skipBattlePhaseCount;
 
     Player(int i);

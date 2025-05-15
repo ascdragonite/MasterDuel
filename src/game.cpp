@@ -1,39 +1,38 @@
 #include "game.h"
+#include "json.hpp" // <-- include nlohmann/json (one header file)
+#include "log_utilis.h"
+#include "monstercard.h"
 #include "player.h"
-#include "monstercard.h"    
-#include "spellcard.h"       
-#include "trapcard.h"  
+#include "serialize.h"
+#include "spellcard.h"
+#include "trapcard.h"
 #include <algorithm>
-#include <random>
+#include <chrono>
 #include <ctime>
 #include <iostream>
+#include <random>
 #include <thread>
-#include <chrono>
-#include "log_utilis.h"
-#include "serialize.h"
-#include "json.hpp" // <-- include nlohmann/json (one header file)
 
 using namespace std;
 using json = nlohmann::json;
 
-GameState* GameState::instance = nullptr;
-//commit
+GameState *GameState::instance = nullptr;
+// commit
 
-void GameState::ConsoleClear()
-{
-    //cout << "\033[2J\033[H\033[3J";
+void GameState::ConsoleClear() {
+    // cout << "\033[2J\033[H\033[3J";
 }
 
-GameState* GameState::getInstance() {
+GameState *GameState::getInstance() {
     if (!instance) {
-        Player* player1 = new Player(1);
-        Player* player2 = new Player(2);
+        Player *player1 = new Player(1);
+        Player *player2 = new Player(2);
         instance = new GameState(*player1, *player2);
         cout << "GameState instance created.\n";
     }
     return instance;
 }
-void writeToFile(const json& j) {
+void writeToFile(const json &j) {
     ofstream out("game_state.json");
     if (!out) {
         cerr << "Error opening file for writing.\n";
@@ -43,7 +42,7 @@ void writeToFile(const json& j) {
     out.close();
 }
 
-Player* GameState::getPlayer(int id) {
+Player *GameState::getPlayer(int id) {
     if (id == 1) {
         return player1;
     } else if (id == 2) {
@@ -53,29 +52,28 @@ Player* GameState::getPlayer(int id) {
     }
 }
 
-GameState::GameState(Player& p1, Player& p2) 
-{
+GameState::GameState(Player &p1, Player &p2) {
     player1 = &p1;
     player2 = &p2;
-    player1 -> loadDeckDarkMagician();
-    player2 -> loadDeckBlueEyes();
+    player1->loadDeckDarkMagician();
+    player2->loadDeckBlueEyes();
 }
 
 void GameState::startGame() {
-    player1 -> shuffleDeck();
-    player2 -> shuffleDeck();
+    player1->shuffleDeck();
+    player2->shuffleDeck();
     cout << "Game started!\n";
 
     for (int i = 0; i < 4; i++) {
-        player1 -> drawCard();
-        player2 -> drawCard();
+        player1->drawCard();
+        player2->drawCard();
     }
 }
 json readFromFile() {
     ifstream in("game_state.json");
     if (!in) {
         cerr << "Error: save file not found.\n";
-        return json(); 
+        return json();
     }
 
     if (in.peek() == ifstream::traits_type::eof()) {
@@ -86,37 +84,40 @@ json readFromFile() {
     json j;
     try {
         in >> j;
-    } catch (json::parse_error& e) {
+    } catch (json::parse_error &e) {
         cerr << "JSON Parse Error: " << e.what() << endl;
-        return json(); 
+        return json();
     }
 
     in.close();
     return j;
 
     if (!in) {
-    ofstream out("game_state.json");
-    out << "{}";
-    out.close();
-    return json();
+        ofstream out("game_state.json");
+        out << "{}";
+        out.close();
+        return json();
     }
 }
-void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
+void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
 
     ofstream clearLog("log.txt");
     clearLog.close();
-    
-    for (Card* card : self.getField()) {
-        MonsterCard* mc = dynamic_cast<MonsterCard*>(card);
-        if (mc) mc->clearSummonFlag();
+
+    for (Card *card : self.getField()) {
+        MonsterCard *mc = dynamic_cast<MonsterCard *>(card);
+        if (mc)
+            mc->clearSummonFlag();
     }
 
     cout << "\n[Start of Turn Status]\n";
-    cout << "Player 1 HP: " << player1->getHp() << " | Deck: " << player1->getDeck().size() << endl;
-    cout << "Player 2 HP: " << player2->getHp() << " | Deck: " << player2->getDeck().size() << endl;
+    cout << "Player 1 HP: " << player1->getHp()
+        << " | Deck: " << player1->getDeck().size() << endl;
+    cout << "Player 2 HP: " << player2->getHp()
+        << " | Deck: " << player2->getDeck().size() << endl;
 
     bool hasSummoned = false;
-    bool hasBattled = false; 
+    bool hasBattled = false;
 
     self.resetAttackFlags();
     if (!isFirstTurn) {
@@ -128,11 +129,16 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
         json j = readFromFile();
         from_json(j["Player1"], *player1);
         from_json(j["Player2"], *player2);
-        cout << opponent.canTrap << endl;
-        if(opponent.canTrap){
+        if (opponent.canTrap.empty()) cout << "cant trap!!!" << endl;
+        for (auto index : opponent.canTrap)
+        {
+            cout << index << endl;
+        }
+        if (!opponent.canTrap.empty()) {
             this_thread::sleep_for(std::chrono::milliseconds(1000));
-            cout << opponent.canTrap << endl;
+            cout << opponent.canTrap[0] << endl;
             continue;
+            cout << "restart" << endl;
         }
         ConsoleClear();
         cout << "Hand: ";
@@ -146,15 +152,15 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
         for (int i = 0; i < opponent.getField().size(); ++i) {
             cout << i << ". ";
 
-        MonsterCard* mc = dynamic_cast<MonsterCard*>(opponent.getField()[i]);
-        if (mc) {
-        mc->showInfoHidden();
-        } else {
-        opponent.getField()[i]->showInfo(); // Cho spell/trap hoặc card khác
-        }
+            MonsterCard *mc = dynamic_cast<MonsterCard *>(opponent.getField()[i]);
+            if (mc) {
+                mc->showInfoHidden();
+            } else {
+                opponent.getField()[i]->showInfo(); // Cho spell/trap hoặc card khác
+            }
 
-        cout << " | ";
-        }     
+            cout << " | ";
+        }
         cout << "\n Your Field: ";
         for (int i = 0; i < self.getField().size(); ++i) {
             cout << i << ". ";
@@ -170,7 +176,6 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
         cout << "4: Flip summon\n";
         cout << "Enter your choice: ";
 
-
         int code, index = -1;
         cin >> code;
 
@@ -182,128 +187,109 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
         switch (code) {
             case 0:
                 cout << "Ending your turn..." << endl;
-                this_thread::sleep_for(chrono::milliseconds(800));  
+                this_thread::sleep_for(chrono::milliseconds(800));
                 return; // End turn
 
             case 1:
-            if (index >= 0 && index < self.getHand().size()) {
-              Card* card = self.getHand()[index];
-              string type = card->getType();
+                if (index >= 0 && index < self.getHand().size()) {
+                    Card *card = self.getHand()[index];
+                    string type = card->getType();
 
-              if (type == "Monster") {
-                if (!hasSummoned) { 
-                self.Summon(index);
-                hasSummoned = true;
+                    if (type == "Monster") {
+                        if (!hasSummoned) {
+                            self.Summon(index);
+                            hasSummoned = true;
 
-                MonsterCard* mc = dynamic_cast<MonsterCard*>(card);
-                if (mc) {
-                    writeLog("Opponent summoned a monster in " + string(mc->isInDefense() ? "face-down defense" : "attack") + " position.");
-                }
-              } else {
-                cout << "You cannot summon more than once per turn.\n";
-              }
-            } 
-            else if (type == "Spell" || type == "Trap") {
-                 bool success = card->activateEffect(self, opponent);
-                 if (success) {
-                    writeLog("Opponent activated a " + type + " card: " + card->getName());
-                    delete card;
-                    auto& hand = self.getHandRef(); 
-                    hand.erase(hand.begin() + index);
-                 } else {
-                     cout << "[Spell/Trap] Effect was not activated. Card remains in hand.\n";
-                 }
-            } 
-            else {
-              cout << "Unsupported card type.\n";
-            }
-            } else {
-              cout << "Invalid index.\n";
-            } 
-            break;
-
-            case 2:
-            self.switchPosition(index);
-
-            // Ghi log nếu switch hợp lệ
-            if (index >= 0 && index < self.getField().size()) {
-            MonsterCard* m = dynamic_cast<MonsterCard*>(self.getField()[index]);
-            if (m && !m->isFacedown() && !self.hasAttacked(index) && !m->isJustSummoned()) {
-            string pos = m->isInDefense() ? "Defense" : "Attack";
-            writeLog("Opponent switched position of " + m->getName() + " to " + pos + " position.");
-            }
-            }
-
-            break;
-
-            case 3:
-            if (!self.hasAttacked(index)) {
-                if (opponent.getField().empty()) {
-                    cout << "Opponent has no monsters.\n";
-                    cout << "Do you want to attack directly with " << self.getField()[index]->getName() << "? (y/n): ";
-                    char choice;
-                    cin >> choice;
-        
-                    if (choice == 'y' || choice == 'Y') {
-                        MonsterCard* atkCard = dynamic_cast<MonsterCard*>(self.getField()[index]);
-                        if (!atkCard) {
-                            cout << "Invalid attacker card.\n";
-                            break;
+                            MonsterCard *mc = dynamic_cast<MonsterCard *>(card);
+                            if (mc) {
+                                writeLog(
+                                    "Opponent summoned a monster in " +
+                                    string(mc->isInDefense() ? "face-down defense" : "attack") +
+                                    " position.");
+                            }
+                        } else {
+                            cout << "You cannot summon more than once per turn.\n";
                         }
-        
-                        int damage = atkCard -> getAtk();
-                        opponent.takeDamage(damage);
-                        cout << atkCard->getName() << " attacks directly! Opponent loses " << damage << " HP!\n";
-                        writeLog("Opponent attacked directly with " + atkCard->getName() + " for " + to_string(damage) + " damage.");
-                        self.setAttacked(index); 
-                        hasBattled = true;
+                    } else if (type == "Spell") {
+                        bool success = card->activateEffect(self, opponent);
+                        if (success) {
+                            writeLog("Opponent activated a " + type +
+                                     " card: " + card->getName());
+                            delete card;
+                            auto &hand = self.getHandRef();
+                            hand.erase(hand.begin() + index);
+                        } else {
+                            cout << "[Spell] Effect was not activated. Card remains in "
+                                "hand.\n";
+                        }
+                    } else if (type == "Trap") {
+                        cout << "Placed Trap: " << self.getHand()[index]->getName() << endl;
+                        self.Summon(index);
+                    } 
+                    else {
+                        cout << "Unsupported card type.\n";
                     }
                 } else {
-                    int defendIndex;
-                    cout << "Enter the index of the opponent's card to attack: ";
-                    cin >> defendIndex;
-                    writeLog("Opponent declared an attack from " + self.getField()[index]->getName() + " targeting opponent's card at index " + to_string(defendIndex) + ".");
-                    battlePhase(self, opponent, index, defendIndex);
-                    hasBattled = true;
+                    cout << "Invalid index.\n";
                 }
-            } else {
-                cout << "This monster already battle.\n";
-            }
-            break;
+                break;
+
+            case 2:
+                self.switchPosition(index);
+
+                // Ghi log nếu switch hợp lệ
+                if (index >= 0 && index < self.getField().size()) {
+                    MonsterCard *m = dynamic_cast<MonsterCard *>(self.getField()[index]);
+                    if (m && !m->isFacedown() && !self.hasAttacked(index) &&
+                        !m->isJustSummoned()) {
+                        string pos = m->isInDefense() ? "Defense" : "Attack";
+                        writeLog("Opponent switched position of " + m->getName() + " to " +
+                                 pos + " position.");
+                    }
+                }
+
+                break;
+
+            case 3:
+                if (!self.hasAttacked(index)) {
+                    battlePhase(self, opponent, index, hasBattled);
+                }
+                break;
 
             case 4:
-            if (index >= 0 && index < self.getField().size()) {
-            MonsterCard* mc = dynamic_cast<MonsterCard*>(self.getField()[index]);
-            if (!mc) {
-             cout << "This is not a monster card.\n";
-             break;
-            }
+                if (index >= 0 && index < self.getField().size()) {
+                    MonsterCard *mc = dynamic_cast<MonsterCard *>(self.getField()[index]);
+                    if (!mc) {
+                        cout << "This is not a monster card.\n";
+                        break;
+                    }
 
-            if (!mc->isFacedown()) {
-             cout << mc->getName() << " is already face-up.\n";
-             break;
-            }
+                    if (!mc->isFacedown()) {
+                        cout << mc->getName() << " is already face-up.\n";
+                        break;
+                    }
 
-            if (mc->isJustSummoned()) {
-             cout << "You cannot flip summon a monster that was summoned this turn.\n";
-             break;
-            }
+                    if (mc->isJustSummoned()) {
+                        cout << "You cannot flip summon a monster that was summoned this "
+                            "turn.\n";
+                        break;
+                    }
 
-            mc->flipSummon();        // lật ngửa + chuyển sang attack
-            mc->showInfo();      // in đầy đủ thông tin
+                    mc->flipSummon(); // lật ngửa + chuyển sang attack
+                    mc->showInfo();   // in đầy đủ thông tin
 
-            writeLog("Opponent flip summon their monster: " + mc->getName());
+                    writeLog("Opponent flip summon their monster: " + mc->getName());
 
-           } else {
-           cout << "Invalid index.\n";
-           }
-           break;
-           
+                } else {
+                    cout << "Invalid index.\n";
+                }
+                break;
+
             default:
                 cout << "Invalid action. Try again.\n";
                 break;
         }
-        
+
         if (checkVictory(*player1, *player2)) {
             if (player1->getHp() <= 0 || player1->getDeck().empty()) {
                 cout << "\nPlayer 2 wins!\n";
@@ -313,52 +299,110 @@ void GameState::playerTurn(Player& self, Player& opponent, bool isFirstTurn) {
                 cout << "\nIt's a draw!\n";
             }
             cout << "Game Over.\n";
-            exit(0); 
+            exit(0);
         };
         j["Player1"] = json(*player1);
         j["Player2"] = json(*player2);
-        writeToFile(j); 
+        writeToFile(j);
         this_thread::sleep_for(std::chrono::milliseconds(3000));
     }
 }
 
-void GameState :: battlePhase(Player& attacker, Player& defender, int attackIndex, int defendIndex){
-    if (attacker.hasAttacked(attackIndex)){
+
+
+void GameState ::battlePhase(Player &self, Player &opponent, int index, bool hasBattled) {
+    int defendIndex = -1;
+    
+    if (opponent.getField().empty()) {
+        cout << "Opponent has no monsters.\n";
+        cout << "Do you want to attack directly with "
+            << self.getField()[index]->getName() << "? (y/n): ";
+        char choice;
+        cin >> choice;
+
+        if (choice == 'y' || choice == 'Y') {
+            MonsterCard *atkCard =
+                dynamic_cast<MonsterCard *>(self.getField()[index]);
+            if (!atkCard) {
+                cout << "Invalid attacker card.\n";
+                return;
+            }
+
+            int damage = atkCard->getAtk();
+            opponent.takeDamage(damage);
+            cout << atkCard->getName() << " attacks directly! Opponent loses "
+                << damage << " HP!\n";
+            writeLog("Opponent attacked directly with " + atkCard->getName() +
+                     " for " + to_string(damage) + " damage.");
+            self.setAttacked(index);
+            hasBattled = true;
+        }
+    } else {
+        cout << "Enter the index of the opponent's card to attack: ";
+        cin >> defendIndex;
+        writeLog("Opponent declared an attack from " +
+                 self.getField()[index]->getName() +
+                 " targeting opponent's card at index " + to_string(defendIndex) +
+                 ".");
+        hasBattled = true;
+    }
+    if (self.hasAttacked(index)) {
         cout << "This monster already battle" << endl;
         return;
     }
 
+    vector<Card *> atkField = self.getField();
+    vector<Card *> defField = opponent.getField();
 
-    vector<Card*> atkField = attacker.getField();
-    vector<Card*> defField = defender.getField();
-
-    if(attackIndex >= atkField.size() || defendIndex >= defField.size()){
+    if (index >= atkField.size() || defendIndex >= defField.size()) {
         cout << "Invalid indexes" << endl;
         return;
     }
 
-    MonsterCard* atkCard = dynamic_cast<MonsterCard*>(atkField[attackIndex]);
-    MonsterCard* defCard = dynamic_cast<MonsterCard*>(defField[defendIndex]);
+    MonsterCard *atkCard = dynamic_cast<MonsterCard *>(atkField[index]);
+    MonsterCard *defCard = dynamic_cast<MonsterCard *>(defField[defendIndex]);
 
-    if(!atkCard || !defCard){
+    if (!atkCard || !defCard) {
         cout << "Invalid cards for battle" << endl;
         return;
     }
 
     cout << atkCard->getName() << " attacks " << defCard->getName() << endl;
 
-    if(defCard -> isFacedown()){
-        defCard -> reveal();
+    if (defCard->isFacedown()) {
+        defCard->reveal();
         cout << "The defending card was face-down. It is now reveal: ";
-        defCard -> showInfo();
+        defCard->showInfo();
     }
 
-    *atkCard += *defCard;
-    this_thread::sleep_for(chrono::milliseconds(800));
+    vector<int> trapCardIndexes;
+    int i = 0;
+    for (auto card : defField) {
+        if (card->getType() == "Trap")
+        {
+            trapCardIndexes.push_back(i);
+            cout << "Trap card activate!!!" << endl;
+        }
+        i++;
+    }
+    opponent.canTrap = trapCardIndexes;
+    json j = readFromFile();
+    string turn = j.at("turn");
+    j["Player" + (turn == "PLAYER1") ? "2" : "1"] = opponent; 
+    writeToFile(j);
+    
+    if(trapCardIndexes.empty())
+    {
+        *atkCard += *defCard;
+        this_thread::sleep_for(chrono::milliseconds(800));
+    }
+
 }
 
-bool GameState::checkVictory(const Player& p1, const Player& p2) {
-    if (p1.getHp() <= 0 || p1.getDeck().empty()) return true;
-    if (p2.getHp() <= 0 || p2.getDeck().empty()) return true;
+bool GameState::checkVictory(const Player &p1, const Player &p2) {
+    if (p1.getHp() <= 0 || p1.getDeck().empty())
+        return true;
+    if (p2.getHp() <= 0 || p2.getDeck().empty())
+        return true;
     return false;
 }

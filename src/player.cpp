@@ -200,7 +200,6 @@ void Player::setHand(vector<Card*> newHand)
     hand.clear();
 
     hand = newHand;
-    DumpInfo(*this);
 }
 
 void Player::setField(vector<Card*> newField)
@@ -212,7 +211,6 @@ void Player::setField(vector<Card*> newField)
     field.clear();
 
     field = newField;
-    DumpInfo(*this);
 }
 void Player::setDeck(vector<Card*> newDeck)
 {
@@ -223,7 +221,6 @@ void Player::setDeck(vector<Card*> newDeck)
     deck.clear();
 
     deck = newDeck;
-    DumpInfo(*this);
 }
 
 vector<Card*>& Player::getDeckRef() {
@@ -237,7 +234,6 @@ vector<Card*>& Player::getFieldRef() {
 void Player::setHp(int hp)
 {
     this -> hp = hp; 
-    DumpInfo(*this);
 }
 
 vector<Card*>& Player::getHandRef() {

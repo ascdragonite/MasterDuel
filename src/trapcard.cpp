@@ -37,6 +37,6 @@ json TrapCard::toJson() const
     return j;
 }
 bool TrapCard::activateEffect(Player& self, Player& opponent) {
-    cout << "[TrapCard Effect] No effect defined.\n";
+    cout << "[TrapCard Effect] Effect activate.\n";
     return false;
 }
