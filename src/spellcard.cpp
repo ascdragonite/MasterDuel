@@ -63,6 +63,8 @@ shared_ptr<Spell> SpellCard::getEffectInstance(const std::string& type) {
     /*else if (type == "Re:End Of A Dream") effect = std::make_shared<Destroyer>();
     else if (type == "Re:End Of A Dream") effect = std::make_shared<RageOfTheBlueEyes>();*/
     else if (type == "Re:End Of A Dream") effect = std::make_shared<ReEndOfADream>();
+    else if (type == "World Vanquisher") effect = std::make_shared<WorldVanquisher>();
+    else if (type == "Flower Snow Drum’n’Bass") effect = std::make_shared<FlowerSnowrumNBass>();
   //Step 3: add spell effect names here
     else 
     {

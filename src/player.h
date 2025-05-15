@@ -60,7 +60,6 @@ class Player{
     void setDeck(vector<Card*> newDeck);
     void setField(vector<Card*> newField);
     void setHand(vector<Card*> newHand);
-
     ~Player();
 };
 #endif

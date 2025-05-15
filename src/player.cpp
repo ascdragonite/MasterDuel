@@ -11,6 +11,7 @@
 #include <ctime>
 #include "serialize.h"
 
+
 using namespace std;
 
 int Player::getIndex() const
@@ -239,7 +240,6 @@ void Player::setHp(int hp)
 vector<Card*>& Player::getHandRef() {
     return hand;
 }
-
 
 
 void Player :: loadDeckDarkMagician(){

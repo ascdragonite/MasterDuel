@@ -160,8 +160,14 @@ MonsterCard& MonsterCard::operator+=(MonsterCard& other) {
 int MonsterCard::getAtk() const{
     return atk;
 }
+void MonsterCard::setAtk(int atk){
+    this -> atk = atk;
+}
 int MonsterCard::getDef() const{
     return def;
+}
+void MonsterCard::setDef(int def){
+    this -> def = def;
 }
 
 void MonsterCard :: setDefenseMode(bool mode){

@@ -36,7 +36,8 @@ class MonsterCard : public Card{
         void PlayCard(vector<Card*>& field) override;
         bool isJustSummoned() const;     
         void clearSummonFlag();  
-        
+        void setAtk(int atk);
+        void setDef(int def);
         bool activateEffect(Player& self, Player& opponent) override;
         
         json toJson() const override;

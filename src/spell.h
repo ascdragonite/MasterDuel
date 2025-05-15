@@ -24,7 +24,13 @@ class ReEndOfADream : public Spell{
 class RageOfTheBlueEyes : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
+*/
+class WorldVanquisher : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
+class FlowerSnowrumNBass : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
 
 //cursed technique: Strategy Pattern
 //Step 1:Declare Spell here
-*/

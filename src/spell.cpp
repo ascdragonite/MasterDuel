@@ -1,6 +1,11 @@
 #include "spell.h"
 #include "player.h"
+#include "card.h"
 #include <iostream>
+#include <vector>
+#include "monstercard.h"
+#include <cstdlib>
+#include <ctime> 
 using namespace std;
 
 bool OshamaScramble::ActivateEffect(Player& self, Player& opponent) { //tráo bài đối thủ
@@ -57,17 +62,7 @@ bool DarkMagic::ActivateEffect(Player& self, Player& opponent) {
 
 bool ReEndOfADream::ActivateEffect(Player& self, Player& opponent) { //thêm lượt nếu hp<1000
 
-if(self.getHp()>=1000){
-    cout << "[Re:End of A Dream] Activation failed : Can not be used when your hp >= 1000" << endl;
-    return false;
-}
-else if(self.getCannotUseReEndThisTurn()==true){
-    cout << "[Re:End of A Dream] Activation failed : You already use this spell" << endl;
-    return false;
-}
-    self.setExtraTurn(true);
-    cout << "[Re:End of A Dream] successfully gained you an extra turn" << endl;
-    self.setCannotUseReEndThisTurn(true);
+
     
     //logic card
 
@@ -82,7 +77,67 @@ bool Destroyer::ActivateEffect(Player& self, Player& opponent) { // xử 1 lá �
 bool RageOfTheBlueEyes ::ActivateEffect(Player& self, Player& opponent) { // hi sinh 2/3 hp khiến rồng xanh tấn công 2 lần/turn
 
 }
-
+*/
 bool WorldVanquisher::ActivateEffect(Player& self, Player& opponent){ //buff 200 atk
+    vector<Card*> newfield = self.getField();
+    int countC = 0;
+    for(auto card : newfield){
+        
+        if(card->getType()=="Monster"){
+            countC++;
+        }
+    }
+        if(countC==0){
+        cout << "[World Vanquisher] Activation Failed : You need at least 1 monster card" << endl;
+            return false;
+        }
+        if(countC>0){
+                int in;
+                do{
+                    cout << "[World Vanquisher] : Choose the card you want to buff" << endl;
+                cin >> in;
+                if(newfield[in]->getType()!="Monster"){
+                    cout << "[World Vanquisher] Activation Failed : You need to choose a monster card" << endl;
+                }
+                }while(newfield[in]->getType()!="Monster");
+                MonsterCard* card = dynamic_cast<MonsterCard*>(newfield[in]);
+                card->setAtk(card->getAtk()+200);
+                cout << "[World Vanquisher] successfully gained " << card->getName() << " 200 atk" << endl;
+} 
+    return true; // Indicate success
+}
 
-} */
+bool FlowerSnowrumNBass::ActivateEffect(Player& self, Player& opponent){
+    int cself;
+    int copp;
+    int r;
+    vector<Card*> newdeck1 = self.getDeck();
+    for(auto card1 : newdeck1){
+        cself++;
+    }
+
+    vector<Card*> newdeck2 = opponent.getDeck();
+        for(auto card2 : newdeck2){
+        copp++;
+    }
+    cout << "[Flower Snow Drum’n’Bass] is chosing a player" << endl;
+    srand(time(0));
+    r = rand() % 2 + 1;
+    if(r==1){
+        if(cself <2){
+            cout << "[Flower Snow Drum’n’Bass] Activation Failed : There is not enough card in your deck" << endl;
+        }
+        self.drawCard();
+        self.drawCard();
+        cout << "[Flower Snow Drum’n’Bass] successfully drew you 2 cards" << endl;
+    }
+    if(r==2){
+        if(copp <2){
+            cout << "[Flower Snow Drum’n’Bass] Activation Failed : There is not enough card in opponent's deck" << endl;
+        }
+        opponent.drawCard();
+        opponent.drawCard();
+        cout << "[Flower Snow Drum’n’Bass] successfully drew your opponent 2 cards" << endl;
+    }       
+    return true; // Indicate success
+}
