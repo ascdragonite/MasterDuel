@@ -1,2 +1,0 @@
-[Thu May 15 14:01:59 2025] Opponent summoned a monster in attack position.
-[Thu May 15 14:02:11 2025] Opponent attacked directly with Feryquitous for 1500 damage.

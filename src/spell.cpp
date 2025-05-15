@@ -108,8 +108,8 @@ bool WorldVanquisher::ActivateEffect(Player& self, Player& opponent){ //buff 200
 }
 
 bool FlowerSnowrumNBass::ActivateEffect(Player& self, Player& opponent){
-    int cself;
-    int copp;
+    int cself = 0;
+    int copp = 0;
     int r;
     vector<Card*> newdeck1 = self.getDeck();
     for(auto card1 : newdeck1){
@@ -126,6 +126,7 @@ bool FlowerSnowrumNBass::ActivateEffect(Player& self, Player& opponent){
     if(r==1){
         if(cself <2){
             cout << "[Flower Snow Drum’n’Bass] Activation Failed : There is not enough card in your deck" << endl;
+            return false;
         }
         self.drawCard();
         self.drawCard();
@@ -134,6 +135,7 @@ bool FlowerSnowrumNBass::ActivateEffect(Player& self, Player& opponent){
     if(r==2){
         if(copp <2){
             cout << "[Flower Snow Drum’n’Bass] Activation Failed : There is not enough card in opponent's deck" << endl;
+            return false;
         }
         opponent.drawCard();
         opponent.drawCard();
