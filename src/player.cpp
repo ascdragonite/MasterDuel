@@ -282,7 +282,7 @@ void Player :: loadDeckBlueEyes(){
     deck.push_back(new SpellCard("Re:End of A Dream", "If and only if your lifepoint is lower or equal to 500 you can activate this card. When this card is activated, you can conduct anorther turn"));
     deck.push_back(new SpellCard("Disorted Fate", "Look at your full deck and place a card you like at the top of the deck."));
     deck.push_back(new SpellCard("Oshama Scramble", "Shuffle your opponent's deck when this card is activated."));
-    deck.push_back(new SpellCard("Flower Snow Drum'n'Bass", "Flip coin, winner gets draw 2 cards"));
+    deck.push_back(new SpellCard("Flower Snow Drum n Bass", "Flip coin, winner gets draw 2 cards"));
     deck.push_back(new SpellCard("World Vanquisher", "Buff a monster attack by 200 when this card is activated."));
     deck.push_back(new SpellCard("Dragon United", "Buff a monster attack and defense by 100 for each faceup monster you control when this card is activated."));
     deck.push_back(new SpellCard("Burst Stream of Destruction", "If you controll a Blue eye white dragon destroy all card your opponent controll but skip your next 2 battle phase."));

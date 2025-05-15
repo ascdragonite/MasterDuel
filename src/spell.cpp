@@ -107,7 +107,7 @@ bool WorldVanquisher::ActivateEffect(Player& self, Player& opponent){ //buff 200
     return true; // Indicate success
 }
 
-bool FlowerSnowrumNBass::ActivateEffect(Player& self, Player& opponent){
+bool FlowerSnowDrumNBass::ActivateEffect(Player& self, Player& opponent){
     int cself = 0;
     int copp = 0;
     int r;
@@ -120,26 +120,26 @@ bool FlowerSnowrumNBass::ActivateEffect(Player& self, Player& opponent){
         for(auto card2 : newdeck2){
         copp++;
     }
-    cout << "[Flower Snow Drum’n’Bass] is chosing a player" << endl;
+    cout << "[Flower Snow Drum n Bass] is chosing a player" << endl;
     srand(time(0));
     r = rand() % 2 + 1;
     if(r==1){
         if(cself <2){
-            cout << "[Flower Snow Drum’n’Bass] Activation Failed : There is not enough card in your deck" << endl;
+            cout << "[Flower Snow Drum n Bass] Activation Failed : There is not enough card in your deck" << endl;
             return false;
         }
         self.drawCard();
         self.drawCard();
-        cout << "[Flower Snow Drum’n’Bass] successfully drew you 2 cards" << endl;
+        cout << "[Flower Snow Drum n Bass] successfully drew you 2 cards" << endl;
     }
     if(r==2){
         if(copp <2){
-            cout << "[Flower Snow Drum’n’Bass] Activation Failed : There is not enough card in opponent's deck" << endl;
+            cout << "[Flower Snow Drum n Bass] Activation Failed : There is not enough card in opponent's deck" << endl;
             return false;
         }
         opponent.drawCard();
         opponent.drawCard();
-        cout << "[Flower Snow Drum’n’Bass] successfully drew your opponent 2 cards" << endl;
+        cout << "[Flower Snow Drum n Bass] successfully drew your opponent 2 cards" << endl;
     }       
     return true; // Indicate success
 }

@@ -28,7 +28,7 @@ class RageOfTheBlueEyes : public Spell{
 class WorldVanquisher : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
-class FlowerSnowrumNBass : public Spell{
+class FlowerSnowDrumNBass : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
 
