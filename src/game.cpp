@@ -312,8 +312,14 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
 
 void GameState ::battlePhase(Player &self, Player &opponent, int index, bool hasBattled) {
     int defendIndex = -1;
-    
-    if (opponent.getField().empty()) {
+    bool hasMonster = false;
+    for(Card* c : opponent.getField()){
+        if(c -> getType() == "Monster"){
+            hasMonster = true;
+            break;
+        }
+    }
+    if (!hasMonster) {
         cout << "Opponent has no monsters.\n";
         cout << "Do you want to attack directly with "
             << self.getField()[index]->getName() << "? (y/n): ";

@@ -257,7 +257,7 @@ void Player :: loadDeckDarkMagician(){
     deck.push_back(new SpellCard("Re:End of a dream", "If and only if your lifepoint is lower or equal to 500 you can activate this card. When this card is activated, you can conduct anorther turn"));
     deck.push_back(new SpellCard("Disorted Fate", "Look at your full deck and place a card you like at the top of the deck."));
     deck.push_back(new SpellCard("Oshama Scramble", "Shuffle your opponent's deck when this card is activated."));
-    deck.push_back(new SpellCard("Dark Magic", " If you controll a “Dark Magician” monster, destroy all spell and trap card your opponent controll."));
+    deck.push_back(new SpellCard("Dark Magic", " If you controll a “Dark Magician” monster, destroy all monster your opponent controll."));
     deck.push_back(new SpellCard("Bond Between the teacher and student", "If you controll a “Dark Magician”, special summon from your deck a dark magician girl but skip your battle phase"));
     deck.push_back(new SpellCard("Dark Burning Magic", "If you control a “Dark Magician”, “Dark magician girl” you can destroy all of your oponent card but skip your 2 battle phase"));
     deck.push_back(new SpellCard("The Power of Friendship", "Combine all of your faceup monster atk to 1 single card in this turn."));
