@@ -65,7 +65,17 @@ Magician.\n"; return false;
 
 bool ReEndOfADream::ActivateEffect(Player &self,
                                    Player &opponent) { // thêm lượt nếu hp<1000
+    if (self.getHp() > 1000)
+    {
+        cout << "[Re:End of a Dream] HP is too high"; //Disabled for testing purposes, uncomment line below to activate
+        //return false;
+    }
     json j = readFromFile();
+    if (j["ExtraTurn"])
+    {
+        cout << "[Re:End of a Dream] Already used Re:End of a Dream";
+        return false;
+    }
     j["ExtraTurn"] = true;
 
     ofstream out("game_state.json");

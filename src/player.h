@@ -1,25 +1,23 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <vector>
-#include <string>
 #include "card.h"
+#include <string>
+#include <vector>
 
 class TrapCard;
 
 using namespace std;
 
-class Player{
-    private:
+class Player {
+private:
     int index;
-    vector<Card*> deck;
-    vector<Card*> hand;
-    vector<Card*> field;
+    vector<Card *> deck;
+    vector<Card *> hand;
+    vector<Card *> field;
     int hp;
-    bool extraTurn = false;
-    bool cannotUseReEndThisTurn = false;
 
-    public:
+public:
     vector<int> canTrap;
     int skipBattlePhaseCount;
 
@@ -32,10 +30,6 @@ class Player{
     void resetAttackFlags();
     bool hasAttacked(int fieldIndex) const;
     void setAttacked(int fieldIndex);
-    bool hasExtraTurn() const;
-    void setExtraTurn(bool val);
-    bool getCannotUseReEndThisTurn() const;
-    void setCannotUseReEndThisTurn(bool value);
 
     void revealMonster(int fieldIndex);
     void switchPosition(int fieldIndex);
@@ -49,17 +43,17 @@ class Player{
     void shuffleDeck();
 
     int getIndex() const;
-    vector<Card*> getDeck() const;
-    vector<Card*> getField() const;
-    vector<Card*> getHand() const;
-    vector<Card*>& getDeckRef();
-    vector<Card*>& getFieldRef();
+    vector<Card *> getDeck() const;
+    vector<Card *> getField() const;
+    vector<Card *> getHand() const;
+    vector<Card *> &getDeckRef();
+    vector<Card *> &getFieldRef();
 
-    vector<Card*>& getHandRef();
+    vector<Card *> &getHandRef();
 
-    void setDeck(vector<Card*> newDeck);
-    void setField(vector<Card*> newField);
-    void setHand(vector<Card*> newHand);
+    void setDeck(vector<Card *> newDeck);
+    void setField(vector<Card *> newField);
+    void setHand(vector<Card *> newHand);
     ~Player();
 };
 #endif
