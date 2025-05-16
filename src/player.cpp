@@ -254,7 +254,7 @@ void Player :: loadDeckDarkMagician(){
     deck.push_back(new MonsterCard("Griffore", 1200, 1500, "This monster's tough hide deflects almost any attack.", index));
     deck.push_back(new MonsterCard("Beaver Warrior", 1200, 1500, "What this creature lacks in size it makes up for in defense when battling in the prairie.", index));
     deck.push_back(new MonsterCard("Mystical Elf", 800, 2000, "A delicate elf that lacks offense, but has a terrific defense backed by mystical power.", index));
-    deck.push_back(new SpellCard("Re:End of a dream", "If and only if your lifepoint is lower or equal to 500 you can activate this card. When this card is activated, you can conduct anorther turn"));
+    deck.push_back(new SpellCard("Re:End of a Dream", "If and only if your lifepoint is lower or equal to 500 you can activate this card. When this card is activated, you can conduct anorther turn"));
     deck.push_back(new SpellCard("Disorted Fate", "Look at your full deck and place a card you like at the top of the deck."));
     deck.push_back(new SpellCard("Oshama Scramble", "Shuffle your opponent's deck when this card is activated."));
     deck.push_back(new SpellCard("Dark Magic", " If you controll a “Dark Magician” monster, destroy all monster your opponent controll."));
@@ -279,7 +279,7 @@ void Player :: loadDeckBlueEyes(){
     deck.push_back(new MonsterCard("BlackY", 1500, 500, "A black dragon born from the ashes of fallen stars. Though not powerful in offense, BlackY possesses the stubborn will to rise from ruins and survive every battle.", index));
     deck.push_back(new MonsterCard("Camellia", 2000, 1600, "A divine flower dragon, rare and mesmerizing. Camellia commands deadly blossoms, blending beauty with fatal poison in a delicate yet deadly dance.", index));
     deck.push_back(new MonsterCard("Sakuzyo", 2300, 900, "A sonic dragon traveling across dimensions through ultrasonic waves. Sakuzyo’s roar can shatter metal, and those who hear it often lose their sense of direction completely.", index));
-    deck.push_back(new SpellCard("Re:End of A Dream", "If and only if your lifepoint is lower or equal to 500 you can activate this card. When this card is activated, you can conduct anorther turn"));
+    deck.push_back(new SpellCard("Re:End of a Dream", "If and only if your lifepoint is lower or equal to 500 you can activate this card. When this card is activated, you can conduct anorther turn"));
     deck.push_back(new SpellCard("Disorted Fate", "Look at your full deck and place a card you like at the top of the deck."));
     deck.push_back(new SpellCard("Oshama Scramble", "Shuffle your opponent's deck when this card is activated."));
     deck.push_back(new SpellCard("Flower Snow Drum n Bass", "Flip coin, winner gets draw 2 cards"));

@@ -6,11 +6,9 @@
 #include "serialize.h"
 #include "spellcard.h"
 #include "trapcard.h"
-#include <algorithm>
 #include <chrono>
-#include <ctime>
 #include <iostream>
-#include <random>
+#include <string>
 #include <thread>
 
 using namespace std;
@@ -129,9 +127,7 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
         json j = readFromFile();
         from_json(j["Player1"], *player1);
         from_json(j["Player2"], *player2);
-        if (opponent.canTrap.empty()) cout << "cant trap!!!" << endl;
-        for (auto index : opponent.canTrap)
-        {
+        for (auto index : opponent.canTrap) {
             cout << index << endl;
         }
         if (!opponent.canTrap.empty()) {
@@ -191,49 +187,48 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
                 return; // End turn
 
             case 1:
-                if (index >= 0 && index < self.getHand().size()) {
+                {
+                    if (!(index >= 0 && index < self.getHand().size())) {
+                        cout << "Invalid index.\n";
+                        break;
+                    }
+
                     Card *card = self.getHand()[index];
                     string type = card->getType();
-
                     if (type == "Monster") {
-                        if (!hasSummoned) {
-                            self.Summon(index);
-                            hasSummoned = true;
-
-                            MonsterCard *mc = dynamic_cast<MonsterCard *>(card);
-                            if (mc) {
-                                writeLog(
-                                    "Opponent summoned a monster in " +
-                                    string(mc->isInDefense() ? "face-down defense" : "attack") +
-                                    " position.");
-                            }
-                        } else {
+                        if (hasSummoned) {
                             cout << "You cannot summon more than once per turn.\n";
+                            break;
+                        }
+                        self.Summon(index);
+                        hasSummoned = true;
+
+                        MonsterCard *mc = dynamic_cast<MonsterCard *>(card);
+                        if (mc) {
+                            writeLog(
+                                "Opponent summoned a monster in " +
+                                string(mc->isInDefense() ? "face-down defense" : "attack") +
+                                " position.");
                         }
                     } else if (type == "Spell") {
                         bool success = card->activateEffect(self, opponent);
-                        if (success) {
-                            writeLog("Opponent activated a " + type +
-                                     " card: " + card->getName());
-                            delete card;
-                            auto &hand = self.getHandRef();
-                            hand.erase(hand.begin() + index);
-                        } else {
-                            cout << "[Spell] Effect was not activated. Card remains in "
-                                "hand.\n";
-                        }
+                        if (!success) {
+                            cout << "[Spell] Effect was not activated. Card remains in hand. \n";
+                            break;
+                        } 
+                        writeLog("Opponent activated a " + type +
+                                 " card: " + card->getName());
+                        delete card;
+                        auto &hand = self.getHandRef();
+                        hand.erase(hand.begin() + index);
                     } else if (type == "Trap") {
                         cout << "Placed Trap: " << self.getHand()[index]->getName() << endl;
                         self.Summon(index);
-                    } 
-                    else {
+                    } else {
                         cout << "Unsupported card type.\n";
                     }
-                } else {
-                    cout << "Invalid index.\n";
+                    break;
                 }
-                break;
-
             case 2:
                 self.switchPosition(index);
 
@@ -301,6 +296,7 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
             cout << "Game Over.\n";
             exit(0);
         };
+        j = readFromFile();
         j["Player1"] = json(*player1);
         j["Player2"] = json(*player2);
         writeToFile(j);
@@ -308,13 +304,12 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
     }
 }
 
-
-
-void GameState ::battlePhase(Player &self, Player &opponent, int index, bool hasBattled) {
+void GameState ::battlePhase(Player & self, Player & opponent, int index,
+                             bool hasBattled) {
     int defendIndex = -1;
     bool hasMonster = false;
-    for(Card* c : opponent.getField()){
-        if(c -> getType() == "Monster"){
+    for (Card *c : opponent.getField()) {
+        if (c->getType() == "Monster") {
             hasMonster = true;
             break;
         }
@@ -384,25 +379,21 @@ void GameState ::battlePhase(Player &self, Player &opponent, int index, bool has
     vector<int> trapCardIndexes;
     int i = 0;
     for (auto card : defField) {
-        if (card->getType() == "Trap")
-        {
+        if (card->getType() == "Trap") {
             trapCardIndexes.push_back(i);
-            cout << "Trap card activate!!!" << endl;
         }
         i++;
     }
     opponent.canTrap = trapCardIndexes;
     json j = readFromFile();
     string turn = j.at("turn");
-    j["Player" + (turn == "PLAYER1") ? "2" : "1"] = opponent; 
+    j[string("Player") + ((turn == "PLAYER1") ? "2" : "1")] = opponent;
     writeToFile(j);
-    
-    if(trapCardIndexes.empty())
-    {
+
+    if (trapCardIndexes.empty()) {
         *atkCard += *defCard;
         this_thread::sleep_for(chrono::milliseconds(800));
     }
-
 }
 
 bool GameState::checkVictory(const Player &p1, const Player &p2) {

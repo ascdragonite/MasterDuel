@@ -8,7 +8,6 @@
 #include "spellcard.h"
 #include "trapcard.h"
 #include <chrono>
-#include <fstream>
 #include <iostream>
 #include <string>
 #include <thread>
@@ -104,32 +103,30 @@ int main() {
                 }
                 break;
             }
-
+            state = readFromFile();
             // Update JSON state
             state["Player1"] = *player1;
             state["Player2"] = *player2;
-            bool hasExtra =
-                (player == "1") ? player1->hasExtraTurn() : player2->hasExtraTurn();
-            if (hasExtra) {
-                if (player == "1")
-                    player1->setExtraTurn(false);
-                else
-                    player2->setExtraTurn(false);
 
-                cout << "[Extra Turn] You get to play another turn!\n";
-                writeToFile(state);
-                continue;
+            if (state["ExtraTurn"])
+            {
+                cout << "Player " << player << " gets an Extra turn!!!" << endl;
+                state["ExtraTurn"] = false;
+            } else {
+                state["turn"] = "PLAYER" + string((player == "1") ? "2" : "1");
             }
-            state["turn"] = "PLAYER" + string((player == "1") ? "2" : "1");
             writeToFile(state);
         } else {
             from_json(state["Player1"], *player1);
             from_json(state["Player2"], *player2);
             Player *self = (player == "1") ? player1 : player2;
             Player *opponent = (player == "1") ? player2 : player1;
+            
             if (!self->canTrap.empty()) {
+                
                 ActivateTrapCards(self->canTrap, *self, *opponent);
                 self->canTrap.clear();
+
                 json j = readFromFile();
                 j["Player1"] = *player1;
                 j["Player2"] = *player2;

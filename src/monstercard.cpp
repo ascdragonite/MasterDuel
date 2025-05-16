@@ -71,7 +71,6 @@ Player* OwnerFromIndex(int index){
 }
 
 MonsterCard& MonsterCard::operator+=(MonsterCard& other) {
-    cout << "operator activated!!!" << endl;
     int defValue = other.isInDefense() ? other.getDef() : other.getAtk();
 
 

@@ -45,9 +45,16 @@ json SpellCard::toJson() const
 
 bool SpellCard::activateEffect(Player& self, Player& opponent) 
 {
-    cout << "Spell card activated: " << getName() << endl;
-    return spell->ActivateEffect(self, opponent);
+    if (spell)
+    {
+        cout << "Spell card activated: " << getName() << endl;
+        return spell->ActivateEffect(self, opponent);
+    } else {
+        cout << "epic spell fail" << endl;
+        return false;
+    }
 }
+
 shared_ptr<Spell> SpellCard::getEffectInstance(const std::string& type) {
     static unordered_map<string, shared_ptr<Spell>> effectCache;
 
@@ -62,7 +69,7 @@ shared_ptr<Spell> SpellCard::getEffectInstance(const std::string& type) {
     //else if (type == "Dark Magic") effect = std::make_shared<DarkMagic>();
     /*else if (type == "Re:End Of A Dream") effect = std::make_shared<Destroyer>();
     else if (type == "Re:End Of A Dream") effect = std::make_shared<RageOfTheBlueEyes>();*/
-    else if (type == "Re:End Of A Dream") effect = std::make_shared<ReEndOfADream>();
+    else if (type == "Re:End of a Dream") effect = std::make_shared<ReEndOfADream>();
     else if (type == "World Vanquisher") effect = std::make_shared<WorldVanquisher>();
     else if (type == "Flower Snow Drum n Bass") effect = std::make_shared<FlowerSnowDrumNBass>();
   //Step 3: add spell effect names here
