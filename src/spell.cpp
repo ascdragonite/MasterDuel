@@ -3,15 +3,14 @@
 #include "monstercard.h"
 #include "player.h"
 #include "serialize.h"
-#include <cstdlib>
 #include <ctime>
 #include <fstream>
 #include <iostream>
 #include <vector>
+
 using namespace std;
 
-bool OshamaScramble::ActivateEffect(Player &self,
-                                    Player &opponent) { // tráo bài đối thủ
+bool OshamaScramble::ActivateEffect(Player &self,Player &opponent) { // tráo bài đối thủ
     opponent.shuffleDeck();
     cout << "[Oshama Scramble] has successfully shuffled opponent deck" << endl;
 
@@ -42,8 +41,7 @@ bool DarkMagic::ActivateEffect(Player& self, Player& opponent) {
             }
             if(card2->getType()=="Monster"){
                 cout << "[Dark Magic] Destroyed: " << card2->getName() << endl;
-            }
-                
+            } 
         }
         cout << "[Dark Magic] Activate successfully! All opponent's monster cards are destroyed" << endl;
         opponent.setField(newfieldopp);
@@ -51,8 +49,6 @@ bool DarkMagic::ActivateEffect(Player& self, Player& opponent) {
 
 return true; // Indicate success
 }
-/*
-
 
 
 bool ReEndOfADream::ActivateEffect(Player &self,
@@ -82,11 +78,6 @@ bool ReEndOfADream::ActivateEffect(Player &self,
     return true; // Indicate success
 }
 /*
-bool Destroyer::ActivateEffect(Player& self, Player& opponent) { // xử 1 lá ở
-thế thủ (k quan tâm stat)
-
-}
-*//*
 
 bool RageOfTheBlueEyes ::ActivateEffect(Player& self, Player& opponent) { // hi sinh 2/3 hp khiến rồng xanh tấn công 2 lần/turn
 
@@ -189,7 +180,7 @@ bool DragonUnited::ActivateEffect(Player &self, Player &opponent) {
     return true; // Indicate success
 }
 
-bool Destroyer::ActivateEffect(Player& self, Player& opponent) {
+bool Destr0yer::ActivateEffect(Player& self, Player& opponent) {
  vector<Card *> newfield = opponent.getField();
  vector<Card*> newfieldopp;
     int countC = 0;
@@ -200,7 +191,7 @@ bool Destroyer::ActivateEffect(Player& self, Player& opponent) {
         }
     }
     if (countC == 0) {
-        cout << "[Destroyer] Activation Failed : Opponent need to have at least 1 monster card"
+        cout << "[Destr0yer] Activation Failed : Opponent need to have at least 1 monster card"
             << endl;
         return false;
     }
@@ -208,12 +199,12 @@ bool Destroyer::ActivateEffect(Player& self, Player& opponent) {
         int in;
         MonsterCard* card1 = nullptr;
         do {
-            cout << "[Destroyer] : Choose the card you want to destroy" << endl;
+            cout << "[Destr0yer] : Choose the card you want to destroy" << endl;
             cin >> in;
 
             
             if (in < 0 || in >= newfield.size()) {
-                cout << "[Destroyer] Invalid index!" << endl;
+                cout << "[Destr0yer] Invalid index!" << endl;
                 card1 = nullptr;
                 continue;  // ⬅ Tại sao?
             }
@@ -221,7 +212,7 @@ bool Destroyer::ActivateEffect(Player& self, Player& opponent) {
             card1 = dynamic_cast<MonsterCard*>(newfield[in]);
 
             if (!card1 || card1->getType() != "Monster"||card1->isFacedown()==false) {
-                cout << "[Destroyer] Activation Failed : You need to choose a defense monster card" << endl;
+                cout << "[Destr0yer] Activation Failed : You need to choose a defense monster card" << endl;
             }
         } while (!card1 || card1->getType() != "Monster"||card1->isFacedown()==false);
         for(auto card0 : newfield){
@@ -229,8 +220,9 @@ bool Destroyer::ActivateEffect(Player& self, Player& opponent) {
                 newfieldopp.push_back(card0);
             }
             if(card0 == newfield[in]){
-                cout << "[Destroyer] successfully destroy 1 defense card : " << card0->getName() << endl;
+                cout << "[Destr0yer] successfully destroy 1 defense card : " << card0->getName() << endl;
             }
         }
+    }
     return true; // Indicate success
 }

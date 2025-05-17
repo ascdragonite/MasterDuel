@@ -9,28 +9,35 @@ class OshamaScramble : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
 
-/*class DarkMagic : public Spell{
+class DarkMagic : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
-};*/
+};
 
 class ReEndOfADream : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
-
-/*class Destroyer : public Spell{
+class WorldVanquisher : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
 
+class FlowerSnowDrumNBass : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
+class DragonUnited : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
+
+
+class Destr0yer : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
+
+
+/*
 class RageOfTheBlueEyes : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
 */
-class WorldVanquisher : public Spell{
-  bool ActivateEffect(Player& self, Player& opponent) override;
-};
-class FlowerSnowDrumNBass : public Spell{
-  bool ActivateEffect(Player& self, Player& opponent) override;
-};
 
 //cursed technique: Strategy Pattern
 //Step 1:Declare Spell here
