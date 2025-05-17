@@ -180,7 +180,7 @@ bool DragonUnited::ActivateEffect(Player &self, Player &opponent) {// hiện t�
     return true; // Indicate success
 } 
 
-bool Destr0yer::ActivateEffect(Player& self, Player& opponent) {
+bool Destr0yer::ActivateEffect(Player& self, Player& opponent) { //xử 1 lá ở defense
  vector<Card *> newfield = opponent.getField();
  vector<Card*> newfieldopp;
     int countC = 0;
@@ -206,7 +206,7 @@ bool Destr0yer::ActivateEffect(Player& self, Player& opponent) {
             if (in < 0 || in >= newfield.size()) {
                 cout << "[Destr0yer] Invalid index!" << endl;
                 card1 = nullptr;
-                continue;  // ⬅ Tại sao?
+                continue; 
             }
 
             card1 = dynamic_cast<MonsterCard*>(newfield[in]);
@@ -224,5 +224,45 @@ bool Destr0yer::ActivateEffect(Player& self, Player& opponent) {
             }
         }
     }
+    return true; // Indicate success
+}
+
+
+bool DisortedFate::ActivateEffect(Player &self,Player &opponent) { // look at full deck and place a card at the top
+    vector<Card *> newdeck = self.getDeck();
+    vector<Card *> newdeckself;
+    int c1 = 0;
+    int c2 = 0;
+    cout << "List of card in your deck : " << endl;
+    for(auto card : newdeck){
+        cout << c1 << ": " << card->getName() << endl;
+        c1++;
+    }
+    int in;
+        do {
+            cout << "[Disorted Fate] : Choose the card you want to add to the top of your deck" << endl;
+            cin >> in;
+            if (in < 0 || in >= newdeck.size()) {
+                cout << "[Disorted Fate] Invalid index!" << endl;
+            }
+        }while(in < 0 || in >= newdeck.size());
+
+        for(auto card1 : newdeck){
+            if(card1 != newdeck[in]){
+                newdeckself.push_back(card1);
+            }
+    }
+
+    newdeckself.push_back(newdeck[in]);
+
+    cout << "[Disorted Fate] : Successfully move " << newdeck[in]->getName() << " to the top of your deck" << endl;
+    cout << "List of card in your deck : " << endl;
+    for(auto card2 : newdeckself){
+        cout << c2 << ": " << card2->getName() << endl;
+        c2++;
+    }
+
+    self.setDeck(newdeckself);
+
     return true; // Indicate success
 }

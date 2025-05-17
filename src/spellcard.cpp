@@ -66,7 +66,7 @@ shared_ptr<Spell> SpellCard::getEffectInstance(const std::string& type) {
     std::shared_ptr<Spell> effect;
 
     if (type == "Oshama Scramble") effect = std::make_shared<OshamaScramble>();
-    //else if (type == "Dark Magic") effect = std::make_shared<DarkMagic>();
+    else if (type == "Disorted Fate") effect = std::make_shared<DisortedFate>();
     else if (type == "Dragon United") effect = std::make_shared<DragonUnited>();
     else if (type == "Dark Magic") effect = std::make_shared<DarkMagic>();
     else if (type == "Destr0yer") effect = std::make_shared<Destr0yer>();

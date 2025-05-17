@@ -32,6 +32,10 @@ class Destr0yer : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
 
+class DisortedFate : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
+
 
 /*
 class RageOfTheBlueEyes : public Spell{

@@ -205,7 +205,7 @@ void Player::setDeck(vector<Card*> newDeck)
 {
     for(Card* card : deck)
     {
-        delete card;
+        //delete card;
     }
     deck.clear();
 
