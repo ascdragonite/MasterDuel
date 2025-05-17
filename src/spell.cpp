@@ -152,7 +152,7 @@ bool FlowerSnowDrumNBass::ActivateEffect(Player &self, Player &opponent) {
     }
     return true; // Indicate success
 }
-bool DragonUnited::ActivateEffect(Player &self, Player &opponent) {
+bool DragonUnited::ActivateEffect(Player &self, Player &opponent) {// hiện tại đang sai logic, sửa sau
         vector<Card *> newfield = self.getField();
     int countC = 0;
     for (auto card : newfield) {
@@ -178,20 +178,20 @@ bool DragonUnited::ActivateEffect(Player &self, Player &opponent) {
             }
         }
     return true; // Indicate success
-}
+} 
 
 bool Destr0yer::ActivateEffect(Player& self, Player& opponent) {
  vector<Card *> newfield = opponent.getField();
  vector<Card*> newfieldopp;
     int countC = 0;
-    for (auto card : newfield) {
-
-        if (card->getType() == "Monster") {
+    for (auto card2 : newfield) {
+        MonsterCard *card3 = dynamic_cast<MonsterCard *>(card2);
+        if (card3->getType() == "Monster" && card3->isInDefense()==true) {
             countC++;
         }
     }
     if (countC == 0) {
-        cout << "[Destr0yer] Activation Failed : Opponent need to have at least 1 monster card"
+        cout << "[Destr0yer] Activation Failed : Opponent need to have at least 1 monster card on defense mode"
             << endl;
         return false;
     }
@@ -211,10 +211,10 @@ bool Destr0yer::ActivateEffect(Player& self, Player& opponent) {
 
             card1 = dynamic_cast<MonsterCard*>(newfield[in]);
 
-            if (!card1 || card1->getType() != "Monster"||card1->isFacedown()==false) {
+            if (!card1 || card1->getType() != "Monster"||card1->isInDefense()==false) {
                 cout << "[Destr0yer] Activation Failed : You need to choose a defense monster card" << endl;
             }
-        } while (!card1 || card1->getType() != "Monster"||card1->isFacedown()==false);
+        } while (!card1 || card1->getType() != "Monster"||card1->isInDefense()==false);
         for(auto card0 : newfield){
             if(card0 != newfield[in]){
                 newfieldopp.push_back(card0);

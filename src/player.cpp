@@ -275,6 +275,7 @@ void Player :: loadDeckBlueEyes(){
     deck.push_back(new SpellCard("Dragon United", "Buff a monster attack and defense by 100 for each faceup monster you control when this card is activated."));
     deck.push_back(new SpellCard("Burst Stream of Destruction", "If you controll a Blue eye white dragon destroy all card your opponent controll but skip your next 2 battle phase."));
     deck.push_back(new SpellCard("Rage of the blue eyes", "Sacrifice 2/3 of your lifepoint, “Blue Eyes White Dragon” you controll can now attack twice in a turn ( can not active “Re:End of a dream” the turn you activate this card).")); 
+    deck.push_back(new SpellCard("Destr0yer",("Can destroy a monster card in defense mode"))); 
 }
 
 void Player::shuffleDeck(){
