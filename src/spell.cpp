@@ -20,37 +20,6 @@ bool OshamaScramble::ActivateEffect(Player &self,Player &opponent) { // tráo b�
 }
 
 
-bool DarkMagic::ActivateEffect(Player& self, Player& opponent) {
-    int countm = 0;
-    vector<Card*> newfield1 = self.getField();
-    vector<Card*> newfield2 = opponent.getField();
-    vector<Card*> newfieldopp;
-    for(auto card1 : newfield1){
-        if(card1->getName() == "Dark Magician"){
-            countm++;
-    }
-    }
-    if(countm == 0){
-        cout << "[Dark Magic] Activation failed: You do not control a Dark Magician" << endl;
-        return false;
-    }
-    if(countm > 0){
-        for(auto card2 : newfield2){
-            if(card2->getType() != "Monster"){
-                newfieldopp.push_back(card2);
-            }
-            if(card2->getType()=="Monster"){
-                cout << "[Dark Magic] Destroyed: " << card2->getName() << endl;
-            } 
-        }
-        cout << "[Dark Magic] Activate successfully! All opponent's monster cards are destroyed. You can not attack this turn!" << endl;
-        self.setSkipBattlePhaseCount(1);
-        opponent.setField(newfieldopp);
-    }
-
-return true; // Indicate success
-
-}
 
 
 bool ReEndOfADream::ActivateEffect(Player &self, Player &opponent) { // thêm lượt nếu hp<1000
@@ -268,5 +237,236 @@ bool DisortedFate::ActivateEffect(Player &self,Player &opponent) { // look at fu
     return true; // Indicate success
 }
 
+bool DarkMagic::ActivateEffect(Player& self, Player& opponent) {
+    int countm = 0;
+    vector<Card*> newfield1 = self.getField();
+    vector<Card*> newfield2 = opponent.getField();
+    vector<Card*> newfieldopp;
+    for(auto card1 : newfield1){
+        if(card1->getName() == "Dark Magician"){
+            countm++;
+    }
+    }
+    if(countm == 0){
+        cout << "[Dark Magic] Activation failed: You do not control a Dark Magician" << endl;
+        return false;
+    }
+    if(countm > 0){
+        for(auto card2 : newfield2){
+            if(card2->getType() != "Monster"){
+                newfieldopp.push_back(card2);
+            }
+            if(card2->getType()=="Monster"){
+                cout << "[Dark Magic] Destroyed: " << card2->getName() << endl;
+            } 
+        }
+        cout << "[Dark Magic] Activate successfully! All opponent's monster cards are destroyed. You can not attack this turn!" << endl;
+        self.setSkipBattlePhaseCount(2);
+        opponent.setField(newfieldopp);
+    }
+
+return true; // Indicate success
+
+}
 
 
+bool DarkBurningMagic::ActivateEffect(Player& self, Player& opponent) {
+    int countdm = 0;
+    int countdmg = 0;
+    vector<Card*> newfield1 = self.getField();
+    vector<Card*> newfield2 = opponent.getField();
+    vector<Card*> newfieldopp;
+    for(auto card1 : newfield1){
+        if(card1->getName() == "Dark Magician"){
+            countdm++;
+        }
+        if(card1->getName() == "Dark Magician Girl"){
+            countdmg++;           
+        }
+    }
+    if(countdm == 0 || countdmg == 0){
+        cout << "[Dark Magic] Activation failed: You do not control both Dark Magician and Dark Magician Girl" << endl;
+        return false;     
+    }
+    if(countdm > 0 && countdmg > 0){
+        for(auto card2 : newfield2){
+            if(card2->getType() != "Monster"){
+                newfieldopp.push_back(card2);
+            }
+            if(card2->getType()=="Monster"){
+                cout << "[Dark Burning Magic] Destroyed: " << card2->getName() << endl;
+            } 
+        }
+        cout << "[Dark Burning Magic] Activate successfully! All opponent's monster cards are destroyed. You can not attack in 2 turn!" << endl;
+        self.setSkipBattlePhaseCount(2);
+        opponent.setField(newfieldopp);
+    }
+
+return true; // Indicate success
+
+
+
+}
+bool RageofTheBlueEyes::ActivateEffect(Player& self, Player& opponent) {
+    int countm = 0;
+    vector<Card*> newfield1 = self.getField();
+    vector<Card*> newfield2 = opponent.getField();
+    vector<Card*> newfieldopp;
+    for(auto card1 : newfield1){
+        if(card1->getName() == "Blue-Eyes White Dragon"){
+            countm++;
+    }
+    }
+    if(countm == 0){
+        cout << "[Burst Stream of Destruction] Activation failed: You do not control a Blue-Eyes White Dragon" << endl;
+        return false;
+    }
+    if(countm > 0){
+        for(auto card2 : newfield2){
+            if(card2->getType() != "Monster"){
+                newfieldopp.push_back(card2);
+            }
+            if(card2->getType()=="Monster"){
+                cout << "[Burst Stream of Destruction] Destroyed: " << card2->getName() << endl;
+            } 
+        }
+        cout << "[Burst Stream of Destruction] Activate successfully! All opponent's monster cards are destroyed. You can not attack this turn!" << endl;
+        self.setSkipBattlePhaseCount(2);
+        opponent.setField(newfieldopp);
+    }
+
+return true; // Indicate success
+
+}
+
+bool BondBetweenTheTeacherandStudent::ActivateEffect(Player& self, Player& opponent) {
+    int countm = 0;
+    vector<Card*> newfield = self.getField();
+    vector<Card*> newdeck = self.getDeck();
+    vector<Card*> newdeckself;
+    for(auto card1 : newfield){
+        if(card1->getName() == "Dark Magician"){
+            countm++;
+    }
+    }
+    if(countm == 0){
+        cout << "[Bond Between The Teacher and Student] Activation failed: You do not control a Dark Magician" << endl;
+        return false;
+    }
+    if(countm > 0){
+        for(auto card2 : newdeck){
+            if(card2->getName() == "Dark Magician Girl"){
+                newfield.push_back(card2);
+            }
+            if(card2->getName() != "Dark Magician Girl"){
+                newdeckself.push_back(card2);
+            }              
+        }
+        cout << "[Bond Between The Teacher and Student] : Special Summon Dark Magician Girl successfully" << endl;
+        self.setDeck(newdeckself);
+        self.setField(newfield);
+        self.setSkipBattlePhaseCount(1);
+    }
+    return true; // Indicate success
+
+}
+
+//trap
+bool MirrorForce::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> newfield = opponent.getField();
+    vector<Card*> newfieldopp;
+    int countm;
+    bool candestroy = false;
+
+    for(auto card1 : newfield){
+        MonsterCard *card2 = dynamic_cast<MonsterCard *>(card1);
+        if(card2 != nullptr && card2->getType() == "Monster" && card2->isInDefense() == false){
+            cout << "[Mirror Force] Destroyed : " << card2->getName() << endl;
+            candestroy = true;
+        }
+        else{
+            newfieldopp.push_back(card1);
+        }
+    }
+    if(candestroy == false){
+        cout << "[Mirror Force] Opponent do not have any monster in attack position" << endl;
+    }
+    
+    opponent.setField(newfieldopp);
+    return true; // Indicate success
+}
+
+bool MirrorForce::ActivateEffect(Player& self, Player& opponent) {
+    cout << "[Mirror Force] End opponent battle phase!" << endl;
+    opponent.setSkipBattlePhaseCount(1);
+    return true; // Indicate success}
+}
+
+
+/*
+
+bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) {
+    int countm = 0;
+    int countmo = 0;
+    int newcard = 0;
+    int newhp = 0;
+    vector<Card*> newfield1 = self.getField();
+    vector<Card*> newfield2 = opponent.getField();
+    for(auto card1 : newfield1){
+        if(card1->getType() == "Monster"){
+            countm++;
+        }
+    }
+    if(countm == 0){
+        cout << "[The Power of Friendship] Activation Failed : You do not have any Monster card on field" << endl;
+    }
+    if(countm > 0){
+        for(auto card2 : newfield1){
+            MonsterCard *card3 = dynamic_cast<MonsterCard *>(card2);
+            if(card3 != nullptr && card3->getType() == "Monster"){
+                newcard += card3->getAtk();
+            }
+    }
+    cout << "[The Power of Friendship] Activation Successful : Your friendship gained you " << newcard << " Attack this turn! Time to fight!" << endl;
+
+    for(auto card4 : newfield2){
+        if(card4->getType() == "Monster"){
+            countmo++;
+        }
+    }
+    
+    if(countmo == 0){
+        cout << "[The Power of Friendship] Opponent do not have any monster card on field. Attack directly their LP!" << endl;
+        newhp = opponent.getHp() - newcard;
+        if(newhp < 0){
+            newhp = 0;
+        }
+        opponent.setHp(newhp);
+    }
+    
+    if(countmo > 0){
+        int in;
+        do{
+        cout << "[The Power of Friendship] Choose the index of the card you want to attack : " << endl;
+        cin >> in;
+        if(newfield2[in]->getType() != "Monster"){
+            cout << "You need to choose a monster card" << endl;
+        }
+        }while(newfield2[in]->getType() != "Monster");
+        MonsterCard *card5 = dynamic_cast<MonsterCard *>(newfield2[in]);
+        if(card5 != nullptr && card5->getType() == "Monster"){
+            if(card5->isInDefense() == true){
+                
+            }
+        }
+    }
+    
+    
+    
+
+
+}
+
+}
+
+*/

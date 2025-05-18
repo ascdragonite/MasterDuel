@@ -56,11 +56,11 @@ class ThePowerofFriendship : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
 
-/*
-class RageOfTheBlueEyes : public Spell{
+//Trap Card
+class MirrorForce : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
-*/
+
 
 //cursed technique: Strategy Pattern
 //Step 1:Declare Spell here
