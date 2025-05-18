@@ -36,23 +36,24 @@ bool DarkMagic::ActivateEffect(Player& self, Player& opponent) {
     }
     if(countm > 0){
         for(auto card2 : newfield2){
-            if(card2->getType()!="Monster"){
+            if(card2->getType() != "Monster"){
                 newfieldopp.push_back(card2);
             }
             if(card2->getType()=="Monster"){
                 cout << "[Dark Magic] Destroyed: " << card2->getName() << endl;
             } 
         }
-        cout << "[Dark Magic] Activate successfully! All opponent's monster cards are destroyed" << endl;
+        cout << "[Dark Magic] Activate successfully! All opponent's monster cards are destroyed. You can not attack this turn!" << endl;
+        self.setSkipBattlePhaseCount(1);
         opponent.setField(newfieldopp);
     }
 
 return true; // Indicate success
+
 }
 
 
-bool ReEndOfADream::ActivateEffect(Player &self,
-                                   Player &opponent) { // thêm lượt nếu hp<1000
+bool ReEndOfADream::ActivateEffect(Player &self, Player &opponent) { // thêm lượt nếu hp<1000
     if (self.getHp() > 1000)
     {
         cout << "[Re:End of a Dream] HP is too high"; //Disabled for testing purposes, uncomment line below to activate
@@ -266,3 +267,6 @@ bool DisortedFate::ActivateEffect(Player &self,Player &opponent) { // look at fu
 
     return true; // Indicate success
 }
+
+
+

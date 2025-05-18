@@ -36,6 +36,25 @@ class DisortedFate : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
 
+class BurstStreamofDestruction : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
+
+class RageofTheBlueEyes : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
+
+class BondBetweenTheTeacherandStudent : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
+
+class DarkBurningMagic : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
+
+class ThePowerofFriendship : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
 
 /*
 class RageOfTheBlueEyes : public Spell{
