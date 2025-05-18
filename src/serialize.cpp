@@ -7,8 +7,6 @@
 #include "trapcard.h"
 #include <stdexcept>
 #include <vector>
-#include "game.h"
-#include <iostream>
 
 using json = nlohmann::json;
 using namespace std;
@@ -81,7 +79,8 @@ void to_json(json& j, const Player& p)
         {"hand", SerializeDeck(p.getHand())},
         {"field", SerializeDeck(field)},
         {"attackedThisTurn", p.attackedThisTurn},
-        {"canTrap", p.canTrap}
+        {"canTrap", p.canTrap},
+        {"skipBatllePhaseCount", p.getSkipBattlePhaseCount()}
     };
 
 }
@@ -101,4 +100,5 @@ void from_json(const json& j, Player& p)
     }
     p.attackedThisTurn = attackedThisTurnJson;
     p.canTrap = canTrapJson;
+    p.setSkipBattlePhaseCount(j.at("skipBatllePhaseCount"));
 }

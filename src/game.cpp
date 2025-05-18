@@ -127,14 +127,10 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
         json j = readFromFile();
         from_json(j["Player1"], *player1);
         from_json(j["Player2"], *player2);
-        for (auto index : opponent.canTrap) {
-            cout << index << endl;
-        }
         if (!opponent.canTrap.empty()) {
             this_thread::sleep_for(std::chrono::milliseconds(1000));
             cout << opponent.canTrap[0] << endl;
             continue;
-            cout << "restart" << endl;
         }
         ConsoleClear();
         cout << "Hand: ";
@@ -170,7 +166,7 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
         cout << "2: Switch Monster Position\n";
         cout << "3: Attack\n";
         cout << "4: Flip summon\n";
-        cout << "Enter your choice: ";
+        cout << "Enter your choice [0/1/2/3/4]: ";
 
         int code, index = -1;
         cin >> code;
@@ -246,9 +242,15 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
                 break;
 
             case 3:
-                battlePhase(self, opponent, index, hasBattled, isFirstTurn);
-                break;
+                {
+                    if (self.getSkipBattlePhaseCount() > 0 || isFirstTurn) {
+                        cout << "You cannot attack this turn.\n";
+                        break;
+                    }
 
+                    battlePhase(self, opponent, index, hasBattled);
+                    break;
+                }
             case 4:
                 if (index >= 0 && index < self.getField().size()) {
                     MonsterCard *mc = dynamic_cast<MonsterCard *>(self.getField()[index]);
@@ -294,6 +296,8 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
             cout << "Game Over.\n";
             exit(0);
         };
+        self.setSkipBattlePhaseCount(self.getSkipBattlePhaseCount() - 1);
+
         j = readFromFile();
         j["Player1"] = json(*player1);
         j["Player2"] = json(*player2);
@@ -303,18 +307,13 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
 }
 
 void GameState ::battlePhase(Player & self, Player & opponent, int index,
-                             bool hasBattled, bool isFirstTurn) {
-    
-    if (isFirstTurn && self.getIndex() == 1) {
-        cout << "You cannot attack on the first turn.\n";
-        return;
-    }
-    
+                             bool hasBattled) {
+
     if (self.hasAttacked(index)) {
         cout << "This monster already attacked this turn.\n";
         return;
     }
-                                int defendIndex = -1;
+    int defendIndex = -1;
     bool hasMonster = false;
     for (Card *c : opponent.getField()) {
         if (c->getType() == "Monster") {
@@ -357,8 +356,8 @@ void GameState ::battlePhase(Player & self, Player & opponent, int index,
         //hasBattled = true;
     }
     //if (self.hasAttacked(index)) {
-        //cout << "This monster already battle" << endl;
-       //return;
+    //cout << "This monster already battle" << endl;
+    //return;
     //}
 
     vector<Card *> atkField = self.getField();
@@ -402,7 +401,9 @@ void GameState ::battlePhase(Player & self, Player & opponent, int index,
     if (trapCardIndexes.empty()) {
         self.setAttacked(index);   
         hasBattled = true;
-        *atkCard += *defCard;
+
+        *atkCard += *defCard; //operator overload
+
         this_thread::sleep_for(chrono::milliseconds(1000));
     }
 }

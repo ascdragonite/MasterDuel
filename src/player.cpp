@@ -37,6 +37,18 @@ void DumpInfo(Player& player)
     out.close();
 }
 
+void Player::setSkipBattlePhaseCount(int count)
+{ 
+    if (count < 0) {
+        skipBattlePhaseCount = 0;
+        return;
+    }
+    skipBattlePhaseCount = count; 
+}
+
+int Player::getSkipBattlePhaseCount() const
+{ return skipBattlePhaseCount; }
+
 Player :: Player(int i){
     index = i;
     hp = 4000;

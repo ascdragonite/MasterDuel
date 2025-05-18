@@ -16,10 +16,10 @@ private:
     vector<Card *> hand;
     vector<Card *> field;
     int hp;
+    int skipBattlePhaseCount;
 
 public:
     vector<int> canTrap;
-    int skipBattlePhaseCount;
 
     Player(int i);
 
@@ -43,6 +43,7 @@ public:
     void shuffleDeck();
 
     int getIndex() const;
+    int getSkipBattlePhaseCount() const;
     vector<Card *> getDeck() const;
     vector<Card *> getField() const;
     vector<Card *> getHand() const;
@@ -54,6 +55,7 @@ public:
     void setDeck(vector<Card *> newDeck);
     void setField(vector<Card *> newField);
     void setHand(vector<Card *> newHand);
+    void setSkipBattlePhaseCount(int count);
     ~Player();
 };
 #endif
