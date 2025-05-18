@@ -62,7 +62,7 @@ void GameState::startGame() {
     player2->shuffleDeck();
     cout << "Game started!\n";
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 5; i++) {
         player1->drawCard();
         player2->drawCard();
     }
@@ -246,9 +246,7 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
                 break;
 
             case 3:
-                if (!self.hasAttacked(index)) {
-                    battlePhase(self, opponent, index, hasBattled);
-                }
+                battlePhase(self, opponent, index, hasBattled, isFirstTurn);
                 break;
 
             case 4:
@@ -305,8 +303,18 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
 }
 
 void GameState ::battlePhase(Player & self, Player & opponent, int index,
-                             bool hasBattled) {
-    int defendIndex = -1;
+                             bool hasBattled, bool isFirstTurn) {
+    
+    if (isFirstTurn && self.getIndex() == 1) {
+        cout << "You cannot attack on the first turn.\n";
+        return;
+    }
+    
+    if (self.hasAttacked(index)) {
+        cout << "This monster already attacked this turn.\n";
+        return;
+    }
+                                int defendIndex = -1;
     bool hasMonster = false;
     for (Card *c : opponent.getField()) {
         if (c->getType() == "Monster") {
@@ -345,12 +353,13 @@ void GameState ::battlePhase(Player & self, Player & opponent, int index,
                  self.getField()[index]->getName() +
                  " targeting opponent's card at index " + to_string(defendIndex) +
                  ".");
-        hasBattled = true;
+        //self.setAttacked(index);
+        //hasBattled = true;
     }
-    if (self.hasAttacked(index)) {
-        cout << "This monster already battle" << endl;
-        return;
-    }
+    //if (self.hasAttacked(index)) {
+        //cout << "This monster already battle" << endl;
+       //return;
+    //}
 
     vector<Card *> atkField = self.getField();
     vector<Card *> defField = opponent.getField();
@@ -391,8 +400,10 @@ void GameState ::battlePhase(Player & self, Player & opponent, int index,
     writeToFile(j);
 
     if (trapCardIndexes.empty()) {
+        self.setAttacked(index);   
+        hasBattled = true;
         *atkCard += *defCard;
-        this_thread::sleep_for(chrono::milliseconds(800));
+        this_thread::sleep_for(chrono::milliseconds(1000));
     }
 }
 

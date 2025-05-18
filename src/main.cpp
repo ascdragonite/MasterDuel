@@ -70,6 +70,8 @@ int main() {
         writeToFile(j);
     }
 
+    bool isFirstTurn = true; 
+
     while (true) {
         json state = readFromFile();
 
@@ -89,10 +91,12 @@ int main() {
             from_json(state["Player2"], *player2);
 
             if (player == "1") {
-                gameState->playerTurn(*player1, *player2, false);
+                gameState->playerTurn(*player1, *player2, isFirstTurn);
             } else {
-                gameState->playerTurn(*player2, *player1, false);
+                gameState->playerTurn(*player2, *player1, isFirstTurn);
             }
+
+            isFirstTurn = false;
 
             // Check for victory
             if (gameState->checkVictory(*player1, *player2)) {
