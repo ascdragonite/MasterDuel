@@ -70,6 +70,8 @@ int main() {
         writeToFile(j);
     }
 
+    auto self = (player == "1") ? player1 : player2;
+
     bool isFirstTurn = true; 
 
     while (true) {
@@ -108,6 +110,7 @@ int main() {
                 }
                 break;
             }
+            self->setSkipBattlePhaseCount(self->getSkipBattlePhaseCount() - 1);
             state = readFromFile();
             // Update JSON state
             state["Player1"] = *player1;

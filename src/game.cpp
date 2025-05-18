@@ -296,7 +296,6 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
             cout << "Game Over.\n";
             exit(0);
         };
-        self.setSkipBattlePhaseCount(self.getSkipBattlePhaseCount() - 1);
 
         j = readFromFile();
         j["Player1"] = json(*player1);

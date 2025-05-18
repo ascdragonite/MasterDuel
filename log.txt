@@ -1,3 +1,1 @@
-[Sun May 18 21:01:54 2025] Opponent summoned a monster in attack position.
-[Sun May 18 21:02:03 2025] Opponent activated a Spell card: Dark Magic
-[Sun May 18 21:03:57 2025] Opponent attacked directly with Dark Magician for 2500 damage.
+[Sun May 18 23:59:15 2025] Opponent summoned a monster in attack position.
