@@ -1,2 +1,2 @@
-[Mon May 19 15:15:12 2025] Opponent declared an attack from Blue-Eyes White Dragon targeting opponent's card at index 0.
-[Mon May 19 15:15:53 2025] Opponent declared an attack from Blue-Eyes White Dragon targeting opponent's card at index 0.
+[Mon May 19 21:33:41 2025] Opponent declared an attack from Camellia targeting opponent's card at index 0.
+[Mon May 19 21:33:41 2025] Camellia destroyed a defending monster: Griffore

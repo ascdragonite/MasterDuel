@@ -305,106 +305,110 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
     }
 }
 
-void GameState ::battlePhase(Player & self, Player & opponent, int index,
-                             bool hasBattled) {
+void GameState::battlePhase(Player& self, Player& opponent, int index, bool& hasBattled) {
+    vector<Card*> atkField = self.getField();
+
+    // 🔁 Nhập lại attacker index nếu không hợp lệ
+    while (index < 0 || index >= atkField.size() || 
+           dynamic_cast<MonsterCard*>(atkField[index]) == nullptr) {
+        cout << "Invalid attacker index. Please enter again: ";
+        cin >> index;
+    }
+
+    MonsterCard* atkCard = dynamic_cast<MonsterCard*>(atkField[index]);
+
+    if (atkCard->isInDefense()) {
+        cout << atkCard->getName() << " is in Defense Position and cannot attack!\n";
+        return;
+    }
 
     if (self.hasAttacked(index)) {
         cout << "This monster already attacked this turn.\n";
         return;
     }
-    int defendIndex = -1;
+
+    vector<Card*> defField = opponent.getField();
+
     bool hasMonster = false;
-    for (Card *c : opponent.getField()) {
+    for (Card* c : defField) {
         if (c->getType() == "Monster") {
             hasMonster = true;
             break;
         }
     }
+
     if (!hasMonster) {
+        // Tấn công trực tiếp
         cout << "Opponent has no monsters.\n";
-        cout << "Do you want to attack directly with "
-            << self.getField()[index]->getName() << "? (y/n): ";
+        cout << "Do you want to attack directly with " << atkCard->getName() << "? (y/n): ";
         char choice;
         cin >> choice;
 
         if (choice == 'y' || choice == 'Y') {
-            MonsterCard *atkCard =
-                dynamic_cast<MonsterCard *>(self.getField()[index]);
-            if (!atkCard) {
-                cout << "Invalid attacker card.\n";
-                return;
-            }
-
             int damage = atkCard->getAtk();
             opponent.takeDamage(damage);
             cout << atkCard->getName() << " attacks directly! Opponent loses "
-                << damage << " HP!\n";
+                 << damage << " HP!\n";
             writeLog("Opponent attacked directly with " + atkCard->getName() +
                      " for " + to_string(damage) + " damage.");
             self.setAttacked(index);
             hasBattled = true;
         }
-    } else {
+        return;
+    }
+
+    int defendIndex = -1;
+    while (true) {
         cout << "Enter the index of the opponent's card to attack: ";
         cin >> defendIndex;
-        writeLog("Opponent declared an attack from " +
-                 self.getField()[index]->getName() +
-                 " targeting opponent's card at index " + to_string(defendIndex) +
-                 ".");
-        //self.setAttacked(index);
-        //hasBattled = true;
-    }
-    //if (self.hasAttacked(index)) {
-    //cout << "This monster already battle" << endl;
-    //return;
-    //}
 
-    vector<Card *> atkField = self.getField();
-    vector<Card *> defField = opponent.getField();
-
-    if (index >= atkField.size() || defendIndex >= defField.size()) {
-        cout << "Invalid indexes" << endl;
-        return;
+        if (defendIndex >= 0 && defendIndex < defField.size()) {
+            MonsterCard* defCheck = dynamic_cast<MonsterCard*>(defField[defendIndex]);
+            if (defCheck != nullptr) break;
+            cout << "The selected card is not a monster. Try again.\n";
+        } else {
+            cout << "Invalid target index. Try again.\n";
+        }
     }
 
-    MonsterCard *atkCard = dynamic_cast<MonsterCard *>(atkField[index]);
-    MonsterCard *defCard = dynamic_cast<MonsterCard *>(defField[defendIndex]);
+    MonsterCard* defCard = dynamic_cast<MonsterCard*>(defField[defendIndex]);
 
-    if (!atkCard || !defCard) {
-        cout << "Invalid cards for battle" << endl;
-        return;
-    }
+    writeLog("Opponent declared an attack from " +
+             atkCard->getName() +
+             " targeting opponent's card at index " + to_string(defendIndex) + ".");
 
-    cout << atkCard->getName() << " attacks " << defCard->getName() << endl;
-
+    // Reveal nếu là quái úp
     if (defCard->isFacedown()) {
         defCard->reveal();
-        cout << "The defending card was face-down. It is now reveal: ";
+        cout << "The defending card was face-down. It is now revealed:\n";
         defCard->showInfo();
     }
 
+    // Ghi lại trap
     vector<int> trapCardIndexes;
-    int i = 0;
-    for (auto card : defField) {
-        if (card->getType() == "Trap") {
+    for (int i = 0; i < defField.size(); ++i) {
+        if (defField[i]->getType() == "Trap") {
             trapCardIndexes.push_back(i);
         }
-        i++;
     }
     opponent.canTrap = trapCardIndexes;
+
+    // Ghi trạng thái mới vào file
     json j = readFromFile();
     string turn = j.at("turn");
     j[string("Player") + ((turn == "PLAYER1") ? "2" : "1")] = opponent;
     writeToFile(j);
 
-    if (trapCardIndexes.empty()) {
-        self.setAttacked(index);   
-        hasBattled = true;
-
-        *atkCard += *defCard; //operator overload
-
-        this_thread::sleep_for(chrono::milliseconds(1000));
+    if (!trapCardIndexes.empty()) {
+        return;
     }
+
+    self.setAttacked(index);
+    hasBattled = true;
+
+    *atkCard += *defCard; // Giao chiến
+    this_thread::sleep_for(chrono::milliseconds(1000));
+    opponent.canTrap.clear();
 }
 
 bool GameState::checkVictory(const Player &p1, const Player &p2) {

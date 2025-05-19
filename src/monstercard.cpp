@@ -73,87 +73,98 @@ Player* OwnerFromIndex(int index){
 MonsterCard& MonsterCard::operator+=(MonsterCard& other) {
     int defValue = other.isInDefense() ? other.getDef() : other.getAtk();
 
-
     Player* self = OwnerFromIndex(this->getOwner());
     Player* target = OwnerFromIndex(other.getOwner());
-    
-    const auto& atkField = self->getField();
-    const auto& defField = target->getField();
+
+    auto atkField = self->getField();    // bản sao, không dùng const auto&
+    auto defField = target->getField();
 
     int attackIndex = find(atkField.begin(), atkField.end(), this) - atkField.begin();
     int defendIndex = find(defField.begin(), defField.end(), &other) - defField.begin();
-    
+
     if (defField.empty()) {
         cout << this->getName() << " attacks directly!" << endl;
         target->takeDamage(this->getAtk());
-        cout << "Attacker HP: " << self->getHp() << endl;
-        cout << "Defender HP: " << target->getHp() << endl;
+        cout << "Opponent HP: " << target->getHp() << endl;
+        writeLog(this->getName() + " attacks directly and dealt " + to_string(this->getAtk()) + " damage.");
         return *this;
     }
 
     if (other.isInDefense()) {
-    if (other.isFacedown()) {
-        other.reveal();
-    }
-
-    if (atk > defValue) {
-        writeLog(this->getName() + " destroyed a defending monster: " + other.getName());
-        auto field = defField;
-        field.erase(field.begin() + defendIndex);
-        target->setField(field);
-        other.setOwner(-1);
-        return *this;
-    }
-    else if (atk < defValue) {
-        int loss = defValue - atk;
-        self->takeDamage(loss);
-        writeLog(this->getName() + " failed to destroy " + other.getName() + " in defense. Took " + to_string(loss) + " damage.");
-        cout << "Attacker HP: " << self->getHp() << endl;
-        cout << "Attacker HP: " << target->getHp() << endl;
-        return *this;
-    }
-    else {
-        writeLog(this->getName() + " attacked " + other.getName() + " in defense. Equal ATK and DEF, no card was destroyed.");
-        return *this;
-    }
-}
-
-    else{
-
-        if(atk > defValue){
-            int loss = atk - defValue;
-            target->takeDamage(loss);
-            writeLog(this->getName() + " destroyed " + other.getName() + " and dealt " + to_string(loss) + " damage.");
-            cout << "Attacker HP: " << self -> getHp() << endl;
-            cout << "Attacker HP: " << target -> getHp() << endl;
-            auto field = defField;
-            field.erase(field.begin() + defendIndex);
-            target->setField(field);
-            other.setOwner(-1);
-            return *this;
+        if (other.isFacedown()) {
+            other.reveal();
         }
-        else if(atk < defValue){
+
+        if (atk > defValue) {
+            cout << this->getName() << " destroyed defending " << other.getName() << "!\n";
+            writeLog(this->getName() + " destroyed a defending monster: " + other.getName());
+
+            if (defendIndex >= 0 && defendIndex < defField.size()) {
+                defField.erase(defField.begin() + defendIndex);
+                target->setField(defField);
+            }
+            other.setOwner(-1);
+        } else if (atk < defValue) {
             int loss = defValue - atk;
             self->takeDamage(loss);
-            writeLog(this->getName() + " was destroyed by " + other.getName() + " and took " + to_string(loss) + " damage.");
-            auto field = atkField;
-            field.erase(field.begin() + attackIndex);
-            self->setField(field);
-            return *this;
+            cout << this->getName() << " failed to destroy " << other.getName()
+                 << " in defense and took " << loss << " damage!\n";
+            cout << "Your HP: " << self->getHp() << endl;
+            writeLog(this->getName() + " failed to destroy " + other.getName() +
+                     " in defense. Took " + to_string(loss) + " damage.");
+        } else {
+            cout << this->getName() << " attacked " << other.getName()
+                 << ", but both had equal power. No one destroyed.\n";
+            writeLog(this->getName() + " attacked " + other.getName() +
+                     " in defense. Equal ATK and DEF.");
         }
-        else{
-            //atk = atk
-            writeLog(this->getName() + " and " + other.getName() + " destroyed each other in battle.");
-            auto field1 = atkField;
-            auto field2 = defField;
-            field1.erase(field1.begin() + attackIndex);
-            field2.erase(field2.begin() + defendIndex);
-            self->setField(field1);
-            target->setField(field2);
-            return *this;
-        }
-        
+        return *this;
     }
+
+    // ATTACK vs ATTACK
+    if (atk > defValue) {
+        int loss = atk - defValue;
+        target->takeDamage(loss);
+        cout << this->getName() << " destroyed " << other.getName()
+             << " and dealt " << loss << " damage!\n";
+        cout << "Opponent HP: " << target->getHp() << endl;
+        writeLog(this->getName() + " destroyed " + other.getName() +
+                 " and dealt " + to_string(loss) + " damage.");
+
+        if (defendIndex >= 0 && defendIndex < defField.size()) {
+            defField.erase(defField.begin() + defendIndex);
+            target->setField(defField);
+        }
+        other.setOwner(-1);
+    } else if (atk < defValue) {
+        int loss = defValue - atk;
+        self->takeDamage(loss);
+        cout << this->getName() << " was destroyed by " << other.getName()
+             << " and took " << loss << " damage!\n";
+        cout << "Your HP: " << self->getHp() << endl;
+        writeLog(this->getName() + " was destroyed by " + other.getName() +
+                 " and took " + to_string(loss) + " damage.");
+
+        if (attackIndex >= 0 && attackIndex < atkField.size()) {
+            atkField.erase(atkField.begin() + attackIndex);
+            self->setField(atkField);
+        }
+    } else {
+        cout << this->getName() << " and " << other.getName()
+             << " destroyed each other in a tie!\n";
+        writeLog(this->getName() + " and " + other.getName() +
+                 " destroyed each other in battle.");
+
+        if (attackIndex >= 0 && attackIndex < atkField.size())
+            atkField.erase(atkField.begin() + attackIndex);
+        if (defendIndex >= 0 && defendIndex < defField.size())
+            defField.erase(defField.begin() + defendIndex);
+
+        self->setField(atkField);
+        target->setField(defField);
+    }
+
+    return *this;
 }
 
 int MonsterCard::getAtk() const{
