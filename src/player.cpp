@@ -98,7 +98,7 @@ bool Player::hasAttacked(int index) const {
 
 
 
-void Player::setAttacked(int index) {
+void Player::setAttacked(int index, bool value) {
     if(index >= 0 && index < attackedThisTurn.size())
         attackedThisTurn[index] = true;
 }

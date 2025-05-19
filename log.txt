@@ -1,1 +1,0 @@
-[Mon May 19 16:38:47 2025] Opponent declared an attack from Blue-Eyes White Dragon targeting opponent's card at index 0.

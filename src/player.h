@@ -29,7 +29,7 @@ public:
     vector<bool> attackedThisTurn;
     void resetAttackFlags();
     bool hasAttacked(int fieldIndex) const;
-    void setAttacked(int fieldIndex, bool value);
+    void setAttacked(int index, bool value);
 
     void revealMonster(int fieldIndex);
     void switchPosition(int fieldIndex);
