@@ -37,6 +37,31 @@ json TrapCard::toJson() const
     return j;
 }
 bool TrapCard::activateEffect(Player& self, Player& opponent) {
-    cout << "[TrapCard Effect] Effect activate.\n";
-    return false;
+    if (trap)
+    {
+        cout << "Trap card activated: " << getName() << endl;
+        return trap->ActivateEffect(self, opponent);
+    } else {
+        cout << "epic trap fail" << endl;
+        return false;
+    }
+}
+shared_ptr<Spell> TrapCard::getEffectInstance(const std::string& type) {
+    static unordered_map<string, shared_ptr<Spell>> TrapEffectCache;
+
+    auto it = TrapEffectCache.find(type);
+    if (it != TrapEffectCache.end()) {
+        return it->second;
+    }
+
+    std::shared_ptr<Spell> effect;
+
+    if (type == "Tsunagite") effect = std::make_shared<Spell /*change this to Tsunagite*/ >();
+    else 
+    {
+        return nullptr;
+    };
+
+    TrapEffectCache[type] = effect; 
+    return effect;
 }
