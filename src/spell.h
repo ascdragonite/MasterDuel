@@ -1,3 +1,6 @@
+#ifndef SPELL_H
+#define SPELL_H
+
 #include "player.h"
 
 class Spell{
@@ -61,6 +64,14 @@ class MirrorForce : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
 
+class Tsunagite : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
+
 
 //cursed technique: Strategy Pattern
 //Step 1:Declare Spell here
+
+
+
+#endif

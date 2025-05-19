@@ -75,10 +75,7 @@ shared_ptr<Spell> SpellCard::getEffectInstance(const std::string& type) {
     else if (type == "Flower Snow Drum n Bass") effect = std::make_shared<FlowerSnowDrumNBass>();
     else if (type == "Dark Burning Magic") effect = std::make_shared<DarkBurningMagic>();
     else if (type == "Rage of The Blue Eyes") effect = std::make_shared<RageofTheBlueEyes>();
-//trap
-    else if (type == "Mirror Force") effect = std::make_shared<MirrorForce>();
-    else if (type == "Rage of The Blue Eyes") effect = std::make_shared<RageofTheBlueEyes>();
-    else if (type == "Rage of The Blue Eyes") effect = std::make_shared<RageofTheBlueEyes>();
+    else if (type == "Bond Between The Teacher and Student") effect = std::make_shared<BondBetweenTheTeacherandStudent>();
 
   //Step 3: add spell effect names here
     else 

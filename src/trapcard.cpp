@@ -56,8 +56,8 @@ shared_ptr<Spell> TrapCard::getEffectInstance(const std::string& type) {
 
     std::shared_ptr<Spell> effect;
 
-    if (type == "Tsunagite") effect = std::make_shared<Spell /*change this to Tsunagite*/ >();
-    else 
+    if (type == "Tsunagite") effect = std::make_shared<Tsunagite>();
+    else if (type == "Mirror Force") effect = std::make_shared<MirrorForce>();
     {
         return nullptr;
     };

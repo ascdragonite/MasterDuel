@@ -396,11 +396,12 @@ bool MirrorForce::ActivateEffect(Player& self, Player& opponent) {
     return true; // Indicate success
 }
 
-bool MirrorForce::ActivateEffect(Player& self, Player& opponent) {
+bool Tsunagite::ActivateEffect(Player& self, Player& opponent) {
     cout << "[Mirror Force] End opponent battle phase!" << endl;
     opponent.setSkipBattlePhaseCount(1);
     return true; // Indicate success}
 }
+
 
 
 /*
