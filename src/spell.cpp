@@ -344,6 +344,7 @@ bool BondBetweenTheTeacherandStudent::ActivateEffect(Player& self, Player& oppon
     vector<Card*> newfield = self.getField();
     vector<Card*> newdeck = self.getDeck();
     vector<Card*> newdeckself;
+    bool hasDMG = false;
     for(auto card1 : newfield){
         if(card1->getName() == "Dark Magician"){
             countm++;
@@ -354,21 +355,26 @@ bool BondBetweenTheTeacherandStudent::ActivateEffect(Player& self, Player& oppon
         return false;
     }
     if(countm > 0){
-        for(auto card2 : newdeck){
-            if(card2->getName() == "Dark Magician Girl"){
-                newfield.push_back(card2);
-            }
-            if(card2->getName() != "Dark Magician Girl"){
-                newdeckself.push_back(card2);
-            }              
+        for(int i = 0; i < newdeck.size();i++){     
+            if(newdeck[i]->getName() == "Dark Magician Girl"){
+                Card* darkmagiciangirl = newdeck[i];
+                newdeck.erase(newdeck.begin()+i);
+                newfield.push_back(darkmagiciangirl);
+                hasDMG = true;  
+                break;
         }
+    }
+        if(hasDMG == false){
+            cout << "[Bond Between The Teacher and Student] Activation failed : You do not have any Dark Magician Girl in your deck" << endl;
+            return false;
+            } 
+        
         cout << "[Bond Between The Teacher and Student] : Special Summon Dark Magician Girl successfully" << endl;
-        self.setDeck(newdeckself);
+        self.setDeck(newdeck);
         self.setField(newfield);
         self.setSkipBattlePhaseCount(1);
     }
     return true; // Indicate success
-
 }
 
 //trap

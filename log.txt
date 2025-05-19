@@ -1,2 +1,1 @@
-[Mon May 19 15:06:35 2025] Opponent summoned a monster in attack position.
-[Mon May 19 15:06:41 2025] Opponent activated a Spell card: Bond Between The Teacher and Student
+[Mon May 19 16:38:47 2025] Opponent declared an attack from Blue-Eyes White Dragon targeting opponent's card at index 0.
