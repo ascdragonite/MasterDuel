@@ -108,6 +108,7 @@ int main() {
         j["Player2"] = json(*player2);
         j["turn"] = "PLAYER1";
         j["ExtraTurn"] = false;
+        j["hasBattled"] = false;
         writeToFile(j);
     }
 

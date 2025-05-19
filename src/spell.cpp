@@ -312,6 +312,8 @@ bool RageofTheBlueEyes::ActivateEffect(Player& self, Player& opponent) {
     vector<Card*> newfield1 = self.getField();
     vector<Card*> newfield2 = opponent.getField();
     vector<Card*> newfieldopp;
+
+
     for(auto card1 : newfield1){
         if(card1->getName() == "Blue-Eyes White Dragon"){
             countm++;

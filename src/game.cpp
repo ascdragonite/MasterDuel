@@ -115,7 +115,6 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
         << " | Deck: " << player2->getDeck().size() << endl;
 
     bool hasSummoned = false;
-    bool hasBattled = false;
 
     self.resetAttackFlags();
     if (!isFirstTurn) {
@@ -138,7 +137,6 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
         for (int i = 0; i < self.getHand().size(); ++i) {
             cout << "Index " << i << ":\n";
             self.getHand()[i]->showInfo();
-            cout << "-----------------------------\n";
         }
         cout << "\n Enemy Field: ";
         for (int i = 0; i < opponent.getField().size(); ++i) {
@@ -248,7 +246,7 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
                         break;
                     }
 
-                    battlePhase(self, opponent, index, hasBattled);
+                    battlePhase(self, opponent, index);
                     break;
                 }
             case 4:
@@ -305,8 +303,7 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
     }
 }
 
-void GameState ::battlePhase(Player & self, Player & opponent, int index,
-                             bool hasBattled) {
+void GameState ::battlePhase(Player & self, Player & opponent, int index) {
 
     if (self.hasAttacked(index)) {
         cout << "This monster already attacked this turn.\n";
@@ -341,8 +338,7 @@ void GameState ::battlePhase(Player & self, Player & opponent, int index,
                 << damage << " HP!\n";
             writeLog("Opponent attacked directly with " + atkCard->getName() +
                      " for " + to_string(damage) + " damage.");
-            self.setAttacked(index);
-            hasBattled = true;
+            self.setAttacked(index, true);
         }
     } else {
         cout << "Enter the index of the opponent's card to attack: ";
@@ -398,8 +394,7 @@ void GameState ::battlePhase(Player & self, Player & opponent, int index,
     writeToFile(j);
 
     if (trapCardIndexes.empty()) {
-        self.setAttacked(index);   
-        hasBattled = true;
+        self.setAttacked(index, true);   
 
         *atkCard += *defCard; //operator overload
 
