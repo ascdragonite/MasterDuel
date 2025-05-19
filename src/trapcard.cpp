@@ -2,7 +2,10 @@
 #include "player.h"
 #include <iostream>
 using namespace std;
-TrapCard :: TrapCard(string name, string description) : Card(name, "Trap", description){}
+TrapCard :: TrapCard(string name, string description) : Card(name, "Trap", description)
+{
+    this -> trap = getEffectInstance(name);
+}
 
 void TrapCard :: showInfo() const{
     cout << "Name: " << getName() << endl;
@@ -58,7 +61,9 @@ shared_ptr<Spell> TrapCard::getEffectInstance(const std::string& type) {
 
     if (type == "Tsunagite") effect = std::make_shared<Tsunagite>();
     else if (type == "Mirror Force") effect = std::make_shared<MirrorForce>();
+    else
     {
+        cout << "cannot find " << type << endl;
         return nullptr;
     };
 
