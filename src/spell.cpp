@@ -7,12 +7,14 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include "log_utilis.h"
 
 using namespace std;
 
 bool OshamaScramble::ActivateEffect(Player &self,Player &opponent) { // tráo bài đối thủ
     opponent.shuffleDeck();
     cout << "[Oshama Scramble] has successfully shuffled opponent deck" << endl;
+    writeLog("Opponent has used [Oshama Scramble] to shuffled your deck\n");
 
     // logic card
 
@@ -181,7 +183,12 @@ bool Destr0yer::ActivateEffect(Player& self, Player& opponent) { //xử 1 lá �
 
             card1 = dynamic_cast<MonsterCard*>(newfield[in]);
 
-            if (!card1 || card1->getType() != "Monster"||card1->isInDefense()==false) {
+            if (!card1) {
+            cout << "[Destr0yer] That is not a monster card." << endl;
+            continue;
+        }
+
+            if (card1->getType() != "Monster"||card1->isInDefense()==false) {
                 cout << "[Destr0yer] Activation Failed : You need to choose a defense monster card" << endl;
             }
         } while (!card1 || card1->getType() != "Monster"||card1->isInDefense()==false);
@@ -193,6 +200,7 @@ bool Destr0yer::ActivateEffect(Player& self, Player& opponent) { //xử 1 lá �
                 cout << "[Destr0yer] successfully destroy 1 defense card : " << card0->getName() << endl;
             }
         }
+        self.setField(newfieldopp);
     }
     return true; // Indicate success
 }
@@ -312,8 +320,6 @@ bool RageofTheBlueEyes::ActivateEffect(Player& self, Player& opponent) {
     vector<Card*> newfield1 = self.getField();
     vector<Card*> newfield2 = opponent.getField();
     vector<Card*> newfieldopp;
-
-
     for(auto card1 : newfield1){
         if(card1->getName() == "Blue-Eyes White Dragon"){
             countm++;
@@ -412,27 +418,34 @@ bool Tsunagite::ActivateEffect(Player& self, Player& opponent) {
 
 
 
-/*
 
-bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) {
+
+bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) { //sm tình bạn, 1 hit là nằm
     int countm = 0;
     int countmo = 0;
     int newcard = 0;
-    int newhp = 0;
+    int newhp1 = 0;
+    int newhp2 = 0;
     vector<Card*> newfield1 = self.getField();
     vector<Card*> newfield2 = opponent.getField();
+    vector<Card*> newfieldself;
     for(auto card1 : newfield1){
         if(card1->getType() == "Monster"){
             countm++;
         }
     }
+    if(self.getSkipBattlePhaseCount() > 0){
+        cout << "[The Power of Friendship] Activation Failed : You can not use this card when you are not allow to attack!" << endl;
+        return false;
+    }
     if(countm == 0){
         cout << "[The Power of Friendship] Activation Failed : You do not have any Monster card on field" << endl;
+        return false;
     }
     if(countm > 0){
         for(auto card2 : newfield1){
             MonsterCard *card3 = dynamic_cast<MonsterCard *>(card2);
-            if(card3 != nullptr && card3->getType() == "Monster"){
+            if(card3 != nullptr && card3->getType() == "Monster" && card3->isFacedown() == false){
                 newcard += card3->getAtk();
             }
     }
@@ -446,15 +459,17 @@ bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) {
     
     if(countmo == 0){
         cout << "[The Power of Friendship] Opponent do not have any monster card on field. Attack directly their LP!" << endl;
-        newhp = opponent.getHp() - newcard;
-        if(newhp < 0){
-            newhp = 0;
+        newhp1 = opponent.getHp() - newcard;
+        if(newhp1 < 0){
+            newhp1 = 0;
         }
-        opponent.setHp(newhp);
+        opponent.setHp(newhp1);
     }
     
     if(countmo > 0){
         int in;
+        int newatk = 0;
+        int newdef = 0;
         do{
         cout << "[The Power of Friendship] Choose the index of the card you want to attack : " << endl;
         cin >> in;
@@ -465,17 +480,77 @@ bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) {
         MonsterCard *card5 = dynamic_cast<MonsterCard *>(newfield2[in]);
         if(card5 != nullptr && card5->getType() == "Monster"){
             if(card5->isInDefense() == true){
+
+                cout << "[The Power of Friendship] Attack " << card5->getName() << " in defense position " << "( " << card5->getDef() << " def )" << endl;
+
+                if(newcard > card5->getDef()){
+                    
+                    cout << "[The Power of Friendship] Destroy " << card5->getName() << " with " << newcard << " atk " << endl;
+                    newfield2.erase(newfield2.begin()+in);
+                    opponent.setField(newfield2);
+                }
+                if(newcard < card5->getDef()){
+                    cout << "[The Power of Friendship] Fail to destroy " << card5->getName() << " with " << newcard << " atk " << endl;
+                    cout << "You lose " << card5->getDef() - newcard << " Hp instead" << endl;
+                    newhp2 = self.getHp() - (card5->getDef() - newcard);
+                    self.setHp(newhp2);
+                }
+                if(newcard == card5->getDef()){
+                    cout << "[The Power of Friendship] Your power are equal! Nothing happen!" << endl;
+                }
+            }
+            if(card5->isInDefense() == false){
+
+                cout << "[The Power of Friendship] Attack " << card5->getName() << " in attack position " << "( " << card5->getAtk() << " atk )" << endl;
+
+                if(newcard > card5->getAtk()){
+
+                    cout << "[The Power of Friendship] Destroy " << card5->getName() << " with " << newcard << " atk " << endl;
+                    cout << "Opponent lose " << newcard - card5->getAtk() << " Hp " << endl;
+                    newfield2.erase(newfield2.begin()+in);
+                    opponent.setField(newfield2);
+                    newhp2 = opponent.getHp() - (newcard - card5->getAtk());
+                    opponent.setHp(newhp2);
+                }
+                if(newcard < card5->getAtk()){
+                    cout << "[The Power of Friendship] Fail to destroy " << card5->getName() << " with " << newcard << " atk " << endl;
+                    cout << "All of your monster used in [The Power of Friendship] will be destroy!" << endl;
+                    cout << "[The Power of Friendship] Destroy : " << endl;
+                    for(auto card6 : newfield1){
+                        MonsterCard *card7 = dynamic_cast<MonsterCard *>(card6);
+                        if(card7 == nullptr || card7->getType() != "Monster" || card7->isFacedown() == true){
+                            newfieldself.push_back(card6);
+                        }
+                        if(card7->getType() == "Monster" && card7->isFacedown() == false){
+                            cout << card7->getName() << endl;
+                        }
+                    }
+                }
+                if(newcard == card5->getAtk()){
+                    cout << "[The Power of Friendship] Power comes at an equal cost. All of the monster in this battle will be destroy!" << endl; 
                 
+                    cout << "[The Power of Friendship] Self Destruct : " << endl;
+                    for(auto card6 : newfield1){
+                        MonsterCard *card7 = dynamic_cast<MonsterCard *>(card6);
+                        if(card7 == nullptr || card7->getType() != "Monster" || card7->isFacedown() == true){
+                            newfieldself.push_back(card6);
+                        }
+                        if(card7->getType() == "Monster" && card7->isFacedown() == false){
+                            cout << card7->getName() << endl;
+                        }
+                    }
+                    cout << "[The Power of Friendship] Opponent Destruct : " << endl;
+                    cout << card5->getName() << endl;                
+                
+                }
+            }
+
+                }
             }
         }
+        self.setSkipBattlePhaseCount(1);
+        return true;
     }
     
     
-    
 
-
-}
-
-}
-
-*/
