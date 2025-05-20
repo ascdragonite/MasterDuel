@@ -560,10 +560,12 @@ bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) { //sm
         self.setSkipBattlePhaseCount(1);
         return true;
     }
-    
-    
 
-
+bool Trrricksters(Player& self, Player& opponent)
+{
+    cout << "wrong one bro" << endl;
+    return false;
+}
 
 
 
