@@ -41,6 +41,10 @@ void ActivateTrapCards(vector<int> indexes, Player &self, Player &opponent, int 
         TrapCard *trapCard = dynamic_cast<TrapCard *>(field[trapIndex]);
         if(trapCard->getName() != "Trrricksters!!") trapCard->activateEffect(self, opponent);
         else trapCard->activateEffect(self, opponent, attackerCardIndex);
+        vector<Card*> newField = self.getField(); // lấy bản gốc
+        delete newField[trapIndex];               // giải phóng bộ nhớ
+        newField.erase(newField.begin() + trapIndex); // xóa khỏi field
+        self.setField(newField);                  // cập nhật lại field
         return;
     }
 }
