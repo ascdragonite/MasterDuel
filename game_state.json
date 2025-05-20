@@ -184,12 +184,12 @@
                 "type": "Monster"
             },
             {
-                "atk": 2300,
-                "def": 900,
+                "atk": 2100,
+                "def": 700,
                 "defenseMode": false,
-                "description": "A sonic dragon traveling across dimensions through ultrasonic waves. Sakuzyo’s roar can shatter metal, and those who hear it often lose their sense of direction completely.",
+                "description": "A shadow dragon, slender yet deadly. Kuroma hides within dark clouds, striking without warning and bringing silent destruction to its prey.",
                 "isSet": false,
-                "name": "Sakuzyo",
+                "name": "Kuroma",
                 "owner": 2,
                 "type": "Monster"
             },
