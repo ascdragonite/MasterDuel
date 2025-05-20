@@ -1,6 +1,0 @@
-<<<<<<< HEAD
-[Mon May 19 21:33:41 2025] Opponent declared an attack from Camellia targeting opponent's card at index 0.
-[Mon May 19 21:33:41 2025] Camellia destroyed a defending monster: Griffore
-=======
-[Mon May 19 16:38:47 2025] Opponent declared an attack from Blue-Eyes White Dragon targeting opponent's card at index 0.
->>>>>>> b8ca664ddbcd5829898cdd73a88bf01f530652cb
