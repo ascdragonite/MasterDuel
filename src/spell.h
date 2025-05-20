@@ -31,7 +31,6 @@ class DragonUnited : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
 
-
 class Destr0yer : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
@@ -44,9 +43,9 @@ class BurstStreamofDestruction : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
 
-class RageofTheBlueEyes : public Spell{
-  bool ActivateEffect(Player& self, Player& opponent) override;
-};
+//class RageofTheBlueEyes : public Spell{
+  //bool ActivateEffect(Player& self, Player& opponent) override;
+//};
 
 class BondBetweenTheTeacherandStudent : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;

@@ -342,7 +342,7 @@ return true; // Indicate success
 
 
 }
-bool RageofTheBlueEyes::ActivateEffect(Player& self, Player& opponent) {
+bool BurstStreamofDestruction::ActivateEffect(Player& self, Player& opponent) {
     int countm = 0;
     vector<Card*> newfield1 = self.getField();
     vector<Card*> newfield2 = opponent.getField();

@@ -77,7 +77,7 @@ shared_ptr<Spell> SpellCard::getEffectInstance(const std::string& type) {
     else if (type == "World Vanquisher") effect = std::make_shared<WorldVanquisher>();
     else if (type == "Flower Snow Drum n Bass") effect = std::make_shared<FlowerSnowDrumNBass>();
     else if (type == "Dark Burning Magic") effect = std::make_shared<DarkBurningMagic>();
-    else if (type == "Rage of The Blue Eyes") effect = std::make_shared<RageofTheBlueEyes>();
+    else if (type == "Burst Stream of Destruction") effect = std::make_shared<BurstStreamofDestruction>();
     else if (type == "Bond Between The Teacher and Student") effect = std::make_shared<BondBetweenTheTeacherandStudent>();
     else if (type == "The Power of Friendship") effect = std::make_shared<ThePowerofFriendship>();
 
