@@ -43,9 +43,9 @@ class BurstStreamofDestruction : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
 
-//class RageofTheBlueEyes : public Spell{
-  //bool ActivateEffect(Player& self, Player& opponent) override;
-//};
+class RageofTheBlueEyes : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
 
 class BondBetweenTheTeacherandStudent : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
@@ -58,6 +58,24 @@ class DarkBurningMagic : public Spell{
 class ThePowerofFriendship : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
+
+class MajestyofTheWhiteDragons : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
+
+class RoarofTheBlueEyedDragons : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
+
+class DarkMagicVeil : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
+
+class ThousandKnifes : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
+
+
 
 //Trap Card
 class MirrorForce : public Spell{

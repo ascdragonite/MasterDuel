@@ -80,6 +80,11 @@ shared_ptr<Spell> SpellCard::getEffectInstance(const std::string& type) {
     else if (type == "Burst Stream of Destruction") effect = std::make_shared<BurstStreamofDestruction>();
     else if (type == "Bond Between The Teacher and Student") effect = std::make_shared<BondBetweenTheTeacherandStudent>();
     else if (type == "The Power of Friendship") effect = std::make_shared<ThePowerofFriendship>();
+    else if (type == "Rage of The Blue Eyes") effect = std::make_shared<RageofTheBlueEyes>();
+    else if (type == "Majesty of The White Dragons") effect = std::make_shared<MajestyofTheWhiteDragons>();
+    else if (type == "Roar of The Blue-Eyed Dragons") effect = std::make_shared<RoarofTheBlueEyedDragons>();
+    else if (type == "Dark Magic Veil") effect = std::make_shared<DarkMagicVeil>();
+    else if (type == "Thousand Knifes") effect = std::make_shared<ThousandKnifes>();
 
   //Step 3: add spell effect names here
     else 

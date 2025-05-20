@@ -30,6 +30,7 @@ void TrapCard::PlayCard(vector<Card*>& field)
     {
         cout << "Cannot play trap card. Field is full." << endl;
     }
+    
 }
 
 void TrapCard::showInfoHiddenTrap() const {

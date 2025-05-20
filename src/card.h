@@ -28,7 +28,7 @@ public:
   virtual void PlayCard(vector<Card *> &field) = 0;
   virtual bool activateEffect(Player &self, Player &opponent) = 0;
   virtual bool activateEffect(Player &self, Player &opponent, int attackerIndex) = 0;
-
+  
   virtual ~Card();
 };
 #endif

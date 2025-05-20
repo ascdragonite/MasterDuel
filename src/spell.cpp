@@ -8,7 +8,8 @@
 #include <iostream>
 #include <vector>
 #include "log_utilis.h"
-
+#include <algorithm>
+#include <random>
 using namespace std;
 
 
@@ -56,12 +57,10 @@ bool ReEndOfADream::ActivateEffect(Player &self, Player &opponent) { // thêm l�
 
     return true; // Indicate success
 }
-/*
 
-bool RageOfTheBlueEyes ::ActivateEffect(Player& self, Player& opponent) { // hi sinh 2/3 hp khiến rồng xanh tấn công 2 lần/turn
 
-}
-*/
+
+
 bool WorldVanquisher::ActivateEffect(Player &self,
                                      Player &opponent) { // buff 200 atk
     vector<Card *> newfield = self.getField();
@@ -129,8 +128,51 @@ bool FlowerSnowDrumNBass::ActivateEffect(Player &self, Player &opponent) {
         cout << "[Flower Snow Drum n Bass] successfully drew your opponent 2 cards"
             << endl;
     }
-    return true; // Indicate success
+    return true; // Indicate success 
 }
+
+
+bool RageofTheBlueEyes::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> newfield = self.getField();
+    vector<Card*> newfieldopp;
+    int countm;
+    bool Ccanbeused = false;
+    for(auto card : newfield){
+        if(card->getName() == "Blue-Eyes White Dragon"){
+            Ccanbeused = true;
+        }
+    }
+    if(Ccanbeused == false){
+        cout << "[Rage of The Blue Eyes] Activation Failed : You do not control a Blue-Eyes White Dragon!" << endl;
+        return false;
+    }
+    for(int i = 0; i<newfield.size(); i++ ){
+        //MonsterCard *card1 = dynamic_cast<MonsterCard *>(newfield[i]);
+        if(newfield[i]->getName() != "Blue-Eyes White Dragon" && self.hasAttacked(i) == true){
+            Ccanbeused = false;
+            break;
+        }
+        if(newfield[i]->getName() == "Blue-Eyes White Dragon" && self.hasAttacked(i) == true){
+            Ccanbeused = true;
+        }
+    }
+    if(Ccanbeused == false){
+        cout << "[Rage of The Blue Eyes] Activation Failed : You can not activate this card when you already using another monster to attack!" << endl;
+        return false;
+    }
+    if(Ccanbeused == true){
+        for(int i = 0; i<newfield.size(); i++ ){
+        //MonsterCard *card1 = dynamic_cast<MonsterCard *>(newfield[i]);
+        if(newfield[i]->getName() == "Blue-Eyes White Dragon"){
+            self.setAttacked(i, false);
+        }
+    }
+    cout << "[Rage of The Blue Eyes] Successfully gained your Blue-Eyes White Dragon 1 more turn. Attack the enemy!" << endl;
+    }
+    return true;
+}
+
+
 bool DragonUnited::ActivateEffect(Player &self, Player &opponent) {// hiện tại đang sai logic, sửa sau
         vector<Card *> newfield = self.getField();
     int countC = 0;
@@ -179,13 +221,12 @@ bool DragonUnited::ActivateEffect(Player &self, Player &opponent) {// hiện t�
     return true; // Indicate success
  }
 
-bool Destr0yer::ActivateEffect(Player& self, Player& opponent) { //xử 1 lá ở defense
+bool Destr0yer::ActivateEffect(Player& self, Player& opponent) { //xử 1 lá ở defense, bug siêu nặng đang fix???
  vector<Card *> newfield = opponent.getField();
- vector<Card*> newfieldopp;
     int countC = 0;
     for (auto card2 : newfield) {
         MonsterCard *card3 = dynamic_cast<MonsterCard *>(card2);
-        if (card3->getType() == "Monster" && card3->isInDefense()==true) {
+        if (card3 && card3->isInDefense()==true) {
             countC++;
         }
     }
@@ -210,24 +251,14 @@ bool Destr0yer::ActivateEffect(Player& self, Player& opponent) { //xử 1 lá �
 
             card1 = dynamic_cast<MonsterCard*>(newfield[in]);
 
-            if (!card1) {
-            cout << "[Destr0yer] That is not a monster card." << endl;
-            continue;
-        }
-
-            if (card1->getType() != "Monster"||card1->isInDefense()==false) {
+            if (!card1 || card1->isInDefense()==false) {
                 cout << "[Destr0yer] Activation Failed : You need to choose a defense monster card" << endl;
             }
-        } while (!card1 || card1->getType() != "Monster"||card1->isInDefense()==false);
-        for(auto card0 : newfield){
-            if(card0 != newfield[in]){
-                newfieldopp.push_back(card0);
-            }
-            if(card0 == newfield[in]){
-                cout << "[Destr0yer] successfully destroy 1 defense card : " << card0->getName() << endl;
-            }
-        }
-        self.setField(newfieldopp);
+        }while (!card1 ||card1->isInDefense()==false);
+
+            cout << "[Destr0yer] Successfully destroy 1 defense card : " << card1->getName() << endl;
+            newfield.erase(newfield.begin() + in);
+            opponent.setField(newfield);
     }
     return true; // Indicate success
 }
@@ -407,7 +438,7 @@ bool BondBetweenTheTeacherandStudent::ActivateEffect(Player& self, Player& oppon
             return false;
             } 
         
-        cout << "[Bond Between The Teacher and Student] : Special Summon Dark Magician Girl successfully on defense position" << endl;
+        cout << "[Bond Between The Teacher and Student] : Special Summon Dark Magician Girl successfully on facedown defense position" << endl;
         self.setDeck(newdeck);
         self.setField(newfield);
         self.setSkipBattlePhaseCount(1);
@@ -561,22 +592,135 @@ bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) { //sm
         return true;
     }
 
-bool Trrricksters::ActivateEffect(Player& self, Player& opponent)
-{
-    cout << "wrong one bro" << endl;
-    return false;
+bool RoarofTheBlueEyedDragons :: ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> newfield = self.getField();
+    vector<Card*> newdeck = self.getDeck();
+    vector<Card*> newdeckself;
+    bool hasBEWD = false;
+        for(int i = 0; i < newdeck.size();i++){     
+            if(newdeck[i]->getName() == "Blue-Eyes White Dragon"){
+                MonsterCard *BEWD = dynamic_cast<MonsterCard *>(newdeck[i]);
+
+                newdeck.erase(newdeck.begin()+i);
+                BEWD->setDefenseMode(true);
+                BEWD->setFacedown(true);
+                newfield.push_back(BEWD);
+                hasBEWD = true;  
+                break;
+        }
+    }
+        if(hasBEWD == false){
+            cout << "[Roar of the Blue-Eyed Dragons] Activation failed : You do not have any Blue-Eyes White Dragon in your deck" << endl;
+            return false;
+            } 
+        
+        cout << "[Roar of the Blue-Eyed Dragons] : Special Summon Blue-Eyes White Dragon successfully on facedown defense position" << endl;
+        self.setDeck(newdeck);
+        self.setField(newfield);
+        return true;
+    }
+
+
+bool MajestyofTheWhiteDragons :: ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> newfield1 = self.getField();
+    vector<Card*> newfield2 = opponent.getField();
+    vector<Card*> newfieldopp;
+    int count = 0;
+    for(auto card1 : newfield1){    
+        MonsterCard *card2= dynamic_cast<MonsterCard *>(card1);
+        if(card2->getName() == "Blue-Eyes White Dragon" && card2->isFacedown() == false){
+            count++;
+        }
+    }
+    if(count == 0){
+        cout << "[Majesty of the White Dragons] Activation failed: You need to control at least 1 face up Blue-Eyes White Dragon" << endl;
+        return false;
+    }
+    if(count > 0){
+        if (count >= newfield2.size()){
+            
+        }
+        if (count < newfield2.size()){
+        shuffle(newfield2.begin(), newfield2.end(), default_random_engine(time(0)));    
+    }
+    cout << "[Majesty of the White Dragons] You have " << count << " Blue-Eyes White Dragon. Destroy " << count << " enemy's card!" << endl;
+    for (int i = 0; i < newfield2.size(); ++i){
+        cout << "[Majesty of the White Dragons] Destroy : " << newfield2[i]->getName() << endl;
+    }
+    newfield2.erase(newfield2.begin(), newfield2.begin() + count);
+    opponent.setField(newfield2);
+
+}
+return true;
 }
 
-bool Trrricksters :: ActivateEffect(Player& self, Player& opponent, int attackerIndex){
 
-    vector<Card*> newfield = opponent.getField();
-    MonsterCard *card = dynamic_cast<MonsterCard *>(newfield[attackerIndex]);
-    cout << "[Trrricksters!!] Targeting " << card->getName() << endl;
-    cout << "[Trrricksters!!] Counterfire " << card->getAtk() << " atk directly to opponent's Hp!" << endl;
-    opponent.setHp(opponent.getHp() - card->getAtk());
-    cout << "Opponent now have " << opponent.getHp() << " Hp" << endl;
-    return true;// Indicate success
+bool DarkMagicVeil :: ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> newfield = self.getField();
+    vector<Card*> newdeck = self.getDeck();
+    vector<Card*> newdeckself;
+    bool hasDM = false;
+        for(int i = 0; i < newdeck.size();i++){     
+            if(newdeck[i]->getName() == "Dark Magician"){
+                MonsterCard *DM = dynamic_cast<MonsterCard *>(newdeck[i]);
+
+                newdeck.erase(newdeck.begin()+i);
+                DM->setDefenseMode(true);
+                DM->setFacedown(true);
+                newfield.push_back(DM);
+                hasDM = true;  
+                break;
+        }
+    }
+        if(hasDM == false){
+            cout << "[Dark Magic Veil] Activation failed : You do not have any Dark Magician in your deck" << endl;
+            return false;
+            } 
+        
+        cout << "[Dark Magic Veil] : Special Summon Dark Magician successfully on facedown defense position" << endl;
+        self.setDeck(newdeck);
+        self.setField(newfield);
+        return true;
+    }
+
+bool ThousandKnifes::ActivateEffect(Player& self, Player& opponent) {
+    int countm = 0;
+    vector<Card*> newfield1 = self.getField();
+    vector<Card*> newfield2 = opponent.getField();
+
+    int in;
+    for(auto card1 : newfield1){
+        if(card1->getName() == "Dark Magician"){
+            countm++;
+    }
+    }
+    if(countm == 0){
+        cout << "[Thousand Knifes] Activation failed: You do not control a Dark Magician" << endl;
+        return false;
+    }
+    if(countm > 0){
+        do{
+            cout << "[Thousand Knifes] Choose the card you want to destroy : " << endl;
+            cin >> in;
+
+            if (in < 0 || in >= newfield2.size()) {
+                cout << "[Thousand Knifes] Invalid index!" << endl; 
+            }
+   
+        }while (in < 0 || in >= newfield2.size());
+
+            cout << "[Thousand Knifes] Successfully destroy 1 card : " << newfield2[in]->getName() << endl;
+            newfield2.erase(newfield2.begin() + in);
+            opponent.setField(newfield2);
+    }
+return true; // Indicate success
+
 }
+
+
+
+
+
 
 //trap
 bool MirrorForce::ActivateEffect(Player& self, Player& opponent) {
@@ -610,6 +754,23 @@ bool Tsunagite::ActivateEffect(Player& self, Player& opponent) {
 }
 
 
+
+bool Trrricksters::ActivateEffect(Player& self, Player& opponent)
+{
+    cout << "wrong one bro" << endl;
+    return false;
+}
+
+bool Trrricksters :: ActivateEffect(Player& self, Player& opponent, int attackerIndex){
+
+    vector<Card*> newfield = opponent.getField();
+    MonsterCard *card = dynamic_cast<MonsterCard *>(newfield[attackerIndex]);
+    cout << "[Trrricksters!!] Targeting " << card->getName() << endl;
+    cout << "[Trrricksters!!] Counterfire " << card->getAtk() << " atk directly to opponent's Hp!" << endl;
+    opponent.setHp(opponent.getHp() - card->getAtk());
+    cout << "Opponent now have " << opponent.getHp() << " Hp" << endl;
+    return true;// Indicate success
+}
 
 
 
