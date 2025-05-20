@@ -303,8 +303,22 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
     }
 }
 
-void GameState ::battlePhase(Player & self, Player & opponent, int index) {
+void GameState::battlePhase(Player& self, Player& opponent, int index) {
     vector<Card*> atkField = self.getField();
+
+    // 🔒 Check: sân mình không có quái vật thì return
+    bool hasAttacker = false;
+    for (Card* c : atkField) {
+        if (dynamic_cast<MonsterCard*>(c) != nullptr) {
+            hasAttacker = true;
+            break;
+        }
+    }
+
+    if (!hasAttacker) {
+        cout << "You have no monsters to attack with!\n";
+        return;
+    }
 
     // 🔁 Nhập lại attacker index nếu không hợp lệ
     while (index < 0 || index >= atkField.size() || 
@@ -320,7 +334,6 @@ void GameState ::battlePhase(Player & self, Player & opponent, int index) {
         return;
     }
 
-
     if (self.hasAttacked(index)) {
         cout << "This monster already attacked this turn.\n";
         return;
@@ -328,6 +341,7 @@ void GameState ::battlePhase(Player & self, Player & opponent, int index) {
 
     vector<Card*> defField = opponent.getField();
 
+    // ✅ Kiểm tra sân đối thủ có quái vật không
     bool hasMonster = false;
     for (Card* c : defField) {
         if (c->getType() == "Monster") {
@@ -337,11 +351,16 @@ void GameState ::battlePhase(Player & self, Player & opponent, int index) {
     }
 
     if (!hasMonster) {
-        // Tấn công trực tiếp
+        // ✅ Không có quái vật → hỏi có muốn tấn công trực tiếp không
         cout << "Opponent has no monsters.\n";
-        cout << "Do you want to attack directly with " << atkCard->getName() << "? (y/n): ";
         char choice;
-        cin >> choice;
+        do {
+            cout << "Do you want to attack directly with " << atkCard->getName() << "? (y/n): ";
+            cin >> choice;
+            if (choice != 'y' && choice != 'Y' && choice != 'n' && choice != 'N') {
+                cout << "Invalid input. Please enter 'y' or 'n'.\n";
+            }
+        } while (choice != 'y' && choice != 'Y' && choice != 'n' && choice != 'N');
 
         if (choice == 'y' || choice == 'Y') {
             int damage = atkCard->getAtk();
@@ -355,6 +374,7 @@ void GameState ::battlePhase(Player & self, Player & opponent, int index) {
         return;
     }
 
+    // 🔁 Nhập chỉ số quái vật đối thủ để tấn công
     int defendIndex = -1;
     while (true) {
         cout << "Enter the index of the opponent's card to attack: ";
@@ -399,15 +419,12 @@ void GameState ::battlePhase(Player & self, Player & opponent, int index) {
 
     if (trapCardIndexes.empty()) {
         self.setAttacked(index, true);   
-
-        *atkCard += *defCard; //operator overload
-
+        *atkCard += *defCard;
         this_thread::sleep_for(chrono::milliseconds(1000));
     }
 
     self.setAttacked(index, true);
-
-    *atkCard += *defCard; // Giao chiến
+    *atkCard += *defCard;
     this_thread::sleep_for(chrono::milliseconds(1000));
     opponent.canTrap.clear();
 }
