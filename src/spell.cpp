@@ -561,7 +561,7 @@ bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) { //sm
         return true;
     }
 
-bool Trrricksters(Player& self, Player& opponent)
+bool Trrricksters::ActivateEffect(Player& self, Player& opponent)
 {
     cout << "wrong one bro" << endl;
     return false;

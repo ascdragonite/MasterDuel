@@ -70,7 +70,7 @@ class Tsunagite : public Spell{
 };
 
 class Trrricksters : public Spell{
-  bool ActivateEffect(Player& self, Player& opponent, int index) override;
+  bool ActivateEffect(Player& self, Player& opponent, int attackerIndex) override;
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
 //cursed technique: Strategy Pattern
