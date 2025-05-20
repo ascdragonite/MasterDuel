@@ -365,8 +365,10 @@ bool BondBetweenTheTeacherandStudent::ActivateEffect(Player& self, Player& oppon
     if(countm > 0){
         for(int i = 0; i < newdeck.size();i++){     
             if(newdeck[i]->getName() == "Dark Magician Girl"){
-                Card* darkmagiciangirl = newdeck[i];
+                MonsterCard *darkmagiciangirl = dynamic_cast<MonsterCard *>(newdeck[i]);
+                //Card* darkmagiciangirl = newdeck[i];
                 newdeck.erase(newdeck.begin()+i);
+                darkmagiciangirl->setDefenseMode(true);
                 newfield.push_back(darkmagiciangirl);
                 hasDMG = true;  
                 break;
@@ -377,7 +379,7 @@ bool BondBetweenTheTeacherandStudent::ActivateEffect(Player& self, Player& oppon
             return false;
             } 
         
-        cout << "[Bond Between The Teacher and Student] : Special Summon Dark Magician Girl successfully" << endl;
+        cout << "[Bond Between The Teacher and Student] : Special Summon Dark Magician Girl successfully on defense position" << endl;
         self.setDeck(newdeck);
         self.setField(newfield);
         self.setSkipBattlePhaseCount(1);
