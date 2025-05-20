@@ -31,7 +31,7 @@ Card* CardFromJson(const json j)
 
     if(type == "Monster")
     {
-        return new MonsterCard(
+        MonsterCard* m = new MonsterCard(
             j.at("name"), 
             j.at("atk"), 
             j.at("def"), 
@@ -40,6 +40,13 @@ Card* CardFromJson(const json j)
             j.at("defenseMode"),
             j.at("isSet")
         );
+        if (j.contains("justSummoned")) {
+        m->setJustSummoned(j.at("justSummoned"));
+    } else {
+        m->setJustSummoned(false);
+    }
+
+    return m;
     }
     else if(type == "Spell")
     {

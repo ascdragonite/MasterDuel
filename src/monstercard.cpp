@@ -258,6 +258,9 @@ void MonsterCard::clearSummonFlag() {
     justSummoned = false;
 }
 
+void MonsterCard::setJustSummoned(bool value) {
+    justSummoned = value;
+}
 
 
 json MonsterCard::toJson() const 
@@ -271,6 +274,7 @@ json MonsterCard::toJson() const
     j["owner"] = owner; // Assuming Player has a method getIndex()
     j["defenseMode"] = defenseMode;
     j["description"] = description;
+    j["justSummoned"] = justSummoned;
     return j;
 }
 

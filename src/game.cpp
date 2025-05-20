@@ -320,7 +320,7 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
         return;
     }
 
-    // 🔁 Nhập lại attacker index nếu không hợp lệ
+
     while (index < 0 || index >= atkField.size() || 
            dynamic_cast<MonsterCard*>(atkField[index]) == nullptr) {
         cout << "Invalid attacker index. Please enter again: ";
@@ -331,6 +331,11 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
 
     if (atkCard->isInDefense()) {
         cout << atkCard->getName() << " is in Defense Position and cannot attack!\n";
+        return;
+    }
+
+    if (atkCard->isJustSummoned() && self.getHasBattledThisTurn()) {
+        cout << atkCard->getName() << " was summoned after a battle already happened this turn. It cannot attack.\n";
         return;
     }
 
@@ -374,6 +379,7 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
 
         if (choice == 'y' || choice == 'Y') {
             self.setAttacked(index, true);
+            self.setHasBattledThisTurn(true);
             json j = readFromFile();
             string turn = j.at("turn");
             j[string("Player") + to_string(self.getIndex())] = self;
@@ -422,6 +428,7 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
     }
 
     // Ghi lại trap
+    self.setHasBattledThisTurn(true);
     self.setAttacked(index, true);
     json j = readFromFile();
     string turn = j.at("turn");

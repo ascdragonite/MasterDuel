@@ -35,7 +35,8 @@ class MonsterCard : public Card{
         void setFacedown(bool setdown);
         bool isFacedown() const;
         void PlayCard(vector<Card*>& field) override;
-        bool isJustSummoned() const;     
+        bool isJustSummoned() const;
+        void setJustSummoned(bool value);     
         void clearSummonFlag();  
         void setAtk(int atk);
         void setDef(int def);

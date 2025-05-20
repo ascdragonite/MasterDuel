@@ -52,7 +52,8 @@ int Player::getSkipBattlePhaseCount() const
 Player :: Player(int i){
     index = i;
     hp = 4000;
-    skipBattlePhaseCount = 0; 
+    skipBattlePhaseCount = 0;
+    hasBattledThisTurn = false; 
 }
 
 Player::~Player()
@@ -89,13 +90,20 @@ void Player::Summon(int handIndex) {
 
 void Player::resetAttackFlags() {
     attackedThisTurn = vector<bool>(5, false);
+    hasBattledThisTurn = false;
 }
 
 bool Player::hasAttacked(int index) const {
     return index >= 0 && index < attackedThisTurn.size() && attackedThisTurn[index];
 }
 
+bool Player::getHasBattledThisTurn() const {
+    return hasBattledThisTurn;
+}
 
+void Player::setHasBattledThisTurn(bool value) {
+    hasBattledThisTurn = value;
+}
 
 void Player::setAttacked(int index, bool value) {
     if(index >= 0 && index < attackedThisTurn.size())
