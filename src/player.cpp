@@ -82,7 +82,18 @@ void Player :: drawCard(){
 
 void Player::Summon(int handIndex) {
     if (handIndex >= 0 && handIndex < static_cast<int>(hand.size())) {
-        hand[handIndex]->PlayCard(field);
+        Card* card = hand[handIndex];
+        MonsterCard* monster = dynamic_cast<MonsterCard*>(card);
+        if (monster) {
+            // Nếu đã battle trước khi triệu hồi → không được phép attack
+            if (getHasBattledThisTurn()) {
+                monster->setJustSummoned(true);
+            } else {
+                monster->setJustSummoned(false); // được phép attack
+            }
+        }
+
+        card->PlayCard(field);
         hand.erase(hand.begin() + handIndex);
     }
     DumpInfo(*this);

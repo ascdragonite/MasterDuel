@@ -241,7 +241,6 @@ void MonsterCard::PlayCard(vector<Card*>& field)
         }
 
         field.push_back(this);
-        this->justSummoned = true;
         cout << "Monster card played: " << getName() << endl;
     }
     else
