@@ -134,22 +134,52 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
         ConsoleClear();
         cout << "Hand: ";
         int i = 0;
-        for (int i = 0; i < self.getHand().size(); ++i) {
-            cout << "Index " << i << ":\n";
-            self.getHand()[i]->showInfo();
-        }
-        cout << "\n Enemy Field: ";
-        for (int i = 0; i < opponent.getField().size(); ++i) {
-            cout << i << ". ";
+        vector<Card*> hand = self.getHand();
+    for (int i = 0; i < hand.size(); ++i) {
+        cout << "-------------------------\n";
+        cout << "Index " << i << ":\n";
 
-            MonsterCard *mc = dynamic_cast<MonsterCard *>(opponent.getField()[i]);
-            if (mc) {
-                mc->showInfoHidden();
-            } else {
-                opponent.getField()[i]->showInfo(); // Cho spell/trap hoặc card khác
+        if (hand[i]->getType() == "Monster") {
+        // Cast sang MonsterCard và in thủ công, không dùng showInfo()
+            MonsterCard* monster = dynamic_cast<MonsterCard*>(hand[i]);
+            if (monster) {
+                cout << "Name: " << monster->getName() << endl;
+                cout << "Type: " << monster->getType() << endl;
+                cout << "Atk: " << monster->getAtk() << " Def: " << monster->getDef() << endl;
+            // Không in position
             }
+        } else {
+        // Spell hoặc Trap thì vẫn dùng showInfo()
+            hand[i]->showInfo();
+        }
+    }
+    cout << "-------------------------\n";
+    cout << "\nEnemy Field:\n";
+    vector<Card*> enemyField = opponent.getField();
 
-            cout << " | ";
+    for (int i = 0; i < enemyField.size(); ++i) {
+         cout << "Index " << i << ": ";
+
+          // Nếu là Monster
+         if (enemyField[i]->getType() == "Monster") {
+            MonsterCard* mc = dynamic_cast<MonsterCard*>(enemyField[i]);
+            if (mc) {
+                mc->showInfoHidden();  // Giấu thông tin nếu bị úp
+            }
+        }
+           // Nếu là Trap
+         else if (enemyField[i]->getType() == "Trap") {
+            TrapCard* trap = dynamic_cast<TrapCard*>(enemyField[i]);
+            if (trap) {
+                trap->showInfoHiddenTrap();  // Hiện facedown nếu chưa lật
+            }
+         }
+         // Spell hoặc các loại khác (nếu có)
+         else {
+            enemyField[i]->showInfo();  // Giả sử spell không bị úp
+         }
+
+         cout << " | ";
         }
         cout << "\n Your Field: ";
         for (int i = 0; i < self.getField().size(); ++i) {

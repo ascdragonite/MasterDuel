@@ -5,6 +5,7 @@ using namespace std;
 TrapCard :: TrapCard(string name, string description) : Card(name, "Trap", description)
 {
     this -> trap = getEffectInstance(name);
+    isSetTrap = true;
 }
 
 void TrapCard :: showInfo() const{
@@ -29,6 +30,18 @@ void TrapCard::PlayCard(vector<Card*>& field)
     {
         cout << "Cannot play trap card. Field is full." << endl;
     }
+}
+
+void TrapCard::showInfoHiddenTrap() const {
+    if (isSetTrap) {
+        cout << "Facedown Trap Card";
+    } else {
+        showInfo(); 
+    }
+}
+
+void TrapCard::setIsSetTrap(bool val) {
+    isSetTrap = val;
 }
 
 json TrapCard::toJson() const 
