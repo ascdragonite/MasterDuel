@@ -134,30 +134,50 @@ bool FlowerSnowDrumNBass::ActivateEffect(Player &self, Player &opponent) {
 bool DragonUnited::ActivateEffect(Player &self, Player &opponent) {// hiện tại đang sai logic, sửa sau
         vector<Card *> newfield = self.getField();
     int countC = 0;
+    int count = 0;
+    int in;
+
     for (auto card : newfield) {
 
         if (card->getType() == "Monster") {
             countC++;
         }
     }
+
+
     if (countC == 0) {
         cout << "[Dragon United] Activation Failed : You need at least 1 monster card" << endl;
         return false;
     }
     if (countC > 0) {
-        for(auto card : newfield){
-            if (card->getType() == "Monster"){
-                MonsterCard *card1 = dynamic_cast<MonsterCard *>(card);
-                if(card1 != nullptr &&card1->isFacedown()==false){
-                card1->setAtk(card1->getAtk() + 100);
-            cout << "[Dragon United] successfully gained " << card1->getName() << " 100 atk" << endl;
-                }
-    }
-
+        for (auto card1 : newfield) {
+        MonsterCard *card2 = dynamic_cast<MonsterCard *>(card1);
+            if (card2 != nullptr && card2->getType() == "Monster" && card2->isFacedown() == false ) {
+                count++;
             }
         }
+        do{
+            cout << "[Dragon United] : Choose the monster you want to buff" << endl;
+            cin >> in;
+            if(in < 0 || in > newfield.size()){
+                cout << " Invalid Index. Please try again! " << endl;
+                continue;
+            }
+            if (newfield[in]->getType() != "Monster") {
+                cout << "Invalid Index! You need to choose a monster card" << endl;
+            }
+        }while(in < 0 || in > newfield.size() || newfield[in]->getType() != "Monster");
+
+        cout << "You have " << count << " face up monster cards. Your " << newfield[in]->getName() << " gained " << 100 * count << " atk!" << endl;
+
+        MonsterCard *card3 = dynamic_cast<MonsterCard *>(newfield[in]);
+
+        card3->setAtk(card3->getAtk() + (100 * count));
+
+    }
+       
     return true; // Indicate success
-} 
+ }
 
 bool Destr0yer::ActivateEffect(Player& self, Player& opponent) { //xử 1 lá ở defense
  vector<Card *> newfield = opponent.getField();
