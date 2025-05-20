@@ -215,7 +215,7 @@ void Player::setField(vector<Card*> newField)
 {
     for(Card* card : field)
     {
-        delete card;
+        //delete card;
     }
     field.clear();
 
