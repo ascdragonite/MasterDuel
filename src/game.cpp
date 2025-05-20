@@ -164,12 +164,13 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
         cout << "2: Switch Monster Position\n";
         cout << "3: Attack\n";
         cout << "4: Flip summon\n";
-        cout << "Enter your choice [0/1/2/3/4]: ";
+        cout << "5: Surrender\n";
+        cout << "Enter your choice [0/1/2/3/4/5]: ";
 
         int code, index = -1;
         cin >> code;
 
-        if (code != 0) {
+        if (code == 1 || code == 2 || code == 3 || code == 4) {
             cout << "Enter the index of the card: ";
             cin >> index;
         }
@@ -250,6 +251,7 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
                     break;
                 }
             case 4:
+                {
                 if (index >= 0 && index < self.getField().size()) {
                     MonsterCard *mc = dynamic_cast<MonsterCard *>(self.getField()[index]);
                     if (!mc) {
@@ -277,11 +279,46 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
                     cout << "Invalid index.\n";
                 }
                 break;
+            }
+            case 5:
+            {
+              char confirm;
+              while (true) {
+                if (self.getIndex() == 1) {
+                    cout << "Are you sure you want to surrender?\n";
+                    cout << "Believe in your deck, a true duelist never gives up!\n";
+                } else {
+                    cout << "You're thinking of surrendering?\n";
+                    cout << "Pathetic. Believe in something at least...\n";
+                }
+
+                cout << "(y/n): ";
+                cin >> confirm;
+
+                if (confirm == 'y' || confirm == 'Y') {
+                    cout << "You have surrendered. Opponent wins by default.\n";
+                    if (self.getIndex() == 1) {
+                        cout << "\nPlayer 2 wins!\n";
+                } else {
+                        cout << "\nPlayer 1 wins!\n";
+                }
+                cout << "Game Over.\n";
+                exit(0);
+                } else if (confirm == 'n' || confirm == 'N') {
+                       cout << "Surrender cancelled. Back to the game.\n";
+                break;
+                } else {
+                   cout << "Invalid input. Please enter 'y' or 'n'.\n";
+                }
+            }
+             break;
+            }
 
             default:
                 cout << "Invalid action. Try again.\n";
                 break;
         }
+    
 
         if (checkVictory(*player1, *player2)) {
             if (player1->getHp() <= 0 || player1->getDeck().empty()) {
