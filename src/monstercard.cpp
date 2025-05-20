@@ -224,14 +224,22 @@ void MonsterCard::PlayCard(vector<Card*>& field)
     if (monsterCount < 5)
     {
         char answer;
-        cout << "Defense mode? [y/n]";
-        cin >> answer;
-        if (answer == 'y' || answer == 'Y') {
-            defenseMode = true;
-            isSet = true;
-        } else if (answer == 'n' || answer == 'N') {
-            defenseMode = false;
+        while (true) {
+            cout << "Defense mode? [y/n]: ";
+            cin >> answer;
+            if (answer == 'y' || answer == 'Y') {
+                defenseMode = true;
+                isSet = true;
+                break;
+            } else if (answer == 'n' || answer == 'N') {
+                defenseMode = false;
+                isSet = false;
+                break;
+            } else {
+                cout << "Invalid input. Please enter 'y' or 'n'.\n";
+            }
         }
+
         field.push_back(this);
         this->justSummoned = true;
         cout << "Monster card played: " << getName() << endl;
