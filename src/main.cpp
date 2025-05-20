@@ -49,7 +49,7 @@ int main() {
     string player;
     cout << "==================== GAME RULE ====================" << endl;
     cout << "Each player starts with 4000 HP." << endl;
-    cout << "Each player has a deck of 20 cards." << endl;
+    cout << "Each player has a deck of 22 cards." << endl;
     cout << "Each player draws 5 cards at the start of the duel." << endl;
     cout << "A player loses when their HP reaches 0 or if they cannot draw a card." << endl;
     cout << "Starting from turn 2, each player draws 1 card at the beginning of their turn." << endl;
