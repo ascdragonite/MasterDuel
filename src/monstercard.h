@@ -32,6 +32,7 @@ class MonsterCard : public Card{
         bool isInDefense() const;
         void reveal();
         void flipSummon();
+        void setFacedown(bool setdown);
         bool isFacedown() const;
         void PlayCard(vector<Card*>& field) override;
         bool isJustSummoned() const;     

@@ -369,6 +369,7 @@ bool BondBetweenTheTeacherandStudent::ActivateEffect(Player& self, Player& oppon
                 //Card* darkmagiciangirl = newdeck[i];
                 newdeck.erase(newdeck.begin()+i);
                 darkmagiciangirl->setDefenseMode(true);
+                darkmagiciangirl->setFacedown(true);
                 newfield.push_back(darkmagiciangirl);
                 hasDMG = true;  
                 break;
@@ -386,39 +387,6 @@ bool BondBetweenTheTeacherandStudent::ActivateEffect(Player& self, Player& oppon
     }
     return true; // Indicate success
 }
-
-//trap
-bool MirrorForce::ActivateEffect(Player& self, Player& opponent) {
-    vector<Card*> newfield = opponent.getField();
-    vector<Card*> newfieldopp;
-    int countm;
-    bool candestroy = false;
-
-    for(auto card1 : newfield){
-        MonsterCard *card2 = dynamic_cast<MonsterCard *>(card1);
-        if(card2 != nullptr && card2->getType() == "Monster" && card2->isInDefense() == false){
-            cout << "[Mirror Force] Destroyed : " << card2->getName() << endl;
-            candestroy = true;
-        }
-        else{
-            newfieldopp.push_back(card1);
-        }
-    }
-    if(candestroy == false){
-        cout << "[Mirror Force] Opponent do not have any monster in attack position" << endl;
-    }
-    
-    opponent.setField(newfieldopp);
-    return true; // Indicate success
-}
-
-bool Tsunagite::ActivateEffect(Player& self, Player& opponent) {
-    cout << "[Mirror Force] End opponent battle phase!" << endl;
-    opponent.setSkipBattlePhaseCount(1);
-    return true; // Indicate success}
-}
-
-
 
 
 
@@ -475,6 +443,10 @@ bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) { //sm
         do{
         cout << "[The Power of Friendship] Choose the index of the card you want to attack : " << endl;
         cin >> in;
+        if (in < 0 || in >= newfield2.size()) {
+        cout << "Invalid index. Please choose again.\n";
+        continue;  
+        } 
         if(newfield2[in]->getType() != "Monster"){
             cout << "You need to choose a monster card" << endl;
         }
@@ -486,7 +458,7 @@ bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) { //sm
                 cout << "[The Power of Friendship] Attack " << card5->getName() << " in defense position " << "( " << card5->getDef() << " def )" << endl;
 
                 if(newcard > card5->getDef()){
-                    
+                    delete card5;
                     cout << "[The Power of Friendship] Destroy " << card5->getName() << " with " << newcard << " atk " << endl;
                     newfield2.erase(newfield2.begin()+in);
                     opponent.setField(newfield2);
@@ -527,6 +499,10 @@ bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) { //sm
                             cout << card7->getName() << endl;
                         }
                     }
+                    cout << "You lose " << card5->getAtk() - newcard << " Hp " << endl;
+                    newhp2 = self.getHp() - (card5->getAtk() - newcard);
+                    self.setHp(newhp2);
+                    self.setField(newfieldself);
                 }
                 if(newcard == card5->getAtk()){
                     cout << "[The Power of Friendship] Power comes at an equal cost. All of the monster in this battle will be destroy!" << endl; 
@@ -541,8 +517,12 @@ bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) { //sm
                             cout << card7->getName() << endl;
                         }
                     }
+                    self.setField(newfieldself);
+                    
                     cout << "[The Power of Friendship] Opponent Destruct : " << endl;
-                    cout << card5->getName() << endl;                
+                    cout << card5->getName() << endl;        
+                    newfield2.erase(newfield2.begin()+in);
+                    opponent.setField(newfield2);        
                 
                 }
             }
@@ -555,4 +535,45 @@ bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) { //sm
     }
     
     
+
+
+
+
+
+
+
+//trap
+bool MirrorForce::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> newfield = opponent.getField();
+    vector<Card*> newfieldopp;
+    int countm;
+    bool candestroy = false;
+
+    for(auto card1 : newfield){
+        MonsterCard *card2 = dynamic_cast<MonsterCard *>(card1);
+        if(card2 != nullptr && card2->getType() == "Monster" && card2->isInDefense() == false){
+            cout << "[Mirror Force] Destroyed : " << card2->getName() << endl;
+            candestroy = true;
+        }
+        else{
+            newfieldopp.push_back(card1);
+        }
+    }
+    if(candestroy == false){
+        cout << "[Mirror Force] Opponent do not have any monster in attack position" << endl;
+    }
+    
+    opponent.setField(newfieldopp);
+    return true; // Indicate success
+}
+
+bool Tsunagite::ActivateEffect(Player& self, Player& opponent) {
+    cout << "[Mirror Force] End opponent battle phase!" << endl;
+    opponent.setSkipBattlePhaseCount(1);
+    return true; // Indicate success}
+}
+
+
+
+
 

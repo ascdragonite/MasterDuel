@@ -188,6 +188,8 @@ bool MonsterCard :: isInDefense() const{
     return defenseMode;
 }
 
+
+
 void MonsterCard :: reveal(){
     isSet = false;
     justSummoned = true;
@@ -200,6 +202,11 @@ void MonsterCard::flipSummon() {
         justSummoned = true;
     }
 }
+
+void MonsterCard :: setFacedown(bool setdown){
+    isSet = setdown;
+}
+
 
 bool MonsterCard :: isFacedown() const{
     return isSet;

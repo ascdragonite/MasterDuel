@@ -1,2 +1,0 @@
-[Tue May 20 09:49:49 2025] Opponent summoned a monster in attack position.
-[Tue May 20 09:50:46 2025] Opponent attacked directly with Mystical Elf for 800 damage.
