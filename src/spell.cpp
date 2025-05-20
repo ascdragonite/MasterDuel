@@ -13,7 +13,7 @@ using namespace std;
 
 
 bool Spell::ActivateEffect(Player &self, Player &opponent, int attackerIndex) {
-    cout << "ts is not tricksters sybau" << endl;
+    cout << "ts is not tricksters" << endl;
     return true; // Indicate success
 }
 
@@ -567,9 +567,16 @@ bool Trrricksters(Player& self, Player& opponent)
     return false;
 }
 
+bool Trrricksters :: ActivateEffect(Player& self, Player& opponent, int attackerIndex){
 
-
-
+    vector<Card*> newfield = opponent.getField();
+    MonsterCard *card = dynamic_cast<MonsterCard *>(newfield[attackerIndex]);
+    cout << "[Trrricksters!!] Targeting " << card->getName() << endl;
+    cout << "[Trrricksters!!] Counterfire " << card->getAtk() << " atk directly to opponent's Hp!" << endl;
+    opponent.setHp(opponent.getHp() - card->getAtk());
+    cout << "Opponent now have " << opponent.getHp() << " Hp" << endl;
+    return true;// Indicate success
+}
 
 //trap
 bool MirrorForce::ActivateEffect(Player& self, Player& opponent) {
