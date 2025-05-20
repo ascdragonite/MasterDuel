@@ -11,6 +11,13 @@
 
 using namespace std;
 
+
+bool Spell::ActivateEffect(Player &self, Player &opponent, int attackerIndex) {
+    cout << "ts is not tricksters sybau" << endl;
+    return true; // Indicate success
+}
+
+
 bool OshamaScramble::ActivateEffect(Player &self,Player &opponent) { // tráo bài đối thủ
     opponent.shuffleDeck();
     cout << "[Oshama Scramble] has successfully shuffled opponent deck" << endl;

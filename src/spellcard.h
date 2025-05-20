@@ -15,6 +15,7 @@ class SpellCard : public Card{
     SpellCard(string name, string description);
 
     bool activateEffect(Player& self, Player& opponent) override;
+    bool activateEffect(Player& self, Player& opponent, int attackerIndex) override;
 
     void showInfo() const override;
 

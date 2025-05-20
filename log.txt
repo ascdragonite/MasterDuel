@@ -1,0 +1,2 @@
+[Tue May 20 09:54:10 2025] Opponent declared an attack from Beaver Warrior targeting opponent's card at index 0.
+[Tue May 20 09:54:10 2025] Beaver Warrior was destroyed by BlackY and took 300 damage.

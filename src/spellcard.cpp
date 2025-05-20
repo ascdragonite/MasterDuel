@@ -55,6 +55,9 @@ bool SpellCard::activateEffect(Player& self, Player& opponent)
     }
 }
 
+bool SpellCard::activateEffect(Player& self, Player& opponent, int attackerIndex) 
+{ cout << "i forgor" << endl; }
+
 shared_ptr<Spell> SpellCard::getEffectInstance(const std::string& type) {
     static unordered_map<string, shared_ptr<Spell>> effectCache;
 

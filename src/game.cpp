@@ -350,6 +350,16 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
         }
     }
 
+    vector<int> trapCardIndexes;
+    for (int i = 0; i < defField.size(); ++i) {
+        if (defField[i]->getType() == "Trap") {
+            trapCardIndexes.push_back(i);
+        }
+    }
+    opponent.canTrap = trapCardIndexes;
+
+
+
     if (!hasMonster) {
         // ✅ Không có quái vật → hỏi có muốn tấn công trực tiếp không
         cout << "Opponent has no monsters.\n";
@@ -363,13 +373,22 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
         } while (choice != 'y' && choice != 'Y' && choice != 'n' && choice != 'N');
 
         if (choice == 'y' || choice == 'Y') {
-            int damage = atkCard->getAtk();
-            opponent.takeDamage(damage);
-            cout << atkCard->getName() << " attacks directly! Opponent loses "
-                 << damage << " HP!\n";
-            writeLog("Opponent attacked directly with " + atkCard->getName() +
-                     " for " + to_string(damage) + " damage.");
             self.setAttacked(index, true);
+            json j = readFromFile();
+            string turn = j.at("turn");
+            j[string("Player") + to_string(self.getIndex())] = self;
+            j[string("Player") + to_string(opponent.getIndex())] = opponent;
+            writeToFile(j);
+            if(opponent.canTrap.empty()) {
+                int damage = atkCard->getAtk();
+                opponent.takeDamage(damage);
+                cout << atkCard->getName() << " attacks directly! Opponent loses "
+                     << damage << " HP!\n";
+                writeLog("Opponent attacked directly with " + atkCard->getName() +
+                         " for " + to_string(damage) + " damage.");
+                return;
+            }
+
         }
         return;
     }
@@ -403,30 +422,20 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
     }
 
     // Ghi lại trap
-    vector<int> trapCardIndexes;
-    for (int i = 0; i < defField.size(); ++i) {
-        if (defField[i]->getType() == "Trap") {
-            trapCardIndexes.push_back(i);
-        }
-    }
-    opponent.canTrap = trapCardIndexes;
-
-    // Ghi trạng thái mới vào file
+    self.setAttacked(index, true);
     json j = readFromFile();
     string turn = j.at("turn");
-    j[string("Player") + ((turn == "PLAYER1") ? "2" : "1")] = opponent;
+    j[string("Player") + to_string(self.getIndex())] = self;
+    j[string("Player") + to_string(opponent.getIndex())] = opponent;
     writeToFile(j);
 
     if (trapCardIndexes.empty()) {
-        self.setAttacked(index, true);   
-        *atkCard += *defCard;
+
+        *atkCard += *defCard; //operator overload
+
         this_thread::sleep_for(chrono::milliseconds(1000));
     }
 
-    self.setAttacked(index, true);
-    *atkCard += *defCard;
-    this_thread::sleep_for(chrono::milliseconds(1000));
-    opponent.canTrap.clear();
 }
 
 bool GameState::checkVictory(const Player &p1, const Player &p2) {

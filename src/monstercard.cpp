@@ -270,3 +270,8 @@ bool MonsterCard::activateEffect(Player& self, Player& opponent) {
     cout << "[Monstercard] No effect defined.\n";
     return false;
 }
+
+
+bool MonsterCard::activateEffect(Player& self, Player& opponent, int attackerIndex) 
+{ cout << "i forgor" << endl; }
+

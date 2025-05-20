@@ -49,6 +49,18 @@ bool TrapCard::activateEffect(Player& self, Player& opponent) {
         return false;
     }
 }
+
+bool TrapCard::activateEffect(Player& self, Player& opponent, int attackerIndex) {
+    if (trap)
+    {
+        cout << "Trrricksters!! activated: " << getName() << endl;
+        return trap->ActivateEffect(self, opponent, attackerIndex);
+    } else {
+        cout << "epic Trrricksters!! fail" << endl;
+        return false;
+    }
+}
+
 shared_ptr<Spell> TrapCard::getEffectInstance(const std::string& type) {
     static unordered_map<string, shared_ptr<Spell>> TrapEffectCache;
 

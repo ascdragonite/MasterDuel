@@ -83,13 +83,12 @@ void Player::Summon(int handIndex) {
     if (handIndex >= 0 && handIndex < static_cast<int>(hand.size())) {
         hand[handIndex]->PlayCard(field);
         hand.erase(hand.begin() + handIndex);
-        attackedThisTurn.resize(field.size(), false);
     }
     DumpInfo(*this);
 }
 
 void Player::resetAttackFlags() {
-    attackedThisTurn = vector<bool>(field.size(), false);
+    attackedThisTurn = vector<bool>(5, false);
 }
 
 bool Player::hasAttacked(int index) const {
@@ -100,7 +99,7 @@ bool Player::hasAttacked(int index) const {
 
 void Player::setAttacked(int index, bool value) {
     if(index >= 0 && index < attackedThisTurn.size())
-        attackedThisTurn[index] = true;
+        attackedThisTurn[index] = value;
 }
 
 
@@ -214,7 +213,7 @@ void Player::setField(vector<Card*> newField)
 
     field = newField;
 
-    attackedThisTurn.resize(field.size(), false);
+    attackedThisTurn.resize(5, false);
 }
 void Player::setDeck(vector<Card*> newDeck)
 {

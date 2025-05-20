@@ -6,6 +6,7 @@
 class Spell{
 public:
   virtual bool ActivateEffect(Player& self, Player& opponent) = 0;
+  virtual bool ActivateEffect(Player& self, Player& opponent, int attackerIndex);
 };
 
 class OshamaScramble : public Spell{
@@ -68,7 +69,9 @@ class Tsunagite : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
 
-
+class Trrricksters : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent, int index) override;
+};
 //cursed technique: Strategy Pattern
 //Step 1:Declare Spell here
 

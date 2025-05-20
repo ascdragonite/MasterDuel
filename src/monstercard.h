@@ -40,6 +40,7 @@ class MonsterCard : public Card{
         void setAtk(int atk);
         void setDef(int def);
         bool activateEffect(Player& self, Player& opponent) override;
+        bool activateEffect(Player& self, Player& opponent, int attackerIndex) override;
         
         json toJson() const override;
 };

@@ -17,7 +17,7 @@ using namespace std;
 
 using json = nlohmann::json;
 
-void ActivateTrapCards(vector<int> indexes, Player &self, Player &opponent) {
+void ActivateTrapCards(vector<int> indexes, Player &self, Player &opponent, int attackerCardIndex) {
     int i = 1;
     auto field = self.getField();
     for (int index : indexes) {
@@ -39,7 +39,8 @@ void ActivateTrapCards(vector<int> indexes, Player &self, Player &opponent) {
     } else if (choice > 0 && choice <= indexes.size()) {
         int trapIndex = indexes[choice - 1];
         TrapCard *trapCard = dynamic_cast<TrapCard *>(field[trapIndex]);
-        trapCard->activateEffect(self, opponent);
+        if(trapCard->getName() != "Trrricksters!!") trapCard->activateEffect(self, opponent);
+        else trapCard->activateEffect(self, opponent, attackerCardIndex);
         return;
     }
 }
@@ -112,6 +113,8 @@ int main() {
 
     auto self = (player == "1") ? player1 : player2;
 
+    vector<bool> oppAttacked;
+
     bool isFirstTurn = true; 
 
     while (true) {
@@ -169,10 +172,23 @@ int main() {
             from_json(state["Player2"], *player2);
             Player *self = (player == "1") ? player1 : player2;
             Player *opponent = (player == "1") ? player2 : player1;
-            
+
+            auto temp = opponent->attackedThisTurn;
+            int attackerIndex = -1;
+
+            if (!oppAttacked.empty() && temp != oppAttacked) {
+                for (int i = 0; i < temp.size(); ++i) {
+                    if (temp[i] && !oppAttacked[i]) {
+                        cout << "Your opponent's monster at index " << i << " has attacked this turn.\n";
+                        attackerIndex = i;
+                    }
+                }
+            }
+            oppAttacked = temp;
+
             if (!self->canTrap.empty()) {
                 
-                ActivateTrapCards(self->canTrap, *self, *opponent);
+                ActivateTrapCards(self->canTrap, *self, *opponent, attackerIndex);
                 self->canTrap.clear();
 
                 json j = readFromFile();
