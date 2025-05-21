@@ -427,7 +427,8 @@ bool BondBetweenTheTeacherandStudent::ActivateEffect(Player& self, Player& oppon
                 //Card* darkmagiciangirl = newdeck[i];
                 newdeck.erase(newdeck.begin()+i);
                 darkmagiciangirl->setDefenseMode(true);
-                darkmagiciangirl->setFacedown(true);
+                darkmagiciangirl->setFacedown(false);
+                darkmagiciangirl->setJustSummoned(true);
                 newfield.push_back(darkmagiciangirl);
                 hasDMG = true;  
                 break;
@@ -603,7 +604,8 @@ bool RoarofTheBlueEyedDragons :: ActivateEffect(Player& self, Player& opponent) 
 
                 newdeck.erase(newdeck.begin()+i);
                 BEWD->setDefenseMode(true);
-                BEWD->setFacedown(true);
+                BEWD->setFacedown(false);
+                BEWD->setJustSummoned(true);
                 newfield.push_back(BEWD);
                 hasBEWD = true;  
                 break;
@@ -614,7 +616,7 @@ bool RoarofTheBlueEyedDragons :: ActivateEffect(Player& self, Player& opponent) 
             return false;
             } 
         
-        cout << "[Roar of the Blue-Eyed Dragons] : Special Summon Blue-Eyes White Dragon successfully on facedown defense position" << endl;
+        cout << "[Roar of the Blue-Eyed Dragons] : Special Summon Blue-Eyes White Dragon successfully in defense position" << endl;
         self.setDeck(newdeck);
         self.setField(newfield);
         return true;
@@ -631,7 +633,7 @@ bool MajestyofTheWhiteDragons :: ActivateEffect(Player& self, Player& opponent) 
         if(card2->getName() == "Blue-Eyes White Dragon" && card2->isFacedown() == false){
             count++;
         }
-    }
+    }   
     if(count == 0){
         cout << "[Majesty of the White Dragons] Activation failed: You need to control at least 1 face up Blue-Eyes White Dragon" << endl;
         return false;
@@ -666,7 +668,8 @@ bool DarkMagicVeil :: ActivateEffect(Player& self, Player& opponent) {
 
                 newdeck.erase(newdeck.begin()+i);
                 DM->setDefenseMode(true);
-                DM->setFacedown(true);
+                DM->setFacedown(false);
+                DM->setJustSummoned(true);
                 newfield.push_back(DM);
                 hasDM = true;  
                 break;
@@ -677,7 +680,7 @@ bool DarkMagicVeil :: ActivateEffect(Player& self, Player& opponent) {
             return false;
             } 
         
-        cout << "[Dark Magic Veil] : Special Summon Dark Magician successfully on facedown defense position" << endl;
+        cout << "[Dark Magic Veil] : Special Summon Dark Magician successfully in defense position" << endl;
         self.setDeck(newdeck);
         self.setField(newfield);
         return true;

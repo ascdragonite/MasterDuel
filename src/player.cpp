@@ -278,11 +278,11 @@ void Player :: loadDeckDarkMagician(){
     deck.push_back(new SpellCard("Re:End of a Dream", "If and only if your lifepoint is lower or equal to 1000 you can activate this card. When this card is activated, you can conduct anorther turn"));
     deck.push_back(new SpellCard("Disorted Fate", "Look at your full deck and place a card you like at the top of the deck."));
     deck.push_back(new SpellCard("Oshama Scramble", "Shuffle your opponent's deck when this card is activated."));
-    deck.push_back(new SpellCard("Dark Magic Veil", "Special summon a “Dark Magician” in the deck in facedown defend position."));
-    deck.push_back(new SpellCard("Thousand Knifes", "If you control “Dark Magician”: Target 1 monster your opponent controls; destroy that target.."));
-    deck.push_back(new SpellCard("Dark Magic", " If you controll a “Dark Magician” monster, destroy all monster your opponent controll."));
-    deck.push_back(new SpellCard("Bond Between The Teacher and Student", "If you controll a “Dark Magician”, special summon from your deck a dark magician girl but skip your battle phase"));
-    deck.push_back(new SpellCard("Dark Burning Magic", "If you control a “Dark Magician”, “Dark magician girl” you can destroy all of your oponent card but skip your 2 battle phase"));
+    deck.push_back(new SpellCard("Dark Magic Veil", "Special summon a “Dark Magician” in the deck in defend position."));
+    deck.push_back(new SpellCard("Thousand Knifes", "If you control faceup Dark Magician: Target 1 monster your opponent controls; destroy that target.."));
+    deck.push_back(new SpellCard("Dark Magic", " If you controll faceup a Dark Magician monster, destroy all monster your opponent controll."));
+    deck.push_back(new SpellCard("Bond Between The Teacher and Student", "If you controll a “Dark Magician”, special summon from your deck a Dark Magician Girl in defend position but skip your battle phase"));
+    deck.push_back(new SpellCard("Dark Burning Magic", "If you control a face up Dark Magician, Dark magician girl you can destroy all of your oponent card but skip your 2 battle phase"));
     deck.push_back(new SpellCard("The Power of Friendship", "Combine all of your faceup monster atk to 1 single attack in this turn."));
     deck.push_back(new TrapCard("Mirror Force", "When an opponent's monster declares an attack: Destroy all your opponent's Attack Position monsters."));
     deck.push_back(new TrapCard("Tsunagite", "When an opponent's monster declares an attack: Negate the attack and end the battle phase."));
@@ -311,8 +311,8 @@ void Player :: loadDeckBlueEyes(){
     deck.push_back(new SpellCard("Burst Stream of Destruction", "If you controll a Blue eye white dragon destroy all card your opponent controll but skip your next 2 battle phase."));
     deck.push_back(new SpellCard("Rage of The Blue Eyes", "Sacrifice 2/3 of your lifepoint, “Blue Eyes White Dragon” you controll can now attack twice in a turn ( can not active “Re:End of a dream” the turn you activate this card).")); 
     deck.push_back(new SpellCard("Destr0yer",("Can destroy a monster card in defense mode")));
-    deck.push_back(new SpellCard("Roar of The Blue-Eyed Dragons", "Special summon a “Blue-Eyes White Dragon” in the deck in facedown defend position."));
-    deck.push_back(new SpellCard("Majesty of The White Dragons","Destroy random card in your opponent field up to the number of “Blue-Eyes White Dragon” you control")); 
+    deck.push_back(new SpellCard("Roar of The Blue-Eyed Dragons", "Special summon a “Blue-Eyes White Dragon” in the deck in defend position."));
+    deck.push_back(new SpellCard("Majesty of The White Dragons","Destroy random card in your opponent field up to the number of faceup “Blue-Eyes White Dragon” you control")); 
 }
 
 void Player::shuffleDeck(){
