@@ -215,7 +215,7 @@ void Player::setHand(vector<Card*> newHand)
 {
     for(Card* card : hand)
     {
-        delete card;
+        //delete card;
     }
     hand.clear();
 
