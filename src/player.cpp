@@ -156,7 +156,7 @@ void Player::switchPosition(int fieldIndex) {
         return;
     }
 
-    if (!m->isJustSummoned()) {
+    if (m->isJustSummoned()) {
         cout << "You cannot switch the position of this monster right now.\n";
         return;
     }
