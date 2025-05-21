@@ -778,8 +778,8 @@ return true;
 
 }
 
-bool ThousandKnifes::ActivateEffect(Player& self, Player& opponent) {
-}
+//bool ThousandKnifes::ActivateEffect(Player& self, Player& opponent) {
+
 
 
 
