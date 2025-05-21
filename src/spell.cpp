@@ -889,6 +889,7 @@ bool CallofTheSky::ActivateEffect(Player& self, Player& opponent) {
                     cout << "[Ash Again] Destroyed: " << card2->getName() << endl;
                 } 
             }
+            opponent.setField(newfieldopp);
             cout << "[Ash Again] Activate successfully! All opponent's trap cards have returned to ashes. Destroy the enemy now!" << endl;
         }
     return true;

@@ -1,5 +1,1 @@
-[Wed May 21 18:12:42 2025] Opponent summoned a monster in attack position.
-[Wed May 21 18:12:51 2025] Opponent flip summon their monster: Camellia
-[Wed May 21 18:13:40 2025] Opponent activated a Spell card: Dragon United
-[Wed May 21 18:13:50 2025] Opponent declared an attack from Blue-Eyes White Dragon targeting opponent's card at index 0.
-[Wed May 21 18:13:50 2025] Blue-Eyes White Dragon destroyed Griffore and dealt 2100 damage.
+[Wed May 21 18:46:58 2025] Opponent summoned a monster in attack position.
