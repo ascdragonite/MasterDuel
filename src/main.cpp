@@ -119,8 +119,8 @@ int main() {
 
     vector<bool> oppAttacked;
 
-    bool isFirstTurn = true; 
-
+    bool isFirstTurn = (player == "1");
+    
     while (true) {
         json state = readFromFile();
 
