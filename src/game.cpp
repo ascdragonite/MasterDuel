@@ -18,7 +18,7 @@ GameState *GameState::instance = nullptr;
 // commit
 
 void GameState::ConsoleClear() {
-     cout << "\033[2J\033[H\033[3J";
+    //cout << "\033[2J\033[H\033[3J";
 }
 
 GameState *GameState::getInstance() {
@@ -126,60 +126,56 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
         json j = readFromFile();
         from_json(j["Player1"], *player1);
         from_json(j["Player2"], *player2);
-        if (!opponent.canTrap.empty()) {
-            this_thread::sleep_for(std::chrono::milliseconds(1000));
-            cout << opponent.canTrap[0] << endl;
-            continue;
-        }
+
         ConsoleClear();
         cout << "Hand: ";
         int i = 0;
         vector<Card*> hand = self.getHand();
-    for (int i = 0; i < hand.size(); ++i) {
+        for (int i = 0; i < hand.size(); ++i) {
+            cout << "-------------------------\n";
+            cout << "Index " << i << ":\n";
+
+            if (hand[i]->getType() == "Monster") {
+                // Cast sang MonsterCard và in thủ công, không dùng showInfo()
+                MonsterCard* monster = dynamic_cast<MonsterCard*>(hand[i]);
+                if (monster) {
+                    cout << "Name: " << monster->getName() << endl;
+                    cout << "Type: " << monster->getType() << endl;
+                    cout << "Atk: " << monster->getAtk() << " Def: " << monster->getDef() << endl;
+                    // Không in position
+                }
+            } else {
+                // Spell hoặc Trap thì vẫn dùng showInfo()
+                hand[i]->showInfo();
+            }
+        }
         cout << "-------------------------\n";
-        cout << "Index " << i << ":\n";
+        cout << "\nEnemy Field:\n";
+        vector<Card*> enemyField = opponent.getField();
 
-        if (hand[i]->getType() == "Monster") {
-        // Cast sang MonsterCard và in thủ công, không dùng showInfo()
-            MonsterCard* monster = dynamic_cast<MonsterCard*>(hand[i]);
-            if (monster) {
-                cout << "Name: " << monster->getName() << endl;
-                cout << "Type: " << monster->getType() << endl;
-                cout << "Atk: " << monster->getAtk() << " Def: " << monster->getDef() << endl;
-            // Không in position
+        for (int i = 0; i < enemyField.size(); ++i) {
+            cout << "Index " << i << ": ";
+
+            // Nếu là Monster
+            if (enemyField[i]->getType() == "Monster") {
+                MonsterCard* mc = dynamic_cast<MonsterCard*>(enemyField[i]);
+                if (mc) {
+                    mc->showInfoHidden();  // Giấu thông tin nếu bị úp
+                }
             }
-        } else {
-        // Spell hoặc Trap thì vẫn dùng showInfo()
-            hand[i]->showInfo();
-        }
-    }
-    cout << "-------------------------\n";
-    cout << "\nEnemy Field:\n";
-    vector<Card*> enemyField = opponent.getField();
-
-    for (int i = 0; i < enemyField.size(); ++i) {
-         cout << "Index " << i << ": ";
-
-          // Nếu là Monster
-         if (enemyField[i]->getType() == "Monster") {
-            MonsterCard* mc = dynamic_cast<MonsterCard*>(enemyField[i]);
-            if (mc) {
-                mc->showInfoHidden();  // Giấu thông tin nếu bị úp
+            // Nếu là Trap
+            else if (enemyField[i]->getType() == "Trap") {
+                TrapCard* trap = dynamic_cast<TrapCard*>(enemyField[i]);
+                if (trap) {
+                    trap->showInfoHiddenTrap();  // Hiện facedown nếu chưa lật
+                }
             }
-        }
-           // Nếu là Trap
-         else if (enemyField[i]->getType() == "Trap") {
-            TrapCard* trap = dynamic_cast<TrapCard*>(enemyField[i]);
-            if (trap) {
-                trap->showInfoHiddenTrap();  // Hiện facedown nếu chưa lật
+            // Spell hoặc các loại khác (nếu có)
+            else {
+                enemyField[i]->showInfo();  // Giả sử spell không bị úp
             }
-         }
-         // Spell hoặc các loại khác (nếu có)
-         else {
-            enemyField[i]->showInfo();  // Giả sử spell không bị úp
-         }
 
-         cout << " | ";
+            cout << " | ";
         }
         cout << "\n Your Field: ";
         for (int i = 0; i < self.getField().size(); ++i) {
@@ -282,73 +278,73 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
                 }
             case 4:
                 {
-                if (index >= 0 && index < self.getField().size()) {
-                    MonsterCard *mc = dynamic_cast<MonsterCard *>(self.getField()[index]);
-                    if (!mc) {
-                        cout << "This is not a monster card.\n";
-                        break;
+                    if (index >= 0 && index < self.getField().size()) {
+                        MonsterCard *mc = dynamic_cast<MonsterCard *>(self.getField()[index]);
+                        if (!mc) {
+                            cout << "This is not a monster card.\n";
+                            break;
+                        }
+
+                        if (!mc->isFacedown()) {
+                            cout << mc->getName() << " is already face-up.\n";
+                            break;
+                        }
+
+                        if (mc->isJustSummoned()) {
+                            cout << "You cannot flip summon a monster that was summoned this "
+                                "turn.\n";
+                            break;
+                        }
+
+                        mc->flipSummon(); // lật ngửa + chuyển sang attack
+                        mc->showInfo();   // in đầy đủ thông tin
+
+                        writeLog("Opponent flip summon their monster: " + mc->getName());
+
+                    } else {
+                        cout << "Invalid index.\n";
                     }
-
-                    if (!mc->isFacedown()) {
-                        cout << mc->getName() << " is already face-up.\n";
-                        break;
-                    }
-
-                    if (mc->isJustSummoned()) {
-                        cout << "You cannot flip summon a monster that was summoned this "
-                            "turn.\n";
-                        break;
-                    }
-
-                    mc->flipSummon(); // lật ngửa + chuyển sang attack
-                    mc->showInfo();   // in đầy đủ thông tin
-
-                    writeLog("Opponent flip summon their monster: " + mc->getName());
-
-                } else {
-                    cout << "Invalid index.\n";
+                    break;
                 }
-                break;
-            }
             case 5:
-            {
-              char confirm;
-              while (true) {
-                if (self.getIndex() == 1) {
-                    cout << "Are you sure you want to surrender?\n";
-                    cout << "Believe in your deck, a true duelist never gives up!\n";
-                } else {
-                    cout << "You're thinking of surrendering?\n";
-                    cout << "Pathetic. Believe in something at least...\n";
-                }
+                {
+                    char confirm;
+                    while (true) {
+                        if (self.getIndex() == 1) {
+                            cout << "Are you sure you want to surrender?\n";
+                            cout << "Believe in your deck, a true duelist never gives up!\n";
+                        } else {
+                            cout << "You're thinking of surrendering?\n";
+                            cout << "Pathetic. Believe in something at least...\n";
+                        }
 
-                cout << "(y/n): ";
-                cin >> confirm;
+                        cout << "(y/n): ";
+                        cin >> confirm;
 
-                if (confirm == 'y' || confirm == 'Y') {
-                    cout << "You have surrendered. Opponent wins by default.\n";
-                    if (self.getIndex() == 1) {
-                        cout << "\nPlayer 2 wins!\n";
-                } else {
-                        cout << "\nPlayer 1 wins!\n";
+                        if (confirm == 'y' || confirm == 'Y') {
+                            cout << "You have surrendered. Opponent wins by default.\n";
+                            if (self.getIndex() == 1) {
+                                cout << "\nPlayer 2 wins!\n";
+                            } else {
+                                cout << "\nPlayer 1 wins!\n";
+                            }
+                            cout << "Game Over.\n";
+                            exit(0);
+                        } else if (confirm == 'n' || confirm == 'N') {
+                            cout << "Surrender cancelled. Back to the game.\n";
+                            break;
+                        } else {
+                            cout << "Invalid input. Please enter 'y' or 'n'.\n";
+                        }
+                    }
+                    break;
                 }
-                cout << "Game Over.\n";
-                exit(0);
-                } else if (confirm == 'n' || confirm == 'N') {
-                       cout << "Surrender cancelled. Back to the game.\n";
-                break;
-                } else {
-                   cout << "Invalid input. Please enter 'y' or 'n'.\n";
-                }
-            }
-             break;
-            }
 
             default:
                 cout << "Invalid action. Try again.\n";
                 break;
         }
-    
+
 
         if (checkVictory(*player1, *player2)) {
             if (player1->getHp() <= 0 || player1->getDeck().empty()) {
@@ -389,7 +385,7 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
 
 
     while (index < 0 || index >= atkField.size() || 
-           dynamic_cast<MonsterCard*>(atkField[index]) == nullptr) {
+        dynamic_cast<MonsterCard*>(atkField[index]) == nullptr) {
         cout << "Invalid attacker index. Please enter again: ";
         cin >> index;
     }
@@ -447,20 +443,40 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
         if (choice == 'y' || choice == 'Y') {
             self.setAttacked(index, true);
             self.setHasBattledThisTurn(true);
-            json j = readFromFile();
+
+            json j = readFromFile(); //write to json
             string turn = j.at("turn");
             j[string("Player") + to_string(self.getIndex())] = self;
             j[string("Player") + to_string(opponent.getIndex())] = opponent;
             writeToFile(j);
-            if(opponent.canTrap.empty()) {
+
+            auto temp = trapCardIndexes;
+            while (temp == trapCardIndexes) {
+                cout << "index unchanged" << endl;
+                for (int index : trapCardIndexes)
+                {
+                    cout << index << endl;
+                }
+                json state = readFromFile();
+                from_json(state["Player" + to_string(opponent.getIndex())], opponent);
+                from_json(state["Player" + to_string(self.getIndex())], self);
+                trapCardIndexes = opponent.canTrap;
+                this_thread::sleep_for(chrono::milliseconds(1000));
+            }
+            if (trapCardIndexes.size() == 1 && trapCardIndexes[0] == -1) {
+                opponent.canTrap.clear();
                 int damage = atkCard->getAtk();
                 opponent.takeDamage(damage);
                 cout << atkCard->getName() << " attacks directly! Opponent loses "
-                     << damage << " HP!\n";
+                    << damage << " HP!\n";
                 writeLog("Opponent attacked directly with " + atkCard->getName() +
                          " for " + to_string(damage) + " damage.");
-                return;
+
+            } else if (trapCardIndexes.size() == 2 && trapCardIndexes[0] == -1) {
+                cout << "Trap Card " << defField[trapCardIndexes[1]]->getName() << " activated!" << endl;
+                opponent.canTrap.clear();
             }
+            return;
 
         }
         return;
@@ -498,17 +514,30 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
     self.setHasBattledThisTurn(true);
     self.setAttacked(index, true);
     json j = readFromFile();
-    string turn = j.at("turn");
     j[string("Player") + to_string(self.getIndex())] = self;
     j[string("Player") + to_string(opponent.getIndex())] = opponent;
     writeToFile(j);
 
-    if (trapCardIndexes.empty()) {
+    auto temp = trapCardIndexes;
 
-        *atkCard += *defCard; //operator overload
-
+    while (temp == trapCardIndexes) 
+    {
+        cout << "index unchanged" << endl;
+        json state = readFromFile();
+        from_json(state["Player" + to_string(opponent.getIndex())], opponent);
+        from_json(state["Player" + to_string(self.getIndex())], self);
+        trapCardIndexes = opponent.canTrap;
         this_thread::sleep_for(chrono::milliseconds(1000));
     }
+    cout << "index changed" << endl;
+    if (trapCardIndexes.size() == 1 && trapCardIndexes[0] == -1) {
+        *atkCard += *defCard; //operator overload
+        opponent.canTrap.clear();
+    } else if (trapCardIndexes.size() == 2 && trapCardIndexes[0] == -1) {
+        cout << "Trap Card " << defField[trapCardIndexes[0]]->getName() << " activated!" << endl;
+        opponent.canTrap.clear();
+    }
+    this_thread::sleep_for(chrono::milliseconds(1000));
 
 }
 

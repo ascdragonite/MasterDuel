@@ -17,7 +17,7 @@ using namespace std;
 
 using json = nlohmann::json;
 
-void ActivateTrapCards(vector<int> indexes, Player &self, Player &opponent, int attackerCardIndex) {
+int ActivateTrapCards(vector<int> indexes, Player &self, Player &opponent, int attackerCardIndex) {
     int i = 1;
     auto field = self.getField();
     for (int index : indexes) {
@@ -35,7 +35,7 @@ void ActivateTrapCards(vector<int> indexes, Player &self, Player &opponent, int 
     cin >> choice;
     if (choice == 0) {
         cout << "Trap card activation canceled.\n";
-        return;
+        return -1;
     } else if (choice > 0 && choice <= indexes.size()) {
         int trapIndex = indexes[choice - 1];
         TrapCard *trapCard = dynamic_cast<TrapCard *>(field[trapIndex]);
@@ -45,8 +45,9 @@ void ActivateTrapCards(vector<int> indexes, Player &self, Player &opponent, int 
         delete newField[trapIndex];               // giải phóng bộ nhớ
         newField.erase(newField.begin() + trapIndex); // xóa khỏi field
         self.setField(newField);                  // cập nhật lại field
-        return;
+        return indexes[choice - 1]; 
     }
+    return -1;
 }
 
 int main() {
@@ -190,16 +191,22 @@ int main() {
             }
             oppAttacked = temp;
 
-            if (!self->canTrap.empty()) {
-                
-                ActivateTrapCards(self->canTrap, *self, *opponent, attackerIndex);
+            if (!self->canTrap.empty() && self->canTrap[0] != -1) {
+                int index = ActivateTrapCards(self->canTrap, *self, *opponent, attackerIndex) ;
+                cout << "trap did the thing" << endl;
                 self->canTrap.clear();
-
+                
+                self->canTrap.push_back(-1);
+                if (index != -1) self->canTrap.push_back(index);
+                
                 json j = readFromFile();
                 j["Player1"] = *player1;
                 j["Player2"] = *player2;
                 writeToFile(j);
-            } else {
+                self->canTrap.clear();
+                cout << "xdxdxd" << endl;
+
+            } else{
                 static int linesSeen = 0;
                 gameState->ConsoleClear();
                 cout << "Waiting for your turn...\n";
