@@ -267,6 +267,7 @@ void Player :: loadDeckDarkMagician(){
     cout << "Loading deck for player " << index << endl;
     deck.push_back(new MonsterCard("Dark Magician", 2500, 2100, "The ultimate wizard in term of attack and defense.", index));
     deck.push_back(new MonsterCard("Dark Magician", 2500, 2100, "The ultimate wizard in term of attack and defense.", index));
+    deck.push_back(new MonsterCard("Dark Magician", 2500, 2100, "The ultimate wizard in term of attack and defense.", index));
     deck.push_back(new MonsterCard("Dark Magician Girl", 2000, 1700, "Dark Magician favourite student.", index));
     deck.push_back(new MonsterCard("Kuriboh", 0, 0, "Little fluffy ball that like to help others.", index));
     deck.push_back(new MonsterCard("Giant Soldier of Stone", 1300, 2000, "Little fluffy ball that like to help others.", index));
@@ -278,6 +279,7 @@ void Player :: loadDeckDarkMagician(){
     deck.push_back(new SpellCard("Re:End of a Dream", "If and only if your lifepoint is lower or equal to 1000 you can activate this card. When this card is activated, you can conduct anorther turn"));
     deck.push_back(new SpellCard("Disorted Fate", "Look at your full deck and place a ca    rd you like at the top of the deck."));
     deck.push_back(new SpellCard("Oshama Scramble", "Shuffle your opponent's deck when this card is activated."));
+    deck.push_back(new SpellCard("Dark Magic Veil", "Special summon a “Dark Magician” in the deck in defend position."));
     deck.push_back(new SpellCard("Dark Magic Veil", "Special summon a “Dark Magician” in the deck in defend position."));
     deck.push_back(new SpellCard("Cruel Pact", "Pay 1000 Hp and tribute 1 monster on the field to search 1 Dark Magician from your deck and increase 200 ATK for the Dark Magician summon next turn."));
     deck.push_back(new SpellCard("Thousand Knifes", "If you control faceup Dark Magician: Target 1 monster your opponent controls; destroy that target.."));
@@ -292,6 +294,7 @@ void Player :: loadDeckDarkMagician(){
 
 void Player :: loadDeckBlueEyes(){
     cout << "Loading deck for player " << index << endl;
+    deck.push_back(new MonsterCard("Blue-Eyes White Dragon", 3000, 2500, "This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale.", index));
     deck.push_back(new MonsterCard("Blue-Eyes White Dragon", 3000, 2500, "This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale.", index));
     deck.push_back(new MonsterCard("Blue-Eyes White Dragon", 3000, 2500, "This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale.", index));
     deck.push_back(new MonsterCard("T+pazolite", 1750, 200, "A crystal dragon born from solidified molten lava. T+pazolite's scales shimmer like gemstones, absorbing and reflecting light to confuse enemies on the battlefield.", index));
@@ -314,7 +317,8 @@ void Player :: loadDeckBlueEyes(){
     deck.push_back(new SpellCard("Rage of The Blue Eyes", "Sacrifice 2/3 of your lifepoint, “Blue Eyes White Dragon” you controll can now attack twice in a turn ( can not active “Re:End of a dream” the turn you activate this card).")); 
     deck.push_back(new SpellCard("Destr0yer",("Can destroy a monster card in defense mode")));
     deck.push_back(new SpellCard("Roar of The Blue-Eyed Dragons", "Special summon a “Blue-Eyes White Dragon” in the deck in defend position."));
-    deck.push_back(new SpellCard("Majesty of The White Dragons","Destroy random card in your opponent field up to the number of faceup “Blue-Eyes White Dragon” you control")); 
+    deck.push_back(new SpellCard("Majesty of The White Dragons","Destroy random card in your opponent field up to the number of faceup “Blue-Eyes White Dragon” you control"));
+    deck.push_back(new SpellCard("1111","If you controll a faceup Blue-Eyes White Dragon destroy all trap cards your opponent control")); 
 }
 
 void Player::shuffleDeck(){
