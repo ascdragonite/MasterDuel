@@ -318,7 +318,7 @@ void Player :: loadDeckBlueEyes(){
     deck.push_back(new SpellCard("Destr0yer",("Can destroy a monster card in defense mode")));
     deck.push_back(new SpellCard("Roar of The Blue-Eyed Dragons", "Special summon a “Blue-Eyes White Dragon” in the deck in defend position."));
     deck.push_back(new SpellCard("Majesty of The White Dragons","Destroy random card in your opponent field up to the number of faceup “Blue-Eyes White Dragon” you control"));
-    deck.push_back(new SpellCard("1111","If you controll a faceup Blue-Eyes White Dragon destroy all trap cards your opponent control")); 
+    deck.push_back(new SpellCard("Ash Again","If you controll a faceup Blue-Eyes White Dragon destroy all trap cards your opponent control")); 
 }
 
 void Player::shuffleDeck(){

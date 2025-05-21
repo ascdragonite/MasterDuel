@@ -746,7 +746,16 @@ bool CruelPact::ActivateEffect(Player& self, Player& opponent) {
         cout << "[Cruel Pact] Activation Failed : You do not control any monster card!" << endl;
         return false;
     }
-
+    for(int i = 0; i < newdeck.size();i++){     
+        if(newdeck[i]->getName() == "Dark Magician"){
+            MonsterCard *DM = dynamic_cast<MonsterCard *>(newdeck[i]);
+            newdeck.erase(newdeck.begin()+i);
+            DM->setAtk(DM->getAtk() + 200);
+            newhand.push_back(DM);
+            hasDM = true;  
+            break;
+        }
+    }
     if(hasM == true && hasDM == true){
         int in;
         do{
@@ -760,31 +769,17 @@ bool CruelPact::ActivateEffect(Player& self, Player& opponent) {
                 cout << "You need to choose a monster card. Try again!" << endl;
             }
         }while(newfield[in]->getType() != "Monster");
-        newfield.erase(newfield.begin() + in);
-        for(int i = 0; i < newdeck.size();i++){     
-            if(newdeck[i]->getName() == "Dark Magician"){
-                MonsterCard *DM = dynamic_cast<MonsterCard *>(newdeck[i]);
-                newdeck.erase(newdeck.begin()+i);
-                DM->setAtk(DM->getAtk() + 200);
-                newhand.push_back(DM);
-                hasDM = true;  
-                break;
-        }
-    }
+        
+    newfield.erase(newfield.begin() + in);
     self.setHp(self.getHp() - 1000);
     self.setDeck(newdeck);
     self.setField(newfield);
     self.setHand(newhand);
     cout << "[Cruel Pact] Successfully sacrifice a monster and 1000 Hp to add a Dark Magician from your deck to your hand!" << endl;
+    return true;
+
+
 }
-    if(hasDM == false){
-        cout << "[Cruel Pact] Activation Failed : You do not have any Dark Magician in your deck" << endl;
-        return false;
-    }
-
-return true;
-
-
 }
 
 bool CallofTheSky::ActivateEffect(Player& self, Player& opponent) {
@@ -805,24 +800,6 @@ bool CallofTheSky::ActivateEffect(Player& self, Player& opponent) {
         return false;
     }
     if(count >=2){
-        int in1;
-        int in2;
-        do{
-            cout << "[Call of The Sky] Choose 2 monster cards to tribute :" << endl;
-            cin >> in1;
-            cin >> in2;
-
-
-            if(in1<0 || in1 >=newfield.size() || in2 < 0 || in2 >= newfield.size()){
-            cout << "Invalid Index. Please choose again!" << endl;
-            continue;
-            }
-            if(newfield[in1]->getType() != "Monster" || newfield[in2]->getType() != "Monster"){
-                cout << "You need to choose 2 monster cards. Try again!" << endl;
-            }
-            
-        }while(newfield[in1]->getType() != "Monster" || newfield[in2]->getType() != "Monster");
-
         for(int i = 0; i < newdeck.size();i++){     
             if(newdeck[i]->getName() == "Blue-Eyes White Dragon"){
                 Card* BEWD = newdeck[i];
@@ -845,14 +822,46 @@ bool CallofTheSky::ActivateEffect(Player& self, Player& opponent) {
             cout << "[Call of The Sky] Activation Failed : You do not have both Blue-Eyes White Dragon and Majesty of The White Dragons in your deck! " << endl;
             return false;
         }
+
+
+
+        int in1;
+        int in2;
+        do{
+            cout << "[Call of The Sky] Choose 2 monster cards to tribute :" << endl;
+            cin >> in1;
+            cin >> in2;
+
+            if(in1<0 || in1 >=newfield.size() || in2 < 0 || in2 >= newfield.size()){
+            cout << "Invalid Index. Please choose again!" << endl;
+            continue;
+            }
+            if (in1 == in2) {
+                cout << "You must choose two different cards. Try again!" << endl;
+                continue;
+            }
+            if(newfield[in1]->getType() != "Monster" || newfield[in2]->getType() != "Monster"){
+                cout << "You need to choose 2 monster cards. Try again!" << endl;
+            }
+            
+        }while(newfield[in1]->getType() != "Monster" || newfield[in2]->getType() != "Monster");
+
+        
         if(hasMoTWD == true && hasBEWD == true){
-            cout << "[Call of The Sky] The Night Sky has heard your call and granted you Blue-Eyes White Dragon and Majesty of The White Dragons." << endl;
-        self.setDeck(newdeck);
-        self.setField(newfield);
-        self.setHand(newhand);    
+            string cardname1 = newfield[in1]->getName();
+            string cardname2 = newfield[in2]->getName();
+            cout << "[Call of The Sky] The Night Sky has heard your call and granted you Blue-Eyes White Dragon and Majesty of The White Dragons for the price of " << cardname1 << " and " << cardname2 << " !" << endl;
+            if (in1 > in2) swap(in1, in2);
+                newfield.erase(newfield.begin() + in2);
+                newfield.erase(newfield.begin() + in1);
+            
+            self.setDeck(newdeck);
+            self.setField(newfield);
+            self.setHand(newhand);
+            return true;    
         }
         }
-        return true;
+        
     }
     
 
@@ -922,4 +931,5 @@ bool Trrricksters :: ActivateEffect(Player& self, Player& opponent, int attacker
 }
 
 
+//bool AshAgain::ActivateEffect(Player& self, Player& opponent)
 
