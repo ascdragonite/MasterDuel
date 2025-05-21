@@ -439,7 +439,7 @@ bool BondBetweenTheTeacherandStudent::ActivateEffect(Player& self, Player& oppon
             return false;
             } 
         
-        cout << "[Bond Between The Teacher and Student] : Special Summon Dark Magician Girl successfully on facedown defense position" << endl;
+        cout << "[Bond Between The Teacher and Student] : Special Summon Dark Magician Girl successfully in defense position" << endl;
         self.setDeck(newdeck);
         self.setField(newfield);
         self.setSkipBattlePhaseCount(1);
