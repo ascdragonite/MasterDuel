@@ -87,6 +87,7 @@ shared_ptr<Spell> SpellCard::getEffectInstance(const std::string& type) {
     else if (type == "Thousand Knifes") effect = std::make_shared<ThousandKnifes>();
     else if (type == "Cruel Pact") effect = std::make_shared<CruelPact>();
     else if (type == "Call of the Sky") effect = std::make_shared<CallofTheSky>();
+    else if (type == "Ash Again") effect = std::make_shared<AshAgain>();
   //Step 3: add spell effect names here
     else 
     {

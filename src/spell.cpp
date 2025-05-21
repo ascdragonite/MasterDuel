@@ -810,7 +810,7 @@ bool CallofTheSky::ActivateEffect(Player& self, Player& opponent) {
             }
         }
         for(int i = 0; i < newdeck.size();i++){     
-            if(newdeck[i]->getName() == "Majesty of The White Dragons "){
+            if(newdeck[i]->getName() == "Majesty of The White Dragons"){
                 Card* MoTWD = newdeck[i];
                 newdeck.erase(newdeck.begin()+i);
                 newhand.push_back(MoTWD);
@@ -865,7 +865,34 @@ bool CallofTheSky::ActivateEffect(Player& self, Player& opponent) {
     }
     
 
-
+    bool AshAgain::ActivateEffect(Player& self, Player& opponent){
+        int countm = 0;
+        vector<Card*> newfield1 = self.getField();
+        vector<Card*> newfield2 = opponent.getField();
+        vector<Card*> newfieldopp;
+        for(auto card : newfield1){
+            MonsterCard *card1 = dynamic_cast<MonsterCard *>(card);
+            if(card1->getName() == "Blue-Eyes White Dragon"   && card1->isFacedown() == false){
+                countm++;
+            }
+        }
+        if(countm == 0){
+            cout << "[Ash Again] Activation failed: You do not control a face up Blue-Eyes White Dragon" << endl;
+            return false;
+        }
+        if(countm > 0){
+            for(auto card2 : newfield2){
+                if(card2->getType() == "Monster"){
+                    newfieldopp.push_back(card2);
+                }
+                if(card2->getType()!="Monster"){
+                    cout << "[Ash Again] Destroyed: " << card2->getName() << endl;
+                } 
+            }
+            cout << "[Ash Again] Activate successfully! All opponent's trap cards have returned to ashes. Destroy the enemy now!" << endl;
+        }
+    return true;
+}
 
 
 

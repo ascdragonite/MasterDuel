@@ -83,7 +83,9 @@ class CallofTheSky : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
 
-
+class AshAgain : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
 
 
 //Trap Card
