@@ -746,7 +746,8 @@ bool CruelPact::ActivateEffect(Player& self, Player& opponent) {
         cout << "[Cruel Pact] Activation Failed : You do not control any monster card!" << endl;
         return false;
     }
-    if(hasM == true){
+
+    if(hasM == true && hasDM == true){
         int in;
         do{
             cout << "[Cruel Pact] Choose a monster card to tribute : " << endl;
@@ -759,6 +760,7 @@ bool CruelPact::ActivateEffect(Player& self, Player& opponent) {
                 cout << "You need to choose a monster card. Try again!" << endl;
             }
         }while(newfield[in]->getType() != "Monster");
+        newfield.erase(newfield.begin() + in);
         for(int i = 0; i < newdeck.size();i++){     
             if(newdeck[i]->getName() == "Dark Magician"){
                 MonsterCard *DM = dynamic_cast<MonsterCard *>(newdeck[i]);
@@ -770,15 +772,91 @@ bool CruelPact::ActivateEffect(Player& self, Player& opponent) {
         }
     }
     self.setHp(self.getHp() - 1000);
+    self.setDeck(newdeck);
+    self.setField(newfield);
+    self.setHand(newhand);
     cout << "[Cruel Pact] Successfully sacrifice a monster and 1000 Hp to add a Dark Magician from your deck to your hand!" << endl;
 }
+    if(hasDM == false){
+        cout << "[Cruel Pact] Activation Failed : You do not have any Dark Magician in your deck" << endl;
+        return false;
+    }
 
 return true;
 
 
 }
 
-//bool ThousandKnifes::ActivateEffect(Player& self, Player& opponent) {
+bool CallofTheSky::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> newfield = self.getField();
+    vector<Card*> newhand = self.getHand();
+    vector<Card*> newdeck = self.getDeck();
+    vector<Card*> newdeckself;
+    bool hasBEWD = false;
+    bool hasMoTWD = false;
+    int count = 0;
+    for(auto card1 : newfield){
+        if(card1 ->getType() == "Monster"){
+            count++;
+        }
+    }
+    if(count < 2){
+        cout << "[Call of The Sky] Activation Failed : You do not control enough monster card!" << endl;
+        return false;
+    }
+    if(count >=2){
+        int in1;
+        int in2;
+        do{
+            cout << "[Call of The Sky] Choose 2 monster cards to tribute :" << endl;
+            cin >> in1;
+            cin >> in2;
+
+
+            if(in1<0 || in1 >=newfield.size() || in2 < 0 || in2 >= newfield.size()){
+            cout << "Invalid Index. Please choose again!" << endl;
+            continue;
+            }
+            if(newfield[in1]->getType() != "Monster" || newfield[in2]->getType() != "Monster"){
+                cout << "You need to choose 2 monster cards. Try again!" << endl;
+            }
+            
+        }while(newfield[in1]->getType() != "Monster" || newfield[in2]->getType() != "Monster");
+
+        for(int i = 0; i < newdeck.size();i++){     
+            if(newdeck[i]->getName() == "Blue-Eyes White Dragon"){
+                Card* BEWD = newdeck[i];
+                newdeck.erase(newdeck.begin()+i);
+                newhand.push_back(BEWD);
+                hasBEWD = true;  
+                break;
+            }
+        }
+        for(int i = 0; i < newdeck.size();i++){     
+            if(newdeck[i]->getName() == "Majesty of The White Dragons "){
+                Card* MoTWD = newdeck[i];
+                newdeck.erase(newdeck.begin()+i);
+                newhand.push_back(MoTWD);
+                hasMoTWD = true;  
+                break;
+            }
+        }
+        if(hasMoTWD == false || hasBEWD == false){
+            cout << "[Call of The Sky] Activation Failed : You do not have both Blue-Eyes White Dragon and Majesty of The White Dragons in your deck! " << endl;
+            return false;
+        }
+        if(hasMoTWD == true && hasBEWD == true){
+            cout << "[Call of The Sky] The Night Sky has heard your call and granted you Blue-Eyes White Dragon and Majesty of The White Dragons." << endl;
+        self.setDeck(newdeck);
+        self.setField(newfield);
+        self.setHand(newhand);    
+        }
+        }
+        return true;
+    }
+    
+
+
 
 
 
