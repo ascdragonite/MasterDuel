@@ -1,1 +1,4 @@
-[Wed May 21 22:32:53 2025] Opponent activated a Spell card: Roar of The Blue-Eyed Dragons
+[Thu May 22 00:22:02 2025] Opponent summoned a monster in attack position.
+[Thu May 22 00:22:09 2025] Opponent used [Call of The Sky]. The Night Sky choose to help them with Blue-Eyes White Dragon and Majesty of The White Dragons for the price of Sasakure
+[Thu May 22 00:22:09 2025]  and Morimori Atsushi
+[Thu May 22 00:22:09 2025] Opponent activated a Spell card: Call of the Sky
