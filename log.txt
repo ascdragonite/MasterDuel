@@ -1,2 +1,1 @@
-[Wed May 21 22:20:12 2025] Opponent summoned a monster in attack position.
-[Wed May 21 22:20:21 2025] Opponent switched position of Dark Magician Girl to Defense position.
+[Wed May 21 22:27:42 2025] Opponent activated a Spell card: Dark Magic Veil

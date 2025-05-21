@@ -87,8 +87,6 @@ void Player::Summon(int handIndex) {
 
         if (monster) {
             // Ngăn switch tư thế trong lượt được triệu hồi
-            monster->setCanSwitchPosition(false);
-
             // Nếu đã battle trước khi triệu hồi → không được phép attack
             if (getHasBattledThisTurn()) {
                 monster->setJustSummoned(true);
@@ -158,7 +156,7 @@ void Player::switchPosition(int fieldIndex) {
         return;
     }
 
-    if (!m->getCanSwitchPosition()) {
+    if (!m->isJustSummoned()) {
         cout << "You cannot switch the position of this monster right now.\n";
         return;
     }
@@ -166,7 +164,6 @@ void Player::switchPosition(int fieldIndex) {
     // Toggle position
     bool newPos = !m->isInDefense();
     m->setDefenseMode(newPos);
-    m->setCanSwitchPosition(false); 
 
     cout << m->getName() << " switched to " << (newPos ? "Defense" : "Attack") << " position.\n";
 
