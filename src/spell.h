@@ -75,6 +75,15 @@ class ThousandKnifes : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
 
+class CruelPact : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
+
+class CallofTheSky : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
+
+
 
 
 //Trap Card

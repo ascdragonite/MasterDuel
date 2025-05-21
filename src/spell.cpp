@@ -138,12 +138,13 @@ bool RageofTheBlueEyes::ActivateEffect(Player& self, Player& opponent) {
     int countm;
     bool Ccanbeused = false;
     for(auto card : newfield){
-        if(card->getName() == "Blue-Eyes White Dragon"){
+        MonsterCard *card1 = dynamic_cast<MonsterCard *>(card);
+        if(card1->getName() == "Blue-Eyes White Dragon" && card1->isFacedown() == false){
             Ccanbeused = true;
         }
     }
     if(Ccanbeused == false){
-        cout << "[Rage of The Blue Eyes] Activation Failed : You do not control a Blue-Eyes White Dragon!" << endl;
+        cout << "[Rage of The Blue Eyes] Activation Failed : You do not control a face up Blue-Eyes White Dragon!" << endl;
         return false;
     }
     for(int i = 0; i<newfield.size(); i++ ){
@@ -167,7 +168,8 @@ bool RageofTheBlueEyes::ActivateEffect(Player& self, Player& opponent) {
             self.setAttacked(i, false);
         }
     }
-    cout << "[Rage of The Blue Eyes] Successfully gained your Blue-Eyes White Dragon 1 more turn. Attack the enemy!" << endl;
+    self.setHp(self.getHp() * 2 / 3);
+    cout << "[Rage of The Blue Eyes] Successfully sacrifice 2/3 Hp to gain your Blue-Eyes White Dragon 1 more turn. Attack the enemy!" << endl;
     }
     return true;
 }
@@ -308,13 +310,14 @@ bool DarkMagic::ActivateEffect(Player& self, Player& opponent) {
     vector<Card*> newfield1 = self.getField();
     vector<Card*> newfield2 = opponent.getField();
     vector<Card*> newfieldopp;
-    for(auto card1 : newfield1){
-        if(card1->getName() == "Dark Magician"){
+    for(auto card : newfield1){
+        MonsterCard *card1 = dynamic_cast<MonsterCard *>(card);
+        if(card1->getName() == "Dark Magician" && card1->isFacedown() == false){
             countm++;
     }
     }
     if(countm == 0){
-        cout << "[Dark Magic] Activation failed: You do not control a Dark Magician" << endl;
+        cout << "[Dark Magic] Activation failed: You do not control a face up Dark Magician" << endl;
         return false;
     }
     if(countm > 0){
@@ -342,16 +345,17 @@ bool DarkBurningMagic::ActivateEffect(Player& self, Player& opponent) {
     vector<Card*> newfield1 = self.getField();
     vector<Card*> newfield2 = opponent.getField();
     vector<Card*> newfieldopp;
-    for(auto card1 : newfield1){
-        if(card1->getName() == "Dark Magician"){
+    for(auto card : newfield1){
+        MonsterCard *card1 = dynamic_cast<MonsterCard *>(card);
+        if(card1->getName() == "Dark Magician"  && card1->isFacedown() == false){
             countdm++;
         }
-        if(card1->getName() == "Dark Magician Girl"){
+        if(card1->getName() == "Dark Magician Girl" && card1->isFacedown() == false){
             countdmg++;           
         }
     }
     if(countdm == 0 || countdmg == 0){
-        cout << "[Dark Magic] Activation failed: You do not control both Dark Magician and Dark Magician Girl" << endl;
+        cout << "[Dark Magic] Activation failed: You do not control both face up Dark Magician and Dark Magician Girl" << endl;
         return false;     
     }
     if(countdm > 0 && countdmg > 0){
@@ -378,13 +382,14 @@ bool BurstStreamofDestruction::ActivateEffect(Player& self, Player& opponent) {
     vector<Card*> newfield1 = self.getField();
     vector<Card*> newfield2 = opponent.getField();
     vector<Card*> newfieldopp;
-    for(auto card1 : newfield1){
-        if(card1->getName() == "Blue-Eyes White Dragon"){
+    for(auto card : newfield1){
+        MonsterCard *card1 = dynamic_cast<MonsterCard *>(card);
+        if(card1->getName() == "Blue-Eyes White Dragon"   && card1->isFacedown() == false){
             countm++;
     }
     }
     if(countm == 0){
-        cout << "[Burst Stream of Destruction] Activation failed: You do not control a Blue-Eyes White Dragon" << endl;
+        cout << "[Burst Stream of Destruction] Activation failed: You do not control a face up Blue-Eyes White Dragon" << endl;
         return false;
     }
     if(countm > 0){
@@ -641,18 +646,20 @@ bool MajestyofTheWhiteDragons :: ActivateEffect(Player& self, Player& opponent) 
     }
     if(count > 0){
         if (count >= newfield2.size()){
-            
+            cout << "[Majesty of the White Dragons] You have " << count << " Blue-Eyes White Dragon. Destroy " << count << " enemy's card!" << endl;
+            cout << "[Majesty of the White Dragons] Succesfully destroy all opponent's field!" << endl;
+            opponent.setField(newfieldopp);
         }
         if (count < newfield2.size()){
         shuffle(newfield2.begin(), newfield2.end(), default_random_engine(time(0)));    
-    }
+    
     cout << "[Majesty of the White Dragons] You have " << count << " Blue-Eyes White Dragon. Destroy " << count << " enemy's card!" << endl;
-    for (int i = 0; i < newfield2.size(); ++i){
+    for (int i = 0; i < count; ++i){
         cout << "[Majesty of the White Dragons] Destroy : " << newfield2[i]->getName() << endl;
     }
     newfield2.erase(newfield2.begin(), newfield2.begin() + count);
     opponent.setField(newfield2);
-
+}
 }
 return true;
 }
@@ -694,12 +701,13 @@ bool ThousandKnifes::ActivateEffect(Player& self, Player& opponent) {
 
     int in;
     for(auto card1 : newfield1){
-        if(card1->getName() == "Dark Magician"){
+        MonsterCard *card2 = dynamic_cast<MonsterCard *>(card1);
+        if(card2->getName() == "Dark Magician" && card2->isFacedown() == false ){
             countm++;
     }
     }
     if(countm == 0){
-        cout << "[Thousand Knifes] Activation failed: You do not control a Dark Magician" << endl;
+        cout << "[Thousand Knifes] Activation failed: You do not control a face up Dark Magician" << endl;
         return false;
     }
     if(countm > 0){
@@ -720,6 +728,65 @@ bool ThousandKnifes::ActivateEffect(Player& self, Player& opponent) {
 return true; // Indicate success
 
 }
+
+bool CruelPact::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> newfield = self.getField();
+    vector<Card*> newhand = self.getHand();
+    vector<Card*> newdeck = self.getDeck();
+    vector<Card*> newdeckself;
+    bool hasDM = false;
+    bool hasM = false;
+    for(auto card1 : newfield){
+        if(card1->getType() == "Monster"){
+            hasM = true;
+            break;
+        }
+    }
+    if(hasM == false){
+        cout << "[Cruel Pact] Activation Failed : You do not control any monster card!" << endl;
+        return false;
+    }
+    if(hasM == true){
+        int in;
+        do{
+            cout << "[Cruel Pact] Choose a monster card to tribute : " << endl;
+            cin >> in;
+            if(in<0 || in >=newfield.size()){
+                cout << "Invalid Index. Please choose again!" << endl;
+                continue;
+            }
+            if(newfield[in]->getType() != "Monster"){
+                cout << "You need to choose a monster card. Try again!" << endl;
+            }
+        }while(newfield[in]->getType() != "Monster");
+        for(int i = 0; i < newdeck.size();i++){     
+            if(newdeck[i]->getName() == "Dark Magician"){
+                MonsterCard *DM = dynamic_cast<MonsterCard *>(newdeck[i]);
+                newdeck.erase(newdeck.begin()+i);
+                DM->setAtk(DM->getAtk() + 200);
+                newhand.push_back(DM);
+                hasDM = true;  
+                break;
+        }
+    }
+    self.setHp(self.getHp() - 1000);
+    cout << "[Cruel Pact] Successfully sacrifice a monster and 1000 Hp to add a Dark Magician from your deck to your hand!" << endl;
+}
+
+return true;
+
+
+}
+
+bool ThousandKnifes::ActivateEffect(Player& self, Player& opponent) {
+}
+
+
+
+
+
+
+
 
 
 
