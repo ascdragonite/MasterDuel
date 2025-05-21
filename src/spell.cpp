@@ -396,7 +396,7 @@ bool BurstStreamofDestruction::ActivateEffect(Player& self, Player& opponent) {
                 cout << "[Burst Stream of Destruction] Destroyed: " << card2->getName() << endl;
             } 
         }
-        cout << "[Burst Stream of Destruction] Activate successfully! All opponent's monster cards are destroyed. You can not attack this turn!" << endl;
+        cout << "[Burst Stream of Destruction] Activate successfully! All opponent's monster cards are destroyed. You can not attack in 2 turn!" << endl;
         self.setSkipBattlePhaseCount(2);
         opponent.setField(newfieldopp);
     }
@@ -411,13 +411,14 @@ bool BondBetweenTheTeacherandStudent::ActivateEffect(Player& self, Player& oppon
     vector<Card*> newdeck = self.getDeck();
     vector<Card*> newdeckself;
     bool hasDMG = false;
-    for(auto card1 : newfield){
-        if(card1->getName() == "Dark Magician"){
+    for(auto card : newfield){
+        MonsterCard *card1 = dynamic_cast<MonsterCard *>(card);
+        if(card1->getName() == "Dark Magician" && card1->isFacedown() == false){
             countm++;
     }
     }
     if(countm == 0){
-        cout << "[Bond Between The Teacher and Student] Activation failed: You do not control a Dark Magician" << endl;
+        cout << "[Bond Between The Teacher and Student] Activation failed: You do not control a face up Dark Magician" << endl;
         return false;
     }
     if(countm > 0){
