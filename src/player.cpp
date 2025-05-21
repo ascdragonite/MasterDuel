@@ -84,7 +84,11 @@ void Player::Summon(int handIndex) {
     if (handIndex >= 0 && handIndex < static_cast<int>(hand.size())) {
         Card* card = hand[handIndex];
         MonsterCard* monster = dynamic_cast<MonsterCard*>(card);
+
         if (monster) {
+            // Ngăn switch tư thế trong lượt được triệu hồi
+            monster->setCanSwitchPosition(false);
+
             // Nếu đã battle trước khi triệu hồi → không được phép attack
             if (getHasBattledThisTurn()) {
                 monster->setJustSummoned(true);
@@ -93,15 +97,24 @@ void Player::Summon(int handIndex) {
             }
         }
 
-        card->PlayCard(field);
+        card->PlayCard(field); // thêm vào sân (và hỏi attack/defense mode)
         hand.erase(hand.begin() + handIndex);
     }
+
     DumpInfo(*this);
 }
 
 void Player::resetAttackFlags() {
     attackedThisTurn = vector<bool>(5, false);
     hasBattledThisTurn = false;
+
+    // Reset quyền đổi vị trí cho quái vật mỗi lượt
+    for (Card* card : field) {
+        MonsterCard* m = dynamic_cast<MonsterCard*>(card);
+        if (m) {
+            m->setCanSwitchPosition(true); 
+        }
+    }
 }
 
 bool Player::hasAttacked(int index) const {
@@ -136,7 +149,7 @@ void Player::switchPosition(int fieldIndex) {
     }
 
     if (m->isFacedown()) {
-        cout << "Please use function reveal monster to switch a position of a facedown monster.\n";
+        cout << "Please use function reveal monster to switch the position of a facedown monster.\n";
         return;
     }
 
@@ -145,17 +158,19 @@ void Player::switchPosition(int fieldIndex) {
         return;
     }
 
-    if (m->isJustSummoned()) {
-        cout << "You cannot switch position of a monster summoned this turn.\n";
+    if (!m->getCanSwitchPosition()) {
+        cout << "You cannot switch the position of this monster right now.\n";
         return;
     }
 
     // Toggle position
     bool newPos = !m->isInDefense();
     m->setDefenseMode(newPos);
+    m->setCanSwitchPosition(false); 
+
     cout << m->getName() << " switched to " << (newPos ? "Defense" : "Attack") << " position.\n";
 
-    DumpInfo(*this); 
+    DumpInfo(*this);
 }
 
 void Player::revealMonster(int fieldIndex) {
@@ -215,7 +230,7 @@ void Player::setHand(vector<Card*> newHand)
 {
     for(Card* card : hand)
     {
-        //delete card;
+        delete card;
     }
     hand.clear();
 

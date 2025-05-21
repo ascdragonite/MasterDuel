@@ -17,6 +17,7 @@ class MonsterCard : public Card{
         int extraAttackThisTurn = 0;
         int attacksThisTurn = 0;
         int extraAttacksRemaining = 0;
+        bool canSwitchPosition;
     public:
         MonsterCard(string name, int atk, int def, string description, int owner);
         MonsterCard(string name, int atk, int def, string description, int owner, bool defenseMode, bool isSet);
@@ -37,7 +38,11 @@ class MonsterCard : public Card{
         void PlayCard(vector<Card*>& field) override;
         bool isJustSummoned() const;
         void setJustSummoned(bool value);     
-        void clearSummonFlag();  
+        void clearSummonFlag();
+
+        void setCanSwitchPosition(bool val);
+        bool getCanSwitchPosition() const; 
+         
         void setAtk(int atk);
         void setDef(int def);
         bool activateEffect(Player& self, Player& opponent) override;
