@@ -218,8 +218,7 @@ bool DragonUnited::ActivateEffect(Player &self, Player &opponent) {// hiá»‡n táº
 
         card3->setAtk(card3->getAtk() + (100 * count));
 
-        writeLog("Opponent used [Dragon United] to gain " + 100*count );
-        writeLog(" atk for " + newfield[in]->getName() + ". Stay focus! \n");
+        writeLog("Opponent used [Dragon United] to gain " + to_string(100*count) + " atk for " + newfield[in]->getName() + ". Stay focus! \n");
     }
        
     return true; // Indicate success
@@ -495,8 +494,7 @@ bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) { //sm
             }
     }
     cout << "[The Power of Friendship] Activation Successful : Your friendship gained you " << newcard << " Attack this turn! Time to fight!" << endl;
-    writeLog("Opponent used [The Power of Friendship] and gained " + newcard); 
-    writeLog(" atk in one single attack. Focus on defense! \n");
+    writeLog("Opponent used [The Power of Friendship] and gained " + to_string(newcard) + " atk in one single attack. Focus on defense! \n");
     for(auto card4 : newfield2){
         if(card4->getType() == "Monster"){
             countmo++;
@@ -509,10 +507,7 @@ bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) { //sm
         if(newhp1 < 0){
             newhp1 = 0;
         }
-        writeLog("You do not have any monster card on field. [The Power of Friendship] attacked directly to your Hp and cost you " + newcard );
-        writeLog(" Hp \n");
-        writeLog("You have " + newhp1);
-        writeLog( " Hp left \n");
+        writeLog("You do not have any monster card on field. [The Power of Friendship] attacked directly to your Hp and cost you " + to_string(newcard) + " Hp \n You have " + to_string(newhp1) + " Hp left \n");
         opponent.setHp(newhp1);
     }
     
@@ -672,8 +667,7 @@ bool MajestyofTheWhiteDragons :: ActivateEffect(Player& self, Player& opponent) 
     
     cout << "[Majesty of the White Dragons] You have " << count << " Blue-Eyes White Dragon. Destroy " << count << " enemy's card!" << endl;
 
-    writeLog("Opponent used [Majesty of the White Dragons] when having " + count);
-    writeLog(" Blue-Eyes White Dragon. They destroyed : \n " );
+    writeLog("Opponent used [Majesty of the White Dragons] when having " + to_string(count) + "Blue-Eyes White Dragon. They destroyed : \n " );
 
     for (int i = 0; i < count; ++i){
         cout << "[Majesty of the White Dragons] Destroy : " << newfield2[i]->getName() << endl;
@@ -746,8 +740,7 @@ bool ThousandKnifes::ActivateEffect(Player& self, Player& opponent) {
         }while (in < 0 || in >= newfield2.size());
 
             cout << "[Thousand Knifes] Successfully destroy 1 card : " << newfield2[in]->getName() << endl;
-            writeLog("Opponent used [Thousand Knifes] to detroy " + newfield2[in]->getName());
-            writeLog(". Don't give up! \n");
+            writeLog("Opponent used [Thousand Knifes] to detroy " + newfield2[in]->getName() + ". Don't give up! \n");
             newfield2.erase(newfield2.begin() + in);
             opponent.setField(newfield2);
     }
@@ -804,8 +797,7 @@ bool CruelPact::ActivateEffect(Player& self, Player& opponent) {
     self.setField(newfield);
     self.setHand(newhand);
     cout << "[Cruel Pact] Successfully sacrifice " << namecard << " and 1000 Hp to add a Dark Magician with 200 bonus atk from your deck to your hand!" << endl;
-    writeLog("Opponent signed [Cruel Pact] and sacrifice "  + namecard);
-    writeLog( " and 1000 Hp to add a Dark Magician with 200 bonus atk from their deck to their hand! They really go that far? \n");
+    writeLog("Opponent signed [Cruel Pact] and sacrificed "  + namecard + " and 1000 Hp to add a Dark Magician with 200 bonus atk from their deck to their hand! They really go that far? \n");
     return true;
 
 
@@ -881,8 +873,7 @@ bool CallofTheSky::ActivateEffect(Player& self, Player& opponent) {
             string cardname1 = newfield[in1]->getName();
             string cardname2 = newfield[in2]->getName();
             cout << "[Call of The Sky] The Night Sky has heard your call and granted you Blue-Eyes White Dragon and Majesty of The White Dragons for the price of " << cardname1 << " and " << cardname2 << " !" << endl;
-            writeLog("Opponent used [Call of The Sky]. The Night Sky choose to help them with Blue-Eyes White Dragon and Majesty of The White Dragons for the price of " + cardname1);
-            writeLog(" and " + cardname2);
+            writeLog("Opponent used [Call of The Sky]. The Night Sky choose to help them with Blue-Eyes White Dragon and Majesty of The White Dragons for the price of " + cardname1 + " and " + cardname2);
             if (in1 > in2) swap(in1, in2);
                 newfield.erase(newfield.begin() + in2);
                 newfield.erase(newfield.begin() + in1);
@@ -990,10 +981,7 @@ bool Trrricksters :: ActivateEffect(Player& self, Player& opponent, int attacker
     cout << "[Trrricksters!!] Counterfire " << card->getAtk() << " atk directly to opponent's Hp!" << endl;
     opponent.setHp(opponent.getHp() - card->getAtk());
     cout << "Opponent now have " << opponent.getHp() << " Hp" << endl;
-    writeLog("[Trrricksters!!] Activate Effect : Your " + card->getName());
-    writeLog(" atk now attack your Hp directly! Your lose " + card->getAtk());
-    writeLog(" Hp\n You have " + opponent.getHp());
-    writeLog(" Hp left \n Maybe try to think next time?" );
+    writeLog("[Trrricksters!!] Activate Effect : Your " + card->getName() + " atk now attack your Hp directly! Your lose " + to_string(card->getAtk()) + " Hp\n You have " + to_string(opponent.getHp()) + " Hp left \n Maybe try to think next time?" );
     return true;// Indicate success
 }
 
