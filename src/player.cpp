@@ -276,9 +276,10 @@ void Player :: loadDeckDarkMagician(){
     deck.push_back(new MonsterCard("Beaver Warrior", 1200, 1500, "What this creature lacks in size it makes up for in defense when battling in the prairie.", index));
     deck.push_back(new MonsterCard("Mystical Elf", 800, 2000, "A delicate elf that lacks offense, but has a terrific defense backed by mystical power.", index));
     deck.push_back(new SpellCard("Re:End of a Dream", "If and only if your lifepoint is lower or equal to 1000 you can activate this card. When this card is activated, you can conduct anorther turn"));
-    deck.push_back(new SpellCard("Disorted Fate", "Look at your full deck and place a card you like at the top of the deck."));
+    deck.push_back(new SpellCard("Disorted Fate", "Look at your full deck and place a ca    rd you like at the top of the deck."));
     deck.push_back(new SpellCard("Oshama Scramble", "Shuffle your opponent's deck when this card is activated."));
     deck.push_back(new SpellCard("Dark Magic Veil", "Special summon a “Dark Magician” in the deck in defend position."));
+    deck.push_back(new SpellCard("Cruel Pact", "Pay 1000 Hp and tribute 1 monster on the field to search 1 Dark Magician from your deck and increase 200 ATK for the Dark Magician summon next turn."));
     deck.push_back(new SpellCard("Thousand Knifes", "If you control faceup Dark Magician: Target 1 monster your opponent controls; destroy that target.."));
     deck.push_back(new SpellCard("Dark Magic", " If you controll faceup a Dark Magician monster, destroy all monster your opponent controll."));
     deck.push_back(new SpellCard("Bond Between The Teacher and Student", "If you controll a “Dark Magician”, special summon from your deck a Dark Magician Girl in defend position but skip your battle phase"));
@@ -307,6 +308,7 @@ void Player :: loadDeckBlueEyes(){
     deck.push_back(new SpellCard("Oshama Scramble", "Shuffle your opponent's deck when this card is activated."));
     deck.push_back(new SpellCard("Flower Snow Drum n Bass", "Flip coin, winner gets draw 2 cards"));
     deck.push_back(new SpellCard("World Vanquisher", "Buff a monster attack by 200 when this card is activated."));
+    deck.push_back(new SpellCard("The Call of the Sky", "Tribute 2 monster on the field to search 1 BLue-Eyes WHite Dragon and Majesty of The White Dragons from your deck to your hand."));
     deck.push_back(new SpellCard("Dragon United", "Buff a monster attack and defense by 100 for each faceup monster you control when this card is activated."));
     deck.push_back(new SpellCard("Burst Stream of Destruction", "If you controll a Blue eye white dragon destroy all card your opponent controll but skip your next 2 battle phase."));
     deck.push_back(new SpellCard("Rage of The Blue Eyes", "Sacrifice 2/3 of your lifepoint, “Blue Eyes White Dragon” you controll can now attack twice in a turn ( can not active “Re:End of a dream” the turn you activate this card).")); 
