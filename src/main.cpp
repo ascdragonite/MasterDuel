@@ -121,6 +121,8 @@ int main() {
     vector<bool> oppAttacked;
 
     bool isFirstTurn = (player == "1");
+
+    vector<string> log;
     
     while (true) {
         json state = readFromFile();
@@ -193,7 +195,6 @@ int main() {
 
             if (!self->canTrap.empty() && self->canTrap[0] != -1) {
                 int index = ActivateTrapCards(self->canTrap, *self, *opponent, attackerIndex) ;
-                cout << "trap did the thing" << endl;
                 self->canTrap.clear();
                 
                 self->canTrap.push_back(-1);
@@ -204,14 +205,16 @@ int main() {
                 j["Player2"] = *player2;
                 writeToFile(j);
                 self->canTrap.clear();
-                cout << "xdxdxd" << endl;
 
             } else{
                 static int linesSeen = 0;
                 gameState->ConsoleClear();
+                gameState->printFields(*self, *opponent);
                 cout << "Waiting for your turn...\n";
-
-                monitorLog(linesSeen);
+                log = getLastLogLines(3);
+                for (const auto& line : log) {
+                    cout << line << endl;
+                }
                 this_thread::sleep_for(std::chrono::milliseconds(1000));
             }
         }

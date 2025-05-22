@@ -97,6 +97,28 @@ json readFromFile() {
         return json();
     }
 }
+
+void GameState::printFields(const Player& self, const Player& opponent)
+{
+    cout << "\n---------------ENEMY (" << opponent.getHp() << ")--------------\n" << endl;
+        vector<Card*> enemyField = opponent.getField();
+
+        for (int i = 0; i < enemyField.size(); ++i) {
+            cout << i << ": ";
+
+            // Nếu là Monster
+            enemyField[i]->showInfo(true);  // Giả sử spell không bị úp
+
+            cout << "\n \n";
+        }
+        cout << "\n----------------YOU (" << self.getHp() << ")---------------\n " << endl;
+        for (int i = 0; i < self.getField().size(); ++i) {
+            cout << i << ": ";
+            self.getField()[i]->showInfo();
+            cout << "\n \n";
+        }
+}
+
 void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
 
     ofstream clearLog("log.txt");
@@ -128,11 +150,11 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
         from_json(j["Player2"], *player2);
 
         ConsoleClear();
-        cout << "Hand: " << endl;;
+        cout << "------------------Hand------------------" << endl;;
         int i = 0;
         vector<Card*> hand = self.getHand();
         for (int i = 0; i < hand.size(); ++i) {
-            cout << "-------------------------\n";
+            cout << "\n";
             cout << i << ": ";
 
             if (hand[i]->getType() == "Monster") {
@@ -151,24 +173,9 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
                 // Spell hoặc Trap thì vẫn dùng showInfo()
             }
         }
-        cout << "-------------------------\n";
-        cout << "\nEnemy Field:\n" << endl;
-        vector<Card*> enemyField = opponent.getField();
+        cout << "\n";
 
-        for (int i = 0; i < enemyField.size(); ++i) {
-            cout << i << ": ";
-
-            // Nếu là Monster
-            enemyField[i]->showInfo(true);  // Giả sử spell không bị úp
-
-            cout << "\n \n";
-        }
-        cout << "\nYour Field: \n " << endl;
-        for (int i = 0; i < self.getField().size(); ++i) {
-            cout << i << ": ";
-            self.getField()[i]->showInfo();
-            cout << "\n \n";
-        }
+        printFields(self, opponent);
 
         cout << "\nChoose an action:\n";
         cout << "0: End Turn\n";
@@ -520,7 +527,7 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
         *atkCard += *defCard; //operator overload
         opponent.canTrap.clear();
     } else if (trapCardIndexes.size() == 2 && trapCardIndexes[0] == -1) {
-        cout << "Trap Card " << defField[trapCardIndexes[0]]->getName() << " activated!" << endl;
+        cout << "Trap Card " << defField[trapCardIndexes[1]]->getName() << " activated!" << endl;
         opponent.canTrap.clear();
     }
     this_thread::sleep_for(chrono::milliseconds(1000));

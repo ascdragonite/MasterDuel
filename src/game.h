@@ -17,6 +17,7 @@ public:
     void playerTurn(Player &self, Player &opponent, bool isFirstTurn);
     void battlePhase(Player &self, Player &opponent, int index);
     bool checkVictory(const Player &p1, const Player &p2);
+    void printFields(const Player& self, const Player& opponent);
 };
 
 #endif

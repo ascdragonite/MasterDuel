@@ -6,6 +6,7 @@
 #include <iostream>
 #include <ctime>
 #include <cstring>
+#include <vector>
 
 inline void writeLog(const std::string& message) {
     std::ofstream out("log.txt", std::ios::app);
@@ -31,5 +32,14 @@ inline void monitorLog(int& linesSeen) {
 
     linesSeen = currentLine;
 }
-
+inline std::vector<std::string> getLastLogLines(int n = 3) {
+    std::ifstream log("log.txt");
+    std::vector<std::string> lines;
+    std::string line;
+    while (std::getline(log, line)) {
+        lines.push_back(line);
+    }
+    int start = lines.size() > n ? lines.size() - n : 0;
+    return std::vector<std::string>(lines.begin() + start, lines.end());
+}
 #endif
