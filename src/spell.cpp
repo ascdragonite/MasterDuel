@@ -1100,11 +1100,11 @@ bool EnternalSoul::ActivateEffect(Player& self, Player& opponent) {
     }
 
     if (revealableIndexes.empty()) {
-        cout << "[Enternal Soul] Activation failed: You must reveal a card in your hand that mentions Dark Magician." << endl;
+        cout << "[Enternal Soul] Activation failed: You must reveal a card in your hand that mentions 'Dark Magician'." << endl;
         return false;
     }
 
-    cout << "[Enternal Soul] Reveal a card from your hand that mentions Dark Magician:" << endl;
+    cout << "[Enternal Soul] Reveal a card from your hand that mentions 'Dark Magician':" << endl;
     for (int i = 0; i < revealableIndexes.size(); ++i) {
         int idx = revealableIndexes[i];
         cout << "[" << i << "] " << hand[idx]->getName() << endl;
@@ -1118,12 +1118,11 @@ bool EnternalSoul::ActivateEffect(Player& self, Player& opponent) {
 
     int handIndex = revealableIndexes[revealChoice];
     Card* revealedCard = hand[handIndex];
-
     cout << "[Enternal Soul] You revealed: " << revealedCard->getName() << endl;
 
-    deck.insert(deck.begin(), revealedCard);
-    hand.erase(hand.begin() + handIndex);
+    // Không đưa lại vào deck nữa — giữ nguyên trên tay
 
+    // Tìm quái vật có mention "Dark Magician" trong deck
     vector<int> validIndexes;
     for (int i = 0; i < deck.size(); ++i) {
         if (deck[i]->getType() == "Monster" &&
@@ -1162,7 +1161,9 @@ bool EnternalSoul::ActivateEffect(Player& self, Player& opponent) {
         cin >> choice2;
         if (choice2 != -1 && choice2 >= 0 && choice2 < validIndexes.size() && choice2 != choice1) {
             int index2 = validIndexes[choice2];
-            if (index2 > index1) index2--; // adjust if needed
+            // Nếu index2 đứng sau index1 đã bị xóa thì giảm 1
+            if (index2 > index1) index2--;
+
             MonsterCard* m2 = dynamic_cast<MonsterCard*>(deck[index2]);
             m2->setDefenseMode(true);
             m2->setFacedown(false);
@@ -1172,10 +1173,13 @@ bool EnternalSoul::ActivateEffect(Player& self, Player& opponent) {
         }
     }
 
-    for (Card* c : summoned) field.push_back(c);
+    for (Card* c : summoned) {
+        field.push_back(c);
+    }
 
     self.setDeck(deck);
-    self.shuffleDeck();
+    self.setField(field);
+    self.setHand(hand); // hand vẫn giữ nguyên
 
     if (!summoned.empty()) {
         cout << "[Enternal Soul] You summoned: ";
@@ -1193,14 +1197,11 @@ bool EnternalSoul::ActivateEffect(Player& self, Player& opponent) {
     }
 
     if (hasRod && hasSoul) {
-     for (int i = 0; i < 2; ++i) {
-        self.drawCard();
-     }
+        for (int i = 0; i < 2; ++i) {
+            self.drawCard();
+        }
         cout << "[Enternal Soul] You summoned both Rod and Soul, so you draw 2 cards successfully!" << endl;
     }
-
-    self.setField(field);
-    self.setHand(hand);
 
     string logMsg = "Opponent activated [Enternal Soul], special summoned ";
     for (int i = 0; i < summoned.size(); ++i) {
@@ -1214,30 +1215,42 @@ bool EnternalSoul::ActivateEffect(Player& self, Player& opponent) {
 }
 
 bool IllusionMagic::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> field = self.getField();
     vector<Card*> hand = self.getHand();
     vector<Card*> deck = self.getDeck();
 
-    if (hand.empty()) {
-        cout << "[Illusion Magic] Activation failed: No card in hand to discard." << endl;
+    // Tìm monster trên sân có mention "Dark Magician"
+    vector<int> tributeCandidates;
+    for (int i = 0; i < field.size(); ++i) {
+        if (field[i]->getType() == "Monster" &&
+            field[i]->getDescription().find("Dark Magician") != string::npos) {
+            tributeCandidates.push_back(i);
+        }
+    }
+
+    if (tributeCandidates.empty()) {
+        cout << "[Illusion Magic] Activation Failed: You have no monster on the field that mentions 'Dark Magician'." << endl;
         return false;
     }
 
-    cout << "[Illusion Magic] Choose 1 card to discard:" << endl;
-    for (int i = 0; i < hand.size(); ++i) {
-        cout << "[" << i << "] " << hand[i]->getName() << " - " << hand[i]->getDescription() << endl;
+    // Chọn 1 quái vật để hiến tế
+    cout << "[Illusion Magic] Choose 1 monster that mentions 'Dark Magician' to tribute:" << endl;
+    for (int i = 0; i < tributeCandidates.size(); ++i) {
+        int idx = tributeCandidates[i];
+        cout << "[" << i << "] " << field[idx]->getName() << " - " << field[idx]->getDescription() << endl;
     }
 
-    int discardIndex = -1;
+    int tributeChoice = -1;
     do {
         cout << "Index: ";
-        cin >> discardIndex;
-    } while (discardIndex < 0 || discardIndex >= hand.size());
+        cin >> tributeChoice;
+    } while (tributeChoice < 0 || tributeChoice >= tributeCandidates.size());
 
-    string discardedName = hand[discardIndex]->getName();
-    hand.erase(hand.begin() + discardIndex);
+    int fieldIndex = tributeCandidates[tributeChoice];
+    string tributedName = field[fieldIndex]->getName();
+    field.erase(field.begin() + fieldIndex);
 
-    cout << "[Illusion Magic] Discarded: " << discardedName << endl;
-
+    // Tìm các quái vật trong deck mention "Dark Magician"
     vector<int> validIndexes;
     for (int i = 0; i < deck.size(); ++i) {
         if (deck[i]->getType() == "Monster" &&
@@ -1247,13 +1260,15 @@ bool IllusionMagic::ActivateEffect(Player& self, Player& opponent) {
     }
 
     if (validIndexes.size() < 2) {
-        cout << "[Illusion Magic] Not enough valid monster cards in deck that mention 'Dark Magician'." << endl;
+        cout << "[Illusion Magic] Failed: Not enough valid monsters in deck that mention 'Dark Magician'." << endl;
         return false;
     }
 
+    // Chọn 2 bài để thêm vào tay
     cout << "[Illusion Magic] Choose 2 monster cards from your deck that mention 'Dark Magician':" << endl;
     for (int i = 0; i < validIndexes.size(); ++i) {
-        cout << "[" << i << "] " << deck[validIndexes[i]]->getName() << " - " << deck[validIndexes[i]]->getDescription() << endl;
+        cout << "[" << i << "] " << deck[validIndexes[i]]->getName()
+             << " - " << deck[validIndexes[i]]->getDescription() << endl;
     }
 
     int index1 = -1, index2 = -1;
@@ -1262,9 +1277,11 @@ bool IllusionMagic::ActivateEffect(Player& self, Player& opponent) {
         cin >> index1;
         cout << "Second index: ";
         cin >> index2;
+
         if (index1 == index2) {
             cout << "You must choose two different cards." << endl;
         }
+
     } while (
         index1 < 0 || index1 >= validIndexes.size() ||
         index2 < 0 || index2 >= validIndexes.size() ||
@@ -1274,28 +1291,87 @@ bool IllusionMagic::ActivateEffect(Player& self, Player& opponent) {
     int deckIndex1 = validIndexes[index1];
     int deckIndex2 = validIndexes[index2];
 
-    Card* added1 = deck[deckIndex1];
-    Card* added2 = deck[deckIndex2];
+    // Thêm vào tay (giữ nguyên cách làm giống Call of The Sky)
+    Card* card1 = deck[deckIndex1];
+    Card* card2 = deck[deckIndex2];
 
-    if (deckIndex1 > deckIndex2) swap(deckIndex1, deckIndex2);
+    hand.push_back(card1);
+    hand.push_back(card2);
 
-    deck.erase(deck.begin() + deckIndex2);
-    deck.erase(deck.begin() + deckIndex1);
+    // Xoá khỏi deck (theo thứ tự lớn trước)
+    if (deckIndex1 > deckIndex2) {
+        deck.erase(deck.begin() + deckIndex1);
+        deck.erase(deck.begin() + deckIndex2);
+    } else {
+        deck.erase(deck.begin() + deckIndex2);
+        deck.erase(deck.begin() + deckIndex1);
+    }
 
-    hand.push_back(added1);
-    hand.push_back(added2);
+    cout << "[Illusion Magic] You tributed " << tributedName
+         << " and added " << card1->getName() << " and " << card2->getName() << " to your hand!" << endl;
 
-    cout << "[Illusion Magic] You added " << added1->getName() << " and " << added2->getName() << " to your hand." << endl;
+    writeLog("Opponent activated [Illusion Magic]. Tributed " + tributedName +
+             ", added " + card1->getName() + " and " + card2->getName() + " to their hand.");
 
-    writeLog("Opponent activated [Illusion Magic]. Discarded: " + discardedName +
-             ". Added: " + added1->getName() + " and " + added2->getName() + " to their hand.");
-
+    // Cập nhật lại trạng thái
+    self.setField(field);
     self.setDeck(deck);
     self.setHand(hand);
     return true;
 }
 
+bool ApprenticeHelper::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> newfield = self.getField();
+    vector<Card*> newdeck = self.getDeck();
+    bool hasApprentice = false;
 
+    for (int i = 0; i < newdeck.size(); i++) {
+        if (newdeck[i]->getName() == "Magicians Apprentice") {
+            MonsterCard* apprentice = dynamic_cast<MonsterCard*>(newdeck[i]);
+            newdeck.erase(newdeck.begin() + i);
+            apprentice->setDefenseMode(true);
+            apprentice->setFacedown(false);
+            apprentice->setJustSummoned(true);
+            newfield.push_back(apprentice);
+            hasApprentice = true;
+            break;
+        }
+    }
+
+    if (!hasApprentice) {
+        cout << "[Apprentice Helper] Activation failed: No 'Magicians Apprentice' in your deck." << endl;
+        return false;
+    }
+
+    cout << "[Apprentice Helper] Special Summon 'Magicians Apprentice' successfully in defense position." << endl;
+
+    // Tính số lá rút
+    int drawCount = 0;
+    for (Card* c : newfield) {
+        if (c->getType() == "Monster" &&
+            c->getDescription().find("Dark Magician") != string::npos) {
+            drawCount++;
+        }
+    }
+
+    if (drawCount > 2) drawCount = 2;
+
+    for (int i = 0; i < drawCount; ++i) {
+        self.drawCard();
+    }
+
+    if (drawCount > 0) {
+        cout << "[Apprentice Helper] You control monster(s) that mention 'Dark Magician', so you draw " << drawCount << " card(s)." << endl;
+    } else {
+        cout << "[Apprentice Helper] No monster you control mentions 'Dark Magician', you draw nothing." << endl;
+    }
+
+    writeLog("Opponent used [Apprentice Helper] to Special Summon 'Magicians Apprentice' and drew " + to_string(drawCount) + " card(s).");
+
+    self.setDeck(newdeck);
+    self.setField(newfield);
+    return true;
+}
 
 
 
