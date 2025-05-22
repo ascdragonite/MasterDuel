@@ -749,60 +749,92 @@ return true; // Indicate success
 }
 
 bool CruelPact::ActivateEffect(Player& self, Player& opponent) {
-    vector<Card*> newfield = self.getField();
-    vector<Card*> newhand = self.getHand();
-    vector<Card*> newdeck = self.getDeck();
-    vector<Card*> newdeckself;
+    vector<Card*> newField = self.getField();
+    vector<Card*> newHand = self.getHand();
+    vector<Card*> newDeck = self.getDeck();
+
+    bool hasMonster = false;
     bool hasDM = false;
-    bool hasM = false;
-    for(auto card1 : newfield){
-        if(card1->getType() == "Monster"){
-            hasM = true;
+
+    // Kiểm tra có quái vật trên sân không
+    for (Card* card : newField) {
+        if (card->getType() == "Monster") {
+            hasMonster = true;
             break;
         }
     }
-    if(hasM == false){
-        cout << "[Cruel Pact] Activation Failed : You do not control any monster card!" << endl;
+
+    if (!hasMonster) {
+        cout << "[Cruel Pact] Activation Failed: You do not control any monster card!" << endl;
         return false;
     }
-    for(int i = 0; i < newdeck.size();i++){     
-        if(newdeck[i]->getName() == "Dark Magician"){
-            MonsterCard *DM = dynamic_cast<MonsterCard *>(newdeck[i]);
-            newdeck.erase(newdeck.begin()+i);
-            DM->setAtk(DM->getAtk() + 200);
-            newhand.push_back(DM);
-            hasDM = true;  
-            break;
+
+    // Tìm Dark Magician và tạo bản sao an toàn
+    MonsterCard* copiedDM = nullptr;
+    int DMIndex = -1;
+
+    for (int i = 0; i < static_cast<int>(newDeck.size()); ++i) {
+        if (newDeck[i]->getName() == "Dark Magician") {
+            MonsterCard* originalDM = dynamic_cast<MonsterCard*>(newDeck[i]);
+
+            if (originalDM) {
+                copiedDM = new MonsterCard(*originalDM); // Sao chép an toàn
+                copiedDM->setAtk(copiedDM->getAtk() + 200);
+                DMIndex = i;
+                hasDM = true;
+                break;
+            }
         }
     }
-    if(hasM == true && hasDM == true){
-        int in;
-        do{
-            cout << "[Cruel Pact] Choose a monster card to tribute : " << endl;
-            cin >> in;
-            if(in<0 || in >=newfield.size()){
-                cout << "Invalid Index. Please choose again!" << endl;
-                continue;
-            }
-            if(newfield[in]->getType() != "Monster"){
-                cout << "You need to choose a monster card. Try again!" << endl;
-            }
-        }while(newfield[in]->getType() != "Monster" || in<0 || in >=newfield.size());
 
-        string namecard = newfield[in]->getName();
-        
-    newfield.erase(newfield.begin() + in);
+    if (!hasDM || copiedDM == nullptr) {
+        cout << "[Cruel Pact] Activation Failed: No usable Dark Magician in deck!" << endl;
+        return false;
+    }
+
+    // Chọn quái vật để hi sinh
+    int tributeIndex = -1;
+    do {
+        cout << "[Cruel Pact] Choose a monster card to tribute: " << endl;
+        for (int i = 0; i < static_cast<int>(newField.size()); ++i) {
+            if (newField[i]->getType() == "Monster") {
+                cout << "  [" << i << "] " << newField[i]->getName() << endl;
+            }
+        }
+
+        cin >> tributeIndex;
+
+        if (tributeIndex < 0 || tributeIndex >= static_cast<int>(newField.size())) {
+            cout << "Invalid index. Please choose again!" << endl;
+            tributeIndex = -1;
+        } else if (newField[tributeIndex]->getType() != "Monster") {
+            cout << "You must tribute a monster. Try again!" << endl;
+            tributeIndex = -1;
+        }
+    } while (tributeIndex == -1);
+
+    // Lưu tên để ghi log
+    string tributeName = newField[tributeIndex]->getName();
+
+    // Thực hiện hi sinh và cập nhật
+    newField.erase(newField.begin() + tributeIndex);
+    newHand.push_back(copiedDM);
+    newDeck.erase(newDeck.begin() + DMIndex); // Xoá sau khi sao chép
+
     self.setHp(self.getHp() - 1000);
-    self.setDeck(newdeck);
-    self.setField(newfield);
-    self.setHand(newhand);
-    cout << "[Cruel Pact] Successfully sacrifice " << namecard << " and 1000 Hp to add a Dark Magician with 200 bonus atk from your deck to your hand!" << endl;
-    writeLog("Opponent signed [Cruel Pact] and sacrificed "  + namecard + " and 1000 Hp to add a Dark Magician with 200 bonus atk from their deck to their hand! They really go that far? \n");
+    self.setField(newField);
+    self.setHand(newHand);
+    self.setDeck(newDeck);
+
+    cout << "[Cruel Pact] Successfully sacrificed " << tributeName
+         << " and 1000 HP to add a powered-up Dark Magician to your hand!" << endl;
+
+    writeLog("Player used [Cruel Pact], sacrificed " + tributeName +
+             " and 1000 HP to add a Dark Magician (+200 ATK) from their deck to hand.\n");
+
     return true;
-
-
 }
-}
+
 
 bool CallofTheSky::ActivateEffect(Player& self, Player& opponent) {
     vector<Card*> newfield = self.getField();
@@ -872,8 +904,8 @@ bool CallofTheSky::ActivateEffect(Player& self, Player& opponent) {
         if(hasMoTWD == true && hasBEWD == true){
             string cardname1 = newfield[in1]->getName();
             string cardname2 = newfield[in2]->getName();
-            cout << "[Call of The Sky] The Night Sky has heard your call and granted you Blue-Eyes White Dragon and Majesty of The White Dragons for the price of " << cardname1 << " and " << cardname2 << " !" << endl;
-            writeLog("Opponent used [Call of The Sky]. The Night Sky choose to help them with Blue-Eyes White Dragon and Majesty of The White Dragons for the price of " + cardname1 + " and " + cardname2);
+            cout << "[Call of The Sky] The Blue Sky has heard your call and granted you Blue-Eyes White Dragon and Majesty of The White Dragons for the price of " << cardname1 << " and " << cardname2 << " !" << endl;
+            writeLog("Opponent used [Call of The Sky]. The Blue Sky choose to help them with Blue-Eyes White Dragon and Majesty of The White Dragons for the price of " + cardname1 + " and " + cardname2);
             if (in1 > in2) swap(in1, in2);
                 newfield.erase(newfield.begin() + in2);
                 newfield.erase(newfield.begin() + in1);
