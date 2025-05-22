@@ -1,2 +1,6 @@
-[Thu May 22 09:21:23 2025] Player activated [The Ancient Knowledge], added Dark Magic Veil to their hand, then shuffled the deck.
-[Thu May 22 09:21:23 2025] Opponent activated a Spell card: The Ancient knowledge
+[Thu May 22 11:00:08 2025] Opponent declared an attack from Morimori Atsushi targeting opponent's card at index 0.
+[Thu May 22 11:00:12 2025] [Mirror Force] Activate Effect : Your 
+[Thu May 22 11:00:12 2025] Morimori Atsushi
+
+[Thu May 22 11:00:12 2025]  has been destroyed! Be careful nextime. 
+

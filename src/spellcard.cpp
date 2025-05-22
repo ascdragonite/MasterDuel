@@ -9,7 +9,7 @@ SpellCard :: SpellCard(string name, string description) : Card(name, "Spell", de
   this -> spell = getEffectInstance(name);
 }
 
-void SpellCard :: showInfo() const{
+void SpellCard :: showInfo(bool hidden) const{
     cout << "Name: " << getName() << endl;
     cout << "Type: " << getType() << endl;
     cout << "Description: " << getDescription() << endl;

@@ -176,7 +176,7 @@ void Player::revealMonster(int fieldIndex) {
         if (m && m->isFacedown()) {
             m->reveal();                       
             m->setDefenseMode(false);          
-            m->showInfo();
+            field[fieldIndex]->showInfo();
         }
     }
     DumpInfo(*this);

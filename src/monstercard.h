@@ -27,8 +27,7 @@ class MonsterCard : public Card{
         void setOwner(int owner);
 
         MonsterCard& operator+=(MonsterCard& other);
-        void showInfo() const override;
-        void showInfoHidden() const;
+        void showInfo(bool hidden) const override;
         void setDefenseMode(bool mode);
         bool isInDefense() const;
         void reveal();

@@ -18,7 +18,7 @@ GameState *GameState::instance = nullptr;
 // commit
 
 void GameState::ConsoleClear() {
-    //cout << "\033[2J\033[H\033[3J";
+    cout << "\033[2J\033[H\033[3J";
 }
 
 GameState *GameState::getInstance() {
@@ -128,60 +128,46 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
         from_json(j["Player2"], *player2);
 
         ConsoleClear();
-        cout << "Hand: ";
+        cout << "Hand: " << endl;;
         int i = 0;
         vector<Card*> hand = self.getHand();
         for (int i = 0; i < hand.size(); ++i) {
             cout << "-------------------------\n";
-            cout << "Index " << i << ":\n";
+            cout << i << ": ";
 
             if (hand[i]->getType() == "Monster") {
                 // Cast sang MonsterCard và in thủ công, không dùng showInfo()
                 MonsterCard* monster = dynamic_cast<MonsterCard*>(hand[i]);
                 if (monster) {
-                    cout << "Name: " << monster->getName() << endl;
-                    cout << "Type: " << monster->getType() << endl;
+                    cout << monster->getName();
+                    cout << " (Monster)" << endl;
                     cout << "Atk: " << monster->getAtk() << " Def: " << monster->getDef() << endl;
                     // Không in position
                 }
             } else {
+                cout << hand[i]->getName();
+                cout << " (" << hand[i]->getType() << ")" << endl;
+                cout << "Description: " << hand[i]->getDescription() << endl;
                 // Spell hoặc Trap thì vẫn dùng showInfo()
-                hand[i]->showInfo();
             }
         }
         cout << "-------------------------\n";
-        cout << "\nEnemy Field:\n";
+        cout << "\nEnemy Field:\n" << endl;
         vector<Card*> enemyField = opponent.getField();
 
         for (int i = 0; i < enemyField.size(); ++i) {
-            cout << "Index " << i << ": ";
+            cout << i << ": ";
 
             // Nếu là Monster
-            if (enemyField[i]->getType() == "Monster") {
-                MonsterCard* mc = dynamic_cast<MonsterCard*>(enemyField[i]);
-                if (mc) {
-                    mc->showInfoHidden();  // Giấu thông tin nếu bị úp
-                }
-            }
-            // Nếu là Trap
-            else if (enemyField[i]->getType() == "Trap") {
-                TrapCard* trap = dynamic_cast<TrapCard*>(enemyField[i]);
-                if (trap) {
-                    trap->showInfoHiddenTrap();  // Hiện facedown nếu chưa lật
-                }
-            }
-            // Spell hoặc các loại khác (nếu có)
-            else {
-                enemyField[i]->showInfo();  // Giả sử spell không bị úp
-            }
+            enemyField[i]->showInfo(true);  // Giả sử spell không bị úp
 
-            cout << " | ";
+            cout << "\n \n";
         }
-        cout << "\n Your Field: ";
+        cout << "\nYour Field: \n " << endl;
         for (int i = 0; i < self.getField().size(); ++i) {
-            cout << i << ". ";
+            cout << i << ": ";
             self.getField()[i]->showInfo();
-            cout << " | ";
+            cout << "\n \n";
         }
 
         cout << "\nChoose an action:\n";
@@ -297,7 +283,7 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
                         }
 
                         mc->flipSummon(); // lật ngửa + chuyển sang attack
-                        mc->showInfo();   // in đầy đủ thông tin
+                        self.getField()[index]->showInfo();   // in đầy đủ thông tin
 
                         writeLog("Opponent flip summon their monster: " + mc->getName());
 
@@ -507,7 +493,7 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
     if (defCard->isFacedown()) {
         defCard->reveal();
         cout << "The defending card was face-down. It is now revealed:\n";
-        defCard->showInfo();
+        defField[defendIndex]->showInfo();
     }
 
     // Ghi lại trap
