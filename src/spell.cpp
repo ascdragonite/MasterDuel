@@ -957,6 +957,7 @@ bool CallofTheSky::ActivateEffect(Player& self, Player& opponent) {
             }
             opponent.setField(newfieldopp);
             cout << "[Ash Again] Activate successfully! All opponent's trap cards have returned to ashes. Destroy the enemy now!" << endl;
+            writeLog("Opponent used [Ash Again] to disable all trap cards in our field. We can not fool them.");
         }
     return true;
 }
@@ -1047,9 +1048,9 @@ bool MirrorForce::ActivateEffect(Player& self, Player& opponent) { //cần check
             newfieldopp.push_back(card1);
         }
     }
-    if(candestroy == false){
+    /*if(candestroy == false){
         cout << "[Mirror Force] Opponent do not have any monster in attack position" << endl;
-    }
+    }*/
     writeLog(" has been destroyed! Be careful nextime. \n");
     opponent.setField(newfieldopp);
     return true; // Indicate success
