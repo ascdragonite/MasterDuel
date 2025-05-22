@@ -1,9 +1,0 @@
-[Thu May 22 09:59:36 2025] Opponent used [Flower Snow Drum n Bass] and drew you 2 cards. Thank you, I guess? 
-
-[Thu May 22 09:59:36 2025] Opponent activated a Spell card: Flower Snow Drum n Bass
-[Thu May 22 10:01:31 2025] Opponent summoned a monster in attack position.
-[Thu May 22 10:01:42 2025] Opponent attacked directly with Blue-Eyes White Dragon for 3000 damage.
-[Thu May 22 10:01:47 2025] Opponent used [Rage of The Blue Eyes] to sacrifice 2/3 Hp for Blue-Eyes White Dragon's 1 more extra turn. Becareful! 
-
-[Thu May 22 10:01:47 2025] Opponent activated a Spell card: Rage of The Blue Eyes
-[Thu May 22 10:01:54 2025] Opponent attacked directly with Blue-Eyes White Dragon for 3000 damage.

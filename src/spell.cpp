@@ -333,7 +333,7 @@ bool DarkMagic::ActivateEffect(Player& self, Player& opponent) {
         cout << "[Dark Magic] Activate successfully! All opponent's monster cards are destroyed. You can not attack for 2 turns!" << endl;
 
         writeLog("Opponent used [Dark Magic] to destroy all of your monster cards in the cost of losing 2 battle phases. Attack them now!");
-        self.setSkipBattlePhaseCount(2);
+        self.setSkipBattlePhaseCount(1);
         opponent.setField(newfieldopp);
     }
 
