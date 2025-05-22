@@ -1,2 +1,3 @@
-[Thu May 22 01:32:00 2025] Opponent summoned a monster in attack position.
-[Thu May 22 01:32:08 2025] Opponent activated a Spell card: Cruel Pact
+[Thu May 22 08:44:03 2025] Opponent signed [Cruel Pact] and sacrificed Griffore and 1000 Hp to add a Dark Magician with 200 bonus atk from their deck to their hand! They really go that far? 
+
+[Thu May 22 08:44:03 2025] Opponent activated a Spell card: Cruel Pact

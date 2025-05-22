@@ -451,8 +451,8 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
             writeToFile(j);
 
             auto temp = trapCardIndexes;
-            while (temp == trapCardIndexes) {
-                cout << "index unchanged" << endl;
+            while (temp == trapCardIndexes && !temp.empty()) {
+                //cout << "index unchanged" << endl;
                 for (int index : trapCardIndexes)
                 {
                     cout << index << endl;
@@ -463,7 +463,7 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
                 trapCardIndexes = opponent.canTrap;
                 this_thread::sleep_for(chrono::milliseconds(1000));
             }
-            if (trapCardIndexes.size() == 1 && trapCardIndexes[0] == -1) {
+            if (temp.empty() || (trapCardIndexes.size() == 1 && trapCardIndexes[0] == -1)) {
                 opponent.canTrap.clear();
                 int damage = atkCard->getAtk();
                 opponent.takeDamage(damage);
@@ -522,15 +522,15 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
 
     while (temp == trapCardIndexes && !temp.empty()) 
     {
-        cout << "index unchanged" << endl;
+        //cout << "index unchanged" << endl;
         json state = readFromFile();
         from_json(state["Player" + to_string(opponent.getIndex())], opponent);
         from_json(state["Player" + to_string(self.getIndex())], self);
         trapCardIndexes = opponent.canTrap;
         this_thread::sleep_for(chrono::milliseconds(1000));
     }
-    cout << "index changed" << endl;
-    if (trapCardIndexes.size() == 1 && trapCardIndexes[0] == -1) {
+    //cout << "index changed" << endl;
+    if (temp.empty() || (trapCardIndexes.size() == 1 && trapCardIndexes[0] == -1)) {
         *atkCard += *defCard; //operator overload
         opponent.canTrap.clear();
     } else if (trapCardIndexes.size() == 2 && trapCardIndexes[0] == -1) {
