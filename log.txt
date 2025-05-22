@@ -1,0 +1,3 @@
+[Thu May 22 18:57:19 2025] Opponent summoned a monster in attack position.
+[Thu May 22 18:57:32 2025] Opponent used [Soul Servant] to place Enternal Soul to the top of their deck.
+[Thu May 22 18:57:32 2025] Opponent drew 1 card(s) using [Soul Servant].
