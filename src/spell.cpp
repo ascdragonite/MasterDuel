@@ -974,7 +974,6 @@ bool TheAncientKnowledge::ActivateEffect(Player& self, Player& opponent) {
 
     vector<pair<int, Card*>> validCards;
 
-    // Tìm tất cả lá có mô tả chứa "Dark Magician"
     for (int i = 0; i < static_cast<int>(newDeck.size()); ++i) {
         string desc = newDeck[i]->getDescription();
         if (desc.find("Dark Magician") != string::npos) {
@@ -987,7 +986,6 @@ bool TheAncientKnowledge::ActivateEffect(Player& self, Player& opponent) {
         return false;
     }
 
-    // Hiển thị danh sách cho người chơi chọn
     cout << "[The Ancient Knowledge] Cards that mention 'Dark Magician':" << endl;
     for (int i = 0; i < static_cast<int>(validCards.size()); ++i) {
         cout << "  [" << i << "] " << validCards[i].second->getName()
@@ -1010,11 +1008,9 @@ bool TheAncientKnowledge::ActivateEffect(Player& self, Player& opponent) {
     newHand.push_back(selectedCard);
     newDeck.erase(newDeck.begin() + deckIndex);
 
-    // Cập nhật lại deck và hand
     self.setDeck(newDeck);
     self.setHand(newHand);
 
-    // Shuffle bằng hàm có sẵn
     self.shuffleDeck();
 
     cout << "[The Ancient Knowledge] You have added " << selectedCard->getName()
@@ -1030,7 +1026,6 @@ bool SoulServant::ActivateEffect(Player& self, Player& opponent) {
     vector<Card*> deck = self.getDeck();
     vector<Card*> field = self.getField();
 
-    // Tìm các lá trong deck mention "Dark Magician"
     vector<int> validIndexes;
     for (int i = 0; i < deck.size(); ++i) {
         if (deck[i]->getDescription().find("Dark Magician") != string::npos) {
