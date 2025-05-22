@@ -100,7 +100,8 @@ json readFromFile() {
 
 void GameState::printFields(const Player& self, const Player& opponent)
 {
-    cout << "\n---------------ENEMY (" << opponent.getHp() << ")--------------\n" << endl;
+
+    cout << "\n--------------- ENEMY (" << opponent.getHp() << ") --------------\n" << endl;
         vector<Card*> enemyField = opponent.getField();
 
         for (int i = 0; i < enemyField.size(); ++i) {
@@ -111,7 +112,7 @@ void GameState::printFields(const Player& self, const Player& opponent)
 
             cout << "\n \n";
         }
-        cout << "\n----------------YOU (" << self.getHp() << ")---------------\n " << endl;
+        cout << "\n---------------- YOU (" << self.getHp() << ") ---------------\n " << endl;
         for (int i = 0; i < self.getField().size(); ++i) {
             cout << i << ": ";
             self.getField()[i]->showInfo();
@@ -150,7 +151,7 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
         from_json(j["Player2"], *player2);
 
         ConsoleClear();
-        cout << "------------------Hand------------------" << endl;;
+        cout << "  ------------------- Hand ------------------" << endl;
         int i = 0;
         vector<Card*> hand = self.getHand();
         for (int i = 0; i < hand.size(); ++i) {
@@ -177,7 +178,7 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
 
         printFields(self, opponent);
 
-        cout << "\nChoose an action:\n";
+        cout << "\n================ YOUR TURN ================\n";
         cout << "0: End Turn\n";
         cout << "1: Play Card\n";
         cout << "2: Switch Monster Position\n";

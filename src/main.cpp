@@ -210,7 +210,7 @@ int main() {
                 static int linesSeen = 0;
                 gameState->ConsoleClear();
                 gameState->printFields(*self, *opponent);
-                cout << "Waiting for your turn...\n";
+                cout << "\n-------... WAITING FOR YOUR TURN ...-------" << endl;
                 log = getLastLogLines(3);
                 for (const auto& line : log) {
                     cout << line << endl;
