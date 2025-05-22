@@ -520,7 +520,7 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
 
     auto temp = trapCardIndexes;
 
-    while (temp == trapCardIndexes) 
+    while (temp == trapCardIndexes && !temp.empty()) 
     {
         cout << "index unchanged" << endl;
         json state = readFromFile();
