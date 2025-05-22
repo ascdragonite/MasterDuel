@@ -51,7 +51,7 @@ int Player::getSkipBattlePhaseCount() const
 
 Player :: Player(int i){
     index = i;
-    hp = 4000;
+    hp = 8000;
     skipBattlePhaseCount = 0;
     hasBattledThisTurn = false; 
 }
