@@ -950,9 +950,63 @@ bool CallofTheSky::ActivateEffect(Player& self, Player& opponent) {
     return true;
 }
 
+bool TheAncientKnowledge::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> newDeck = self.getDeck();
+    vector<Card*> newHand = self.getHand();
 
+    vector<pair<int, Card*>> validCards;
 
+    // Tìm tất cả lá có mô tả chứa "Dark Magician"
+    for (int i = 0; i < static_cast<int>(newDeck.size()); ++i) {
+        string desc = newDeck[i]->getDescription();
+        if (desc.find("Dark Magician") != string::npos) {
+            validCards.push_back({i, newDeck[i]});
+        }
+    }
 
+    if (validCards.empty()) {
+        cout << "[The Ancient Knowledge] Activation Failed: No card mentions 'Dark Magician' in your deck!" << endl;
+        return false;
+    }
+
+    // Hiển thị danh sách cho người chơi chọn
+    cout << "[The Ancient Knowledge] Cards that mention 'Dark Magician':" << endl;
+    for (int i = 0; i < static_cast<int>(validCards.size()); ++i) {
+        cout << "  [" << i << "] " << validCards[i].second->getName()
+             << " - " << validCards[i].second->getDescription() << endl;
+    }
+
+    int choice = -1;
+    do {
+        cout << "Choose one card to add to your hand: ";
+        cin >> choice;
+
+        if (choice < 0 || choice >= static_cast<int>(validCards.size())) {
+            cout << "Invalid choice. Please try again." << endl;
+            choice = -1;
+        }
+    } while (choice == -1);
+
+    int deckIndex = validCards[choice].first;
+    Card* selectedCard = newDeck[deckIndex];
+    newHand.push_back(selectedCard);
+    newDeck.erase(newDeck.begin() + deckIndex);
+
+    // Cập nhật lại deck và hand
+    self.setDeck(newDeck);
+    self.setHand(newHand);
+
+    // Shuffle bằng hàm có sẵn
+    self.shuffleDeck();
+
+    cout << "[The Ancient Knowledge] You have added " << selectedCard->getName()
+         << " to your hand! The deck has been shuffled." << endl;
+
+    writeLog("Player activated [The Ancient Knowledge], added " +
+             selectedCard->getName() + " to their hand, then shuffled the deck.");
+
+    return true;
+}
 
 
 

@@ -1,3 +1,2 @@
-[Thu May 22 09:01:58 2025] Opponent summoned a monster in attack position.
-[Thu May 22 09:02:07 2025] Opponent used [Call of The Sky]. The Blue Sky choose to help them with Blue-Eyes White Dragon and Majesty of The White Dragons for the price of Sasakure and Feryquitous
-[Thu May 22 09:02:07 2025] Opponent activated a Spell card: Call of the Sky
+[Thu May 22 09:21:23 2025] Player activated [The Ancient Knowledge], added Dark Magic Veil to their hand, then shuffled the deck.
+[Thu May 22 09:21:23 2025] Opponent activated a Spell card: The Ancient knowledge

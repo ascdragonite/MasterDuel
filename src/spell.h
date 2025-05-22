@@ -87,6 +87,10 @@ class AshAgain : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
 
+class TheAncientKnowledge : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
+
 
 //Trap Card
 class MirrorForce : public Spell{
