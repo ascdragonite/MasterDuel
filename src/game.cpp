@@ -237,8 +237,6 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
                             cout << "[Spell] Effect was not activated. Card remains in hand. \n";
                             break;
                         } 
-                        writeLog("Opponent activated a " + type +
-                                 " card: " + card->getName());
                         delete card;
                         auto &hand = self.getHandRef();
                         hand.erase(hand.begin() + index);

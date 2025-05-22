@@ -281,6 +281,7 @@ void Player :: loadDeckDarkMagician(){
     deck.push_back(new MonsterCard("Dark Magician", 2500, 2100, "The ultimate wizard in term of attack and defense.", index));
     deck.push_back(new MonsterCard("Dark Magician", 2500, 2100, "The ultimate wizard in term of attack and defense.", index));
     deck.push_back(new MonsterCard("Dark Magician Girl", 2000, 1700, "Dark Magician favourite student.", index));
+    deck.push_back(new MonsterCard("Dark Magician Girl", 2000, 1700, "Dark Magician favourite student.", index));
     deck.push_back(new MonsterCard("Kuriboh", 0, 0, "Little fluffy ball that like to help others.", index));
     deck.push_back(new MonsterCard("Giant Soldier of Stone", 1300, 2000, "Little fluffy ball that like to help others.", index));
     deck.push_back(new MonsterCard("Mammoth Graveyard", 1200, 800, "A mammoth that protects the graves of its pack and is absolutely merciless when facing grave-robbers.", index));
@@ -289,17 +290,19 @@ void Player :: loadDeckDarkMagician(){
     deck.push_back(new MonsterCard("Beaver Warrior", 1200, 1500, "What this creature lacks in size it makes up for in defense when battling in the prairie.", index));
     deck.push_back(new MonsterCard("Mystical Elf", 800, 2000, "A delicate elf that lacks offense, but has a terrific defense backed by mystical power.", index));
     deck.push_back(new SpellCard("Re:End of a Dream", "If and only if your lifepoint is lower or equal to 1000 you can activate this card. When this card is activated, you can conduct anorther turn"));
-    deck.push_back(new SpellCard("Disorted Fate", "Look at your full deck and place a ca    rd you like at the top of the deck."));
+    deck.push_back(new SpellCard("Disorted Fate", "Look at your full deck and place a card you like at the top of the deck."));
     deck.push_back(new SpellCard("Oshama Scramble", "Shuffle your opponent's deck when this card is activated."));
     deck.push_back(new SpellCard("Dark Magic Veil", "Special summon a Dark Magician in the deck in defend position."));
     deck.push_back(new SpellCard("Dark Magic Veil", "Special summon a Dark Magician in the deck in defend position."));
-    deck.push_back(new SpellCard("The Ancient knowledge", "Search any spell that mention Dark Magician in it's description."));
-    deck.push_back(new SpellCard("The Ancient knowledge", "Search any spell that mention Dark Magician in it's description."));
-    deck.push_back(new SpellCard("The Ancient knowledge", "Search any spell that mention Dark Magician in it's description."));
-    deck.push_back(new SpellCard("Cruel Pact", "Pay 1000 Hp and tribute 1 monster on the field to search 1 Dark Magician from your deck and increase 200 ATK for the Dark Magician summon next turn."));
+    deck.push_back(new SpellCard("The Ancient knowledge", "Search any card that mention Dark Magician in it's description."));
+    deck.push_back(new SpellCard("The Ancient knowledge", "Search any card that mention Dark Magician in it's description."));
+    deck.push_back(new SpellCard("The Ancient knowledge", "Search any card that mention Dark Magician in it's description."));
+    deck.push_back(new SpellCard("Soul Servant", "Draw card equal to number of Dark Magician and Dark Magician girl on the field."));
+    deck.push_back(new SpellCard("Cruel Pact", "Pay 500 Hp and tribute 1 monster on the field to search 1 Dark Magician from your deck and increase 600 ATK for the Dark Magician summon next turn."));
+    deck.push_back(new SpellCard("Thousand Knifes", "If you control faceup Dark Magician: Target 1 monster your opponent controls; destroy that target.."));
     deck.push_back(new SpellCard("Thousand Knifes", "If you control faceup Dark Magician: Target 1 monster your opponent controls; destroy that target.."));
     deck.push_back(new SpellCard("Dark Magic", " If you controll faceup a Dark Magician monster, destroy all monster your opponent controll."));
-    deck.push_back(new SpellCard("Bond Between The Teacher and Student", "If you controll a “Dark Magician”, special summon from your deck a Dark Magician Girl in defend position "));
+    deck.push_back(new SpellCard("Bond Between The Teacher and Student", "If you controll a Dark Magician, special summon from your deck a Dark Magician Girl in defend position "));
     deck.push_back(new SpellCard("Dark Burning Magic", "If you control a face up Dark Magician, Dark magician girl you can destroy all of your oponent card but skip your battle phase"));
     deck.push_back(new SpellCard("The Power of Friendship", "Combine all of your faceup monster atk to 1 single attack in this turn."));
     deck.push_back(new TrapCard("Mirror Force", "When an opponent's monster declares an attack: Destroy all your opponent's Attack Position monsters."));
@@ -315,6 +318,8 @@ void Player :: loadDeckBlueEyes(){
     deck.push_back(new MonsterCard("T+pazolite", 1750, 200, "A crystal dragon born from solidified molten lava. T+pazolite's scales shimmer like gemstones, absorbing and reflecting light to confuse enemies on the battlefield.", index));
     deck.push_back(new MonsterCard("Morimori Atsushi", 1800, 0, "A nomadic dragon god wandering through the eastern forests. With no defensive armor, it relies on immense speed and broad wings to outmaneuver and strike down any who dare approach.", index));
     deck.push_back(new MonsterCard("Feryquitous", 1500, 400, "A young flame dragon constantly yearning to prove its might. Its immature blue flames often ignite unexpected wildfires across the land.", index));
+    deck.push_back(new MonsterCard("BLue-Eyes Alternative White Dragon", 3000, 2500, "This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale.", index));
+    deck.push_back(new MonsterCard("Deep-Eyes White Dragon", 3500, 2500, "This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale.", index));
     deck.push_back(new MonsterCard("Kuroma", 2100, 700, "A shadow dragon, slender yet deadly. Kuroma hides within dark clouds, striking without warning and bringing silent destruction to its prey.", index));
     deck.push_back(new MonsterCard("Laur", 1450, 1000, "An ancient dragon that once guarded sacred lands. Though its strength has waned with time, Laur’s unwavering spirit remains, ready to sacrifice itself to halt any invader’s advance.", index));
     deck.push_back(new MonsterCard("Sasakure", 1900, 0, "A razorwind dragon whose translucent body leaves only trails of slashing winds. Without any defenses, it relies entirely on blinding speed and lethal precision.", index));
@@ -325,6 +330,7 @@ void Player :: loadDeckBlueEyes(){
     deck.push_back(new SpellCard("Disorted Fate", "Look at your full deck and place a card you like at the top of the deck."));
     deck.push_back(new SpellCard("Oshama Scramble", "Shuffle your opponent's deck when this card is activated."));
     deck.push_back(new SpellCard("Flower Snow Drum n Bass", "Flip coin, winner gets draw 2 cards"));
+    deck.push_back(new SpellCard("Flower Snow Drum n Bass", "Flip coin, winner gets draw 2 cards"));
     deck.push_back(new SpellCard("World Vanquisher", "Buff a monster attack by 200 when this card is activated."));
     deck.push_back(new SpellCard("Call of the Sky", "Tribute 2 monster on the field to search 1 BLue-Eyes WHite Dragon and Majesty of The White Dragons from your deck to your hand."));
     deck.push_back(new SpellCard("Dragon United", "Buff a monster attack and defense by 100 for each faceup monster you control when this card is activated."));
@@ -332,6 +338,8 @@ void Player :: loadDeckBlueEyes(){
     deck.push_back(new SpellCard("Rage of The Blue Eyes", "Sacrifice 2/3 of your lifepoint, “Blue Eyes White Dragon” you controll can now attack twice in a turn ( can not active “Re:End of a dream” the turn you activate this card).")); 
     deck.push_back(new SpellCard("Destr0yer",("Can destroy a monster card in defense mode")));
     deck.push_back(new SpellCard("Roar of The Blue-Eyed Dragons", "Special summon a “Blue-Eyes White Dragon” in the deck in defend position."));
+    deck.push_back(new SpellCard("Roar of The Blue-Eyed Dragons", "Special summon a “Blue-Eyes White Dragon” in the deck in defend position."));
+    deck.push_back(new SpellCard("Majesty of The White Dragons","Destroy random card in your opponent field up to the number of faceup “Blue-Eyes White Dragon” you control"));
     deck.push_back(new SpellCard("Majesty of The White Dragons","Destroy random card in your opponent field up to the number of faceup “Blue-Eyes White Dragon” you control"));
     deck.push_back(new SpellCard("Ash Again","If you controll a faceup Blue-Eyes White Dragon destroy all trap cards your opponent control")); 
 }

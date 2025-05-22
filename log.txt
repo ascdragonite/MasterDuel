@@ -1,2 +1,9 @@
-[Thu May 22 09:21:23 2025] Player activated [The Ancient Knowledge], added Dark Magic Veil to their hand, then shuffled the deck.
-[Thu May 22 09:21:23 2025] Opponent activated a Spell card: The Ancient knowledge
+[Thu May 22 09:52:44 2025] Player activated [The Ancient Knowledge], added Soul Servant to their hand, then shuffled the deck.
+[Thu May 22 09:52:53 2025] Opponent used [Dark Magic Veil] to Special Summon Dark Magician in defense position. Be careful! 
+
+[Thu May 22 09:52:59 2025] Player activated [Soul Servant] and drew 1 card(s).
+[Thu May 22 09:53:18 2025] Player activated [The Ancient Knowledge], added Bond Between The Teacher and Student to their hand, then shuffled the deck.
+[Thu May 22 09:53:25 2025] Opponent used [Bond Between The Teacher and Student] to Special Summon Dark Magician Girl in defense position. One more target!
+
+[Thu May 22 09:53:31 2025] Opponent chose to add [Dark Burning Magic] to their hand using [Bond Between The Teacher and Student].
+

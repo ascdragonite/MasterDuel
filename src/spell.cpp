@@ -421,46 +421,83 @@ bool BondBetweenTheTeacherandStudent::ActivateEffect(Player& self, Player& oppon
     int countm = 0;
     vector<Card*> newfield = self.getField();
     vector<Card*> newdeck = self.getDeck();
-    vector<Card*> newdeckself;
+    vector<Card*> newhand = self.getHand();
     bool hasDMG = false;
-    for(auto card : newfield){
-        MonsterCard *card1 = dynamic_cast<MonsterCard *>(card);
-        if(card1->getName() == "Dark Magician" && card1->isFacedown() == false){
+    bool hasDBM = false;
+    int indexDBM = -1;
+
+    // Kiểm tra có Dark Magician ngửa không
+    for (auto card : newfield) {
+        MonsterCard* card1 = dynamic_cast<MonsterCard*>(card);
+        if (card1 && card1->getName() == "Dark Magician" && !card1->isFacedown()) {
             countm++;
-    }
-    }
-    if(countm == 0){
-        cout << "[Bond Between The Teacher and Student] Activation failed: You do not control a face up Dark Magician" << endl;
-        return false;
-    }
-    if(countm > 0){
-        for(int i = 0; i < newdeck.size();i++){     
-            if(newdeck[i]->getName() == "Dark Magician Girl"){
-                MonsterCard *darkmagiciangirl = dynamic_cast<MonsterCard *>(newdeck[i]);
-                //Card* darkmagiciangirl = newdeck[i];
-                newdeck.erase(newdeck.begin()+i);
-                darkmagiciangirl->setDefenseMode(true);
-                darkmagiciangirl->setFacedown(false);
-                darkmagiciangirl->setJustSummoned(true);
-                newfield.push_back(darkmagiciangirl);
-                hasDMG = true;  
-                break;
         }
     }
-        if(hasDMG == false){
-            cout << "[Bond Between The Teacher and Student] Activation failed : You do not have any Dark Magician Girl in your deck" << endl;
-            return false;
-            } 
-        
-        cout << "[Bond Between The Teacher and Student] : Special Summon Dark Magician Girl successfully in defense position" << endl;
-        writeLog("Opponent used [Bond Between The Teacher and Student] to Special Summon Dark Magician Girl in defense position. One more target! \n");
-        self.setDeck(newdeck);
-        self.setField(newfield);
-        self.setSkipBattlePhaseCount(1);
-    }
-    return true; // Indicate success
-}
 
+    if (countm == 0) {
+        cout << "[Bond Between The Teacher and Student] Activation failed: You do not control a face-up Dark Magician" << endl;
+        return false;
+    }
+
+    // Tìm Dark Magician Girl và special summon
+    for (int i = 0; i < static_cast<int>(newdeck.size()); i++) {
+        if (newdeck[i]->getName() == "Dark Magician Girl") {
+            MonsterCard* dmg = dynamic_cast<MonsterCard*>(newdeck[i]);
+            if (dmg) {
+                newdeck.erase(newdeck.begin() + i);
+                dmg->setDefenseMode(true);
+                dmg->setFacedown(false);
+                dmg->setJustSummoned(true);
+                newfield.push_back(dmg);
+                hasDMG = true;
+                break;
+            }
+        }
+    }
+
+    if (!hasDMG) {
+        cout << "[Bond Between The Teacher and Student] Activation failed: No Dark Magician Girl in deck" << endl;
+        return false;
+    }
+
+    cout << "[Bond Between The Teacher and Student] Special Summoned Dark Magician Girl in defense position!" << endl;
+    writeLog("Opponent used [Bond Between The Teacher and Student] to Special Summon Dark Magician Girl in defense position. One more target!\n");
+
+    // Kiểm tra trong deck có Dark Burning Magic không
+    for (int i = 0; i < static_cast<int>(newdeck.size()); i++) {
+        if (newdeck[i]->getName() == "Dark Burning Magic") {
+            hasDBM = true;
+            indexDBM = i;
+            break;
+        }
+    }
+
+    if (hasDBM) {
+        char choice;
+        cout << "[Bond Between The Teacher and Student] Do you want to add [Dark Burning Magic] from your deck to your hand? (y/n): ";
+        cin >> choice;
+
+        if (choice == 'y' || choice == 'Y') {
+            Card* dbm = newdeck[indexDBM];
+            newhand.push_back(dbm);
+            newdeck.erase(newdeck.begin() + indexDBM);
+            cout << "[Bond Between The Teacher and Student] Dark Burning Magic added to your hand!" << endl;
+            writeLog("Opponent chose to add [Dark Burning Magic] to their hand using [Bond Between The Teacher and Student].\n");
+        } else {
+            cout << "[Bond Between The Teacher and Student] You chose not to add Dark Burning Magic." << endl;
+        }
+    } else {
+        cout << "[Bond Between The Teacher and Student] You do not have Dark Burning Magic in your deck." << endl;
+    }
+
+    // Cập nhật lại game state
+    self.setDeck(newdeck);
+    self.setField(newfield);
+    self.setHand(newhand);
+    self.setSkipBattlePhaseCount(0);
+
+    return true;
+}
 
 
 bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) { //sm tình bạn, 1 hit là nằm
@@ -790,7 +827,7 @@ bool CruelPact::ActivateEffect(Player& self, Player& opponent) {
 
             if (originalDM) {
                 copiedDM = new MonsterCard(*originalDM); // Sao chép an toàn
-                copiedDM->setAtk(copiedDM->getAtk() + 200);
+                copiedDM->setAtk(copiedDM->getAtk() + 600);
                 DMIndex = i;
                 hasDM = true;
                 break;
@@ -832,16 +869,16 @@ bool CruelPact::ActivateEffect(Player& self, Player& opponent) {
     newHand.push_back(copiedDM);
     newDeck.erase(newDeck.begin() + DMIndex); // Xoá sau khi sao chép
 
-    self.setHp(self.getHp() - 1000);
+    self.setHp(self.getHp() - 200);
     self.setField(newField);
     self.setHand(newHand);
     self.setDeck(newDeck);
 
     cout << "[Cruel Pact] Successfully sacrificed " << tributeName
-         << " and 1000 HP to add a powered-up Dark Magician to your hand!" << endl;
+         << " and 200 HP to add a powered-up Dark Magician to your hand!" << endl;
 
     writeLog("Player used [Cruel Pact], sacrificed " + tributeName +
-             " and 1000 HP to add a Dark Magician (+200 ATK) from their deck to hand.\n");
+             " and 1000 HP to add a Dark Magician (+600 ATK) from their deck to hand.\n");
 
     return true;
 }
@@ -1020,7 +1057,34 @@ bool TheAncientKnowledge::ActivateEffect(Player& self, Player& opponent) {
     return true;
 }
 
+bool SoulServant::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> field = self.getField();
+    int drawCount = 0;
 
+    for (Card* card : field) {
+        MonsterCard* mc = dynamic_cast<MonsterCard*>(card);
+        if (mc && !mc->isFacedown()) {
+            string name = mc->getName();
+            if (name == "Dark Magician" || name == "Dark Magician Girl") {
+                drawCount++;
+            }
+        }
+    }
+
+    if (drawCount == 0) {
+        cout << "[Soul Servant] Activation failed: You control no face-up Dark Magician or Dark Magician Girl." << endl;
+        return false;
+    }
+
+    cout << "[Soul Servant] You control " << drawCount << " valid target(s). Drawing " << drawCount << " card(s)..." << endl;
+    for (int i = 0; i < drawCount; ++i) {
+    self.drawCard();
+}
+
+    writeLog("Player activated [Soul Servant] and drew " + to_string(drawCount) + " card(s).");
+
+    return true;
+}
 
 
 
