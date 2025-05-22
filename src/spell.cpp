@@ -1213,7 +1213,87 @@ bool EnternalSoul::ActivateEffect(Player& self, Player& opponent) {
     return true;
 }
 
+bool IllusionMagic::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> hand = self.getHand();
+    vector<Card*> deck = self.getDeck();
 
+    if (hand.empty()) {
+        cout << "[Illusion Magic] Activation failed: No card in hand to discard." << endl;
+        return false;
+    }
+
+    cout << "[Illusion Magic] Choose 1 card to discard:" << endl;
+    for (int i = 0; i < hand.size(); ++i) {
+        cout << "[" << i << "] " << hand[i]->getName() << " - " << hand[i]->getDescription() << endl;
+    }
+
+    int discardIndex = -1;
+    do {
+        cout << "Index: ";
+        cin >> discardIndex;
+    } while (discardIndex < 0 || discardIndex >= hand.size());
+
+    string discardedName = hand[discardIndex]->getName();
+    hand.erase(hand.begin() + discardIndex);
+
+    cout << "[Illusion Magic] Discarded: " << discardedName << endl;
+
+    vector<int> validIndexes;
+    for (int i = 0; i < deck.size(); ++i) {
+        if (deck[i]->getType() == "Monster" &&
+            deck[i]->getDescription().find("Dark Magician") != string::npos) {
+            validIndexes.push_back(i);
+        }
+    }
+
+    if (validIndexes.size() < 2) {
+        cout << "[Illusion Magic] Not enough valid monster cards in deck that mention 'Dark Magician'." << endl;
+        return false;
+    }
+
+    cout << "[Illusion Magic] Choose 2 monster cards from your deck that mention 'Dark Magician':" << endl;
+    for (int i = 0; i < validIndexes.size(); ++i) {
+        cout << "[" << i << "] " << deck[validIndexes[i]]->getName() << " - " << deck[validIndexes[i]]->getDescription() << endl;
+    }
+
+    int index1 = -1, index2 = -1;
+    do {
+        cout << "First index: ";
+        cin >> index1;
+        cout << "Second index: ";
+        cin >> index2;
+        if (index1 == index2) {
+            cout << "You must choose two different cards." << endl;
+        }
+    } while (
+        index1 < 0 || index1 >= validIndexes.size() ||
+        index2 < 0 || index2 >= validIndexes.size() ||
+        index1 == index2
+    );
+
+    int deckIndex1 = validIndexes[index1];
+    int deckIndex2 = validIndexes[index2];
+
+    Card* added1 = deck[deckIndex1];
+    Card* added2 = deck[deckIndex2];
+
+    if (deckIndex1 > deckIndex2) swap(deckIndex1, deckIndex2);
+
+    deck.erase(deck.begin() + deckIndex2);
+    deck.erase(deck.begin() + deckIndex1);
+
+    hand.push_back(added1);
+    hand.push_back(added2);
+
+    cout << "[Illusion Magic] You added " << added1->getName() << " and " << added2->getName() << " to your hand." << endl;
+
+    writeLog("Opponent activated [Illusion Magic]. Discarded: " + discardedName +
+             ". Added: " + added1->getName() + " and " + added2->getName() + " to their hand.");
+
+    self.setDeck(deck);
+    self.setHand(hand);
+    return true;
+}
 
 
 

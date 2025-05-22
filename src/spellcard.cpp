@@ -91,6 +91,7 @@ shared_ptr<Spell> SpellCard::getEffectInstance(const std::string& type) {
     else if (type == "The Ancient knowledge") effect = std::make_shared<TheAncientKnowledge>();
     else if (type == "Soul Servant") effect = std::make_shared<SoulServant>();
     else if (type == "Enternal Soul") effect = std::make_shared<EnternalSoul>();
+    else if (type == "Illusion Magic") effect = std::make_shared<IllusionMagic>();
   //Step 3: add spell effect names here
     else 
     {
