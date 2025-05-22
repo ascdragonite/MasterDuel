@@ -167,7 +167,7 @@ bool RageofTheBlueEyes::ActivateEffect(Player& self, Player& opponent) {
             self.setAttacked(i, false);
         }
     }
-    self.setHp(self.getHp() * 2 / 3);
+    self.setHp(self.getHp() * 1 / 3);
     cout << "[Rage of The Blue Eyes] Successfully sacrifice 2/3 Hp to gain your Blue-Eyes White Dragon 1 more turn. Attack the enemy!" << endl;
     writeLog("Opponent used [Rage of The Blue Eyes] to sacrifice 2/3 Hp for Blue-Eyes White Dragon's 1 more extra turn. Becareful! \n");
 }
