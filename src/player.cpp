@@ -341,17 +341,19 @@ void Player :: loadDeckBlueEyes(){
     deck.push_back(new SpellCard("Oshama Scramble", "Shuffle your opponent's deck when this card is activated."));
     deck.push_back(new SpellCard("Flower Snow Drum n Bass", "Flip coin, winner gets draw 2 cards"));
     deck.push_back(new SpellCard("Flower Snow Drum n Bass", "Flip coin, winner gets draw 2 cards"));
-    deck.push_back(new SpellCard("World Vanquisher", "Buff a monster attack by 200 when this card is activated."));
-    deck.push_back(new SpellCard("Call of the Sky", "Tribute 2 monster on the field to search 1 BLue-Eyes WHite Dragon and Majesty of The White Dragons from your deck to your hand."));
-    deck.push_back(new SpellCard("Dragon United", "Buff a monster attack and defense by 100 for each faceup monster you control when this card is activated."));
-    deck.push_back(new SpellCard("Burst Stream of Destruction", "If you controll a Blue eye white dragon destroy all card your opponent controll but skip your next 2 battle phase."));
+    deck.push_back(new SpellCard("World Vanquisher", "Buff a monster attack by 1000 when this card is activated."));
+    deck.push_back(new SpellCard("Call of the Sky", "Tribute 2 monster on the field to search 1 BLue Eyes White Dragon and Majesty of The White Dragons from your deck to your hand."));
+    deck.push_back(new SpellCard("Dragon United", "Buff a monster attack and defense by 500 for each faceup monster you control when this card is activated."));
+    deck.push_back(new SpellCard("Burst Stream of Destruction", "If you controll a Blue Eyes White Dragon destroy all card your opponent controll but skip your next 2 battle phase."));
     deck.push_back(new SpellCard("Rage of The Blue Eyes", "Sacrifice 2/3 of your lifepoint, “Blue Eyes White Dragon” you controll can now attack twice in a turn ( can not active “Re:End of a dream” the turn you activate this card).")); 
     deck.push_back(new SpellCard("Destr0yer",("Can destroy a monster card in defense mode")));
-    deck.push_back(new SpellCard("Roar of The Blue-Eyed Dragons", "Special summon a “Blue-Eyes White Dragon” in the deck in defend position."));
-    deck.push_back(new SpellCard("Roar of The Blue-Eyed Dragons", "Special summon a “Blue-Eyes White Dragon” in the deck in defend position."));
-    deck.push_back(new SpellCard("Majesty of The White Dragons","Destroy random card in your opponent field up to the number of faceup “Blue-Eyes White Dragon” you control"));
-    deck.push_back(new SpellCard("Majesty of The White Dragons","Destroy random card in your opponent field up to the number of faceup “Blue-Eyes White Dragon” you control"));
+    deck.push_back(new SpellCard("Roar of The Blue-Eyed Dragons", "Special summon a Blue Eyes White Dragon in the deck in defend position."));
+    deck.push_back(new SpellCard("Roar of The Blue-Eyed Dragons", "Special summon a Blue Eyes White Dragon in the deck in defend position."));
+    deck.push_back(new SpellCard("Majesty of The White Dragons","Destroy random card in your opponent field up to the number of faceup “Blue Eyes White Dragon” you control"));
+    deck.push_back(new SpellCard("Majesty of The White Dragons","Destroy random card in your opponent field up to the number of faceup “Blue Eyes White Dragon” you control"));
     deck.push_back(new SpellCard("Ash Again","If you controll a faceup Blue-Eyes White Dragon destroy all trap cards your opponent control")); 
+    deck.push_back(new SpellCard("Wishes for Eyes of Blue","Reveal 1 card in your hand that mention Blue Eyes. Special Summon up to 2 monsters from your deck in face-up Defense Position, each of which mentions “Blue Eyes” in their description."));
+    deck.push_back(new SpellCard("Overdose","You can exchange 1 point of your HP to increase the ATK of a monster card that mentions 'Blue Eyes' in its description by 1. The total increase cannot exceed half of your current HP.")); 
 }
 
 void Player::shuffleDeck(){

@@ -1,4 +1,2 @@
-[Thu May 22 21:08:19 2025] Opponent activated [The Ancient Knowledge], added Apprentice Helper to their hand, then shuffled the deck.
-[Thu May 22 21:08:36 2025] Opponent activated [Enternal Soul], special summoned Magicians Soul and Magicians Rod from their deck.
-[Thu May 22 21:08:55 2025] Opponent activated [Apprentice Helper], summoned 'Magicians Apprentice' and drew 3 card(s).
-[Thu May 22 21:09:09 2025] Opponent activated [Apprentice Helper], summoned 'Magicians Apprentice' and drew 4 card(s).
+[Fri May 23 00:53:02 2025] Opponent used [Dragon United] to gain 300 atk and def for Camellia. Stay focus! 
+
