@@ -592,7 +592,7 @@ bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) { //sm
                 
                     cout << "[The Power of Friendship] Self Destruct : " << endl;
 
-                    writeLog("Every battle has its own consequence. Both of you and opponent lose everything in the battlefield! [The Power of Friendship] cost them : ");
+                    writeLog("Every battle has its own consequence. Both of you and opponent lose everything in the battlefield! [The Power of Friendship] costs them : ");
                     for(auto card6 : newfield1){
                         MonsterCard *card7 = dynamic_cast<MonsterCard *>(card6);
                         if(card7 == nullptr || card7->getType() != "Monster" || card7->isFacedown() == true){
