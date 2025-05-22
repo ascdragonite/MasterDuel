@@ -93,6 +93,8 @@ shared_ptr<Spell> SpellCard::getEffectInstance(const std::string& type) {
     else if (type == "Enternal Soul") effect = std::make_shared<EnternalSoul>();
     else if (type == "Illusion Magic") effect = std::make_shared<IllusionMagic>();
     else if (type == "Apprentice Helper") effect = std::make_shared<ApprenticeHelper>();
+    else if (type == "Chaos Magic") effect = std::make_shared<ChaosMagic>();
+    else if (type == "The True Power of Chaos Dual") effect = std::make_shared<TheTruePowerOfChaosDual>();
   //Step 3: add spell effect names here
     else 
     {

@@ -1120,9 +1120,6 @@ bool EnternalSoul::ActivateEffect(Player& self, Player& opponent) {
     Card* revealedCard = hand[handIndex];
     cout << "[Enternal Soul] You revealed: " << revealedCard->getName() << endl;
 
-    // Không đưa lại vào deck nữa — giữ nguyên trên tay
-
-    // Tìm quái vật có mention "Dark Magician" trong deck
     vector<int> validIndexes;
     for (int i = 0; i < deck.size(); ++i) {
         if (deck[i]->getType() == "Monster" &&
@@ -1161,7 +1158,6 @@ bool EnternalSoul::ActivateEffect(Player& self, Player& opponent) {
         cin >> choice2;
         if (choice2 != -1 && choice2 >= 0 && choice2 < validIndexes.size() && choice2 != choice1) {
             int index2 = validIndexes[choice2];
-            // Nếu index2 đứng sau index1 đã bị xóa thì giảm 1
             if (index2 > index1) index2--;
 
             MonsterCard* m2 = dynamic_cast<MonsterCard*>(deck[index2]);
@@ -1179,7 +1175,7 @@ bool EnternalSoul::ActivateEffect(Player& self, Player& opponent) {
 
     self.setDeck(deck);
     self.setField(field);
-    self.setHand(hand); // hand vẫn giữ nguyên
+    self.setHand(hand); 
 
     if (!summoned.empty()) {
         cout << "[Enternal Soul] You summoned: ";
@@ -1219,7 +1215,6 @@ bool IllusionMagic::ActivateEffect(Player& self, Player& opponent) {
     vector<Card*> hand = self.getHand();
     vector<Card*> deck = self.getDeck();
 
-    // Tìm monster trên sân có mention "Dark Magician"
     vector<int> tributeCandidates;
     for (int i = 0; i < field.size(); ++i) {
         if (field[i]->getType() == "Monster" &&
@@ -1233,7 +1228,6 @@ bool IllusionMagic::ActivateEffect(Player& self, Player& opponent) {
         return false;
     }
 
-    // Chọn 1 quái vật để hiến tế
     cout << "[Illusion Magic] Choose 1 monster that mentions 'Dark Magician' to tribute:" << endl;
     for (int i = 0; i < tributeCandidates.size(); ++i) {
         int idx = tributeCandidates[i];
@@ -1250,7 +1244,7 @@ bool IllusionMagic::ActivateEffect(Player& self, Player& opponent) {
     string tributedName = field[fieldIndex]->getName();
     field.erase(field.begin() + fieldIndex);
 
-    // Tìm các quái vật trong deck mention "Dark Magician"
+
     vector<int> validIndexes;
     for (int i = 0; i < deck.size(); ++i) {
         if (deck[i]->getType() == "Monster" &&
@@ -1291,14 +1285,12 @@ bool IllusionMagic::ActivateEffect(Player& self, Player& opponent) {
     int deckIndex1 = validIndexes[index1];
     int deckIndex2 = validIndexes[index2];
 
-    // Thêm vào tay (giữ nguyên cách làm giống Call of The Sky)
     Card* card1 = deck[deckIndex1];
     Card* card2 = deck[deckIndex2];
 
     hand.push_back(card1);
     hand.push_back(card2);
 
-    // Xoá khỏi deck (theo thứ tự lớn trước)
     if (deckIndex1 > deckIndex2) {
         deck.erase(deck.begin() + deckIndex1);
         deck.erase(deck.begin() + deckIndex2);
@@ -1313,7 +1305,6 @@ bool IllusionMagic::ActivateEffect(Player& self, Player& opponent) {
     writeLog("Opponent activated [Illusion Magic]. Tributed " + tributedName +
              ", added " + card1->getName() + " and " + card2->getName() + " to their hand.");
 
-    // Cập nhật lại trạng thái
     self.setField(field);
     self.setDeck(deck);
     self.setHand(hand);
@@ -1373,7 +1364,231 @@ bool ApprenticeHelper::ActivateEffect(Player& self, Player& opponent) {
     return true;
 }
 
+bool ChaosMagic::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> newfield = self.getField();
+    vector<Card*> newdeck = self.getDeck();
+    bool hasDMOC = false;
+    bool hasBLS = false;
 
+    vector<int> tributeIndexes;
+    for (int i = 0; i < newfield.size(); ++i) {
+        if (newfield[i]->getType() == "Monster" &&
+            newfield[i]->getDescription().find("Dark Magician") != string::npos) {
+            tributeIndexes.push_back(i);
+        }
+    }
+
+    if (tributeIndexes.size() < 2) {
+        cout << "[Chaos Magic] Activation failed: You do not control at least 2 monsters that mention 'Dark Magician'." << endl;
+        return false;
+    }
+
+    int in1, in2;
+    do {
+        cout << "[Chaos Magic] Choose 2 monsters that mention 'Dark Magician' to tribute:" << endl;
+        for (int i = 0; i < tributeIndexes.size(); ++i) {
+            cout << "[" << i << "] " << newfield[tributeIndexes[i]]->getName() << endl;
+        }
+        cin >> in1 >> in2;
+
+        if (in1 == in2 || in1 < 0 || in1 >= tributeIndexes.size() || in2 < 0 || in2 >= tributeIndexes.size()) {
+            cout << "Invalid input. Try again." << endl;
+        }
+    } while (in1 == in2 || in1 < 0 || in1 >= tributeIndexes.size() || in2 < 0 || in2 >= tributeIndexes.size());
+
+    int idx1 = tributeIndexes[in1];
+    int idx2 = tributeIndexes[in2];
+
+    string name1 = newfield[idx1]->getName();
+    string name2 = newfield[idx2]->getName();
+
+    if (idx1 > idx2) swap(idx1, idx2);
+    newfield.erase(newfield.begin() + idx2);
+    newfield.erase(newfield.begin() + idx1);
+
+
+    for (int i = 0; i < newdeck.size(); ++i) {
+        if (newdeck[i]->getName() == "Dark Magician of Chaos" && !hasDMOC) {
+            MonsterCard* dmoc = dynamic_cast<MonsterCard*>(newdeck[i]);
+            newdeck.erase(newdeck.begin() + i);
+            dmoc->setDefenseMode(true);
+            dmoc->setFacedown(false);
+            dmoc->setJustSummoned(true);
+            newfield.push_back(dmoc);
+            hasDMOC = true;
+            i--;
+        } else if (newdeck[i]->getName() == "Black Luster Soldier" && !hasBLS) {
+            MonsterCard* bls = dynamic_cast<MonsterCard*>(newdeck[i]);
+            newdeck.erase(newdeck.begin() + i);
+            bls->setDefenseMode(true);
+            bls->setFacedown(false);
+            bls->setJustSummoned(true);
+            newfield.push_back(bls);
+            hasBLS = true;
+            i--;
+        }
+
+        if (hasDMOC && hasBLS) break;
+    }
+
+    if (!hasDMOC || !hasBLS) {
+        cout << "[Chaos Magic] Activation failed: Missing Dark Magician of Chaos or Black Luster Soldier in your deck." << endl;
+        return false;
+    }
+
+    cout << "[Chaos Magic] You tributed " << name1 << " and " << name2 << " to Special Summon 'Dark Magician of Chaos' and 'Black Luster Soldier' in defense position!" << endl;
+
+    writeLog("Opponent used [Chaos Magic], tributed " + name1 + " and " + name2 +
+             " to summon DMOC and BLS in defense position.");
+
+    self.setDeck(newdeck);
+    self.setField(newfield);
+    return true;
+}
+
+bool TheWorldDestroyer::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> hand = self.getHand();
+    vector<Card*> fieldSelf = self.getField();
+    vector<Card*> fieldOpp = opponent.getField();
+
+    // Kiểm tra bài trên tay có mention Dark Magician
+    vector<int> revealableIndexes;
+    for (int i = 0; i < hand.size(); ++i) {
+        if (hand[i]->getDescription().find("Dark Magician") != string::npos) {
+            revealableIndexes.push_back(i);
+        }
+    }
+
+    if (revealableIndexes.empty()) {
+        cout << "[The World Destroyer] Activation failed: You must reveal a card in your hand that mentions 'Dark Magician'." << endl;
+        return false;
+    }
+
+    cout << "[The World Destroyer] Reveal a card that mentions 'Dark Magician':" << endl;
+    for (int i = 0; i < revealableIndexes.size(); ++i) {
+        cout << "[" << i << "] " << hand[revealableIndexes[i]]->getName() << endl;
+    }
+
+    int choice = -1;
+    do {
+        cout << "Choose index: ";
+        cin >> choice;
+    } while (choice < 0 || choice >= revealableIndexes.size());
+
+    cout << "[The World Destroyer] You revealed: " << hand[revealableIndexes[choice]]->getName() << endl;
+
+
+    bool hasGandora = false;
+    for (Card* c : fieldSelf) {
+        if (c->getName() == "Gandora-X the Dragon of Demolition") {
+            hasGandora = true;
+            break;
+        }
+    }
+
+    if (!hasGandora) {
+        cout << "[The World Destroyer] Activation failed: You do not control 'Gandora-X the Dragon of Demolition'." << endl;
+        return false;
+    }
+
+    int destroyedMonsterCount = 0;
+    int totalDestroyed = 0;
+
+    for (Card* c : fieldSelf) {
+        if (c->getType() == "Monster") destroyedMonsterCount++;
+        totalDestroyed++;
+    }
+
+    for (Card* c : fieldOpp) {
+        if (c->getType() == "Monster") destroyedMonsterCount++;
+        totalDestroyed++;
+    }
+
+    fieldSelf.clear();
+    fieldOpp.clear();
+
+    int damage = destroyedMonsterCount * 500;
+    opponent.takeDamage(damage);
+
+    cout << "[The World Destroyer] Destroyed all cards on the field!" << endl;
+    cout << "[The World Destroyer] Inflicted " << damage << " damage to your opponent!" << endl;
+    cout << "[The World Destroyer] You must skip your battle phase this turn." << endl;
+
+    writeLog("Opponent activated [The World Destroyer], revealed a card that mentions 'Dark Magician'.");
+    writeLog("All cards on the field were destroyed.");
+    writeLog("Inflicted " + to_string(damage) + " damage to opponent from destroyed monsters.");
+    writeLog("Battle Phase skipped this turn.");
+
+    self.setField(fieldSelf);
+    opponent.setField(fieldOpp);
+
+    self.setSkipBattlePhaseCount(1); 
+
+    return true;
+}
+
+bool TheTruePowerOfChaosDual::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> fieldSelf = self.getField();
+    vector<Card*> fieldOpp = opponent.getField();
+
+    int mentionCount = 0;
+    for (Card* c : fieldSelf) {
+        if (c->getType() == "Monster" &&
+            c->getDescription().find("Dark Magician") != string::npos) {
+            mentionCount++;
+        }
+    }
+
+    if (mentionCount == 0) {
+        cout << "[The True Power of Chaos Dual] Activation failed: You control no monsters that mention 'Dark Magician'." << endl;
+        return false;
+    }
+
+    if (fieldOpp.empty()) {
+        cout << "[The True Power of Chaos Dual] Activation failed: Opponent has no cards on the field." << endl;
+        return false;
+    }
+
+    int destroyCount = min(mentionCount, static_cast<int>(fieldOpp.size()));
+
+    shuffle(fieldOpp.begin(), fieldOpp.end(), default_random_engine(time(0)));
+
+    cout << "[The True Power of Chaos Dual] You control " << mentionCount
+         << " monster(s) that mention 'Dark Magician'. Destroying " << destroyCount << " opponent's card(s) at random!" << endl;
+
+    writeLog("Opponent activated [The True Power of Chaos Dual], destroyed:\n");
+
+    for (int i = 0; i < destroyCount; ++i) {
+        cout << "[Destroyed] Opponent's " << fieldOpp[i]->getName() << endl;
+        writeLog("- " + fieldOpp[i]->getName());
+    }
+
+
+    fieldOpp.erase(fieldOpp.begin(), fieldOpp.begin() + destroyCount);
+
+ 
+    for (Card* c : fieldSelf) {
+    if (c->getType() == "Monster") {
+        string name = c->getName();
+        if (name == "Black Luster Soldier" || name == "Dark Magician of Chaos") {
+            MonsterCard* mc = dynamic_cast<MonsterCard*>(c);
+            if (mc) {
+                mc->setAtk(mc->getAtk() + 100 * destroyCount);
+                cout << "[ATK Boost] " << mc->getName() << " gains +" << (100 * destroyCount) << " ATK!" << endl;
+            }
+        }
+    }
+}
+
+    cout << "[The True Power of Chaos Dual] You must skip your Battle Phase this turn." << endl;
+    writeLog("All monsters that mention 'Dark Magician' gained +" + to_string(100 * destroyCount) + " ATK.");
+    writeLog("Battle Phase is skipped this turn.");
+
+    self.setField(fieldSelf);
+    opponent.setField(fieldOpp);
+    self.setSkipBattlePhaseCount(1);
+    return true;
+}
 
 //trap
 bool MirrorForce::ActivateEffect(Player& self, Player& opponent) { //cần check kĩ writeLog

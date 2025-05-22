@@ -1,4 +1,4 @@
-[Thu May 22 21:08:19 2025] Opponent activated [The Ancient Knowledge], added Apprentice Helper to their hand, then shuffled the deck.
-[Thu May 22 21:08:36 2025] Opponent activated [Enternal Soul], special summoned Magicians Soul and Magicians Rod from their deck.
-[Thu May 22 21:08:55 2025] Opponent activated [Apprentice Helper], summoned 'Magicians Apprentice' and drew 3 card(s).
-[Thu May 22 21:09:09 2025] Opponent activated [Apprentice Helper], summoned 'Magicians Apprentice' and drew 4 card(s).
+[Thu May 22 21:31:40 2025] Opponent used [Apprentice Helper] to Special Summon 'Magicians Apprentice' and drew 1 card(s).
+[Thu May 22 21:31:46 2025] Opponent used [Apprentice Helper] to Special Summon 'Magicians Apprentice' and drew 2 card(s).
+[Thu May 22 21:32:20 2025] Opponent activated [The Ancient Knowledge], added Chaos Magic to their hand, then shuffled the deck.
+[Thu May 22 21:32:30 2025] Opponent used [Chaos Magic], tributed Magicians Apprentice and Magicians Apprentice to summon DMOC and BLS in defense position.
