@@ -167,7 +167,7 @@ bool RageofTheBlueEyes::ActivateEffect(Player& self, Player& opponent) {
             self.setAttacked(i, false);
         }
     }
-    self.setHp(self.getHp() * 2 / 3);
+    self.setHp(self.getHp() * 1 / 3);
     cout << "[Rage of The Blue Eyes] Successfully sacrifice 2/3 Hp to gain your Blue-Eyes White Dragon 1 more turn. Attack the enemy!" << endl;
     writeLog("Opponent used [Rage of The Blue Eyes] to sacrifice 2/3 Hp for Blue-Eyes White Dragon's 1 more extra turn. Becareful! \n");
 }
@@ -333,7 +333,7 @@ bool DarkMagic::ActivateEffect(Player& self, Player& opponent) {
         cout << "[Dark Magic] Activate successfully! All opponent's monster cards are destroyed. You can not attack for 2 turns!" << endl;
 
         writeLog("Opponent used [Dark Magic] to destroy all of your monster cards in the cost of losing 2 battle phases. Attack them now!");
-        self.setSkipBattlePhaseCount(2);
+        self.setSkipBattlePhaseCount(1);
         opponent.setField(newfieldopp);
     }
 
@@ -421,46 +421,83 @@ bool BondBetweenTheTeacherandStudent::ActivateEffect(Player& self, Player& oppon
     int countm = 0;
     vector<Card*> newfield = self.getField();
     vector<Card*> newdeck = self.getDeck();
-    vector<Card*> newdeckself;
+    vector<Card*> newhand = self.getHand();
     bool hasDMG = false;
-    for(auto card : newfield){
-        MonsterCard *card1 = dynamic_cast<MonsterCard *>(card);
-        if(card1->getName() == "Dark Magician" && card1->isFacedown() == false){
+    bool hasDBM = false;
+    int indexDBM = -1;
+
+    // Kiểm tra có Dark Magician ngửa không
+    for (auto card : newfield) {
+        MonsterCard* card1 = dynamic_cast<MonsterCard*>(card);
+        if (card1 && card1->getName() == "Dark Magician" && !card1->isFacedown()) {
             countm++;
-    }
-    }
-    if(countm == 0){
-        cout << "[Bond Between The Teacher and Student] Activation failed: You do not control a face up Dark Magician" << endl;
-        return false;
-    }
-    if(countm > 0){
-        for(int i = 0; i < newdeck.size();i++){     
-            if(newdeck[i]->getName() == "Dark Magician Girl"){
-                MonsterCard *darkmagiciangirl = dynamic_cast<MonsterCard *>(newdeck[i]);
-                //Card* darkmagiciangirl = newdeck[i];
-                newdeck.erase(newdeck.begin()+i);
-                darkmagiciangirl->setDefenseMode(true);
-                darkmagiciangirl->setFacedown(false);
-                darkmagiciangirl->setJustSummoned(true);
-                newfield.push_back(darkmagiciangirl);
-                hasDMG = true;  
-                break;
         }
     }
-        if(hasDMG == false){
-            cout << "[Bond Between The Teacher and Student] Activation failed : You do not have any Dark Magician Girl in your deck" << endl;
-            return false;
-            } 
-        
-        cout << "[Bond Between The Teacher and Student] : Special Summon Dark Magician Girl successfully in defense position" << endl;
-        writeLog("Opponent used [Bond Between The Teacher and Student] to Special Summon Dark Magician Girl in defense position. One more target! \n");
-        self.setDeck(newdeck);
-        self.setField(newfield);
-        self.setSkipBattlePhaseCount(1);
-    }
-    return true; // Indicate success
-}
 
+    if (countm == 0) {
+        cout << "[Bond Between The Teacher and Student] Activation failed: You do not control a face-up Dark Magician" << endl;
+        return false;
+    }
+
+    // Tìm Dark Magician Girl và special summon
+    for (int i = 0; i < static_cast<int>(newdeck.size()); i++) {
+        if (newdeck[i]->getName() == "Dark Magician Girl") {
+            MonsterCard* dmg = dynamic_cast<MonsterCard*>(newdeck[i]);
+            if (dmg) {
+                newdeck.erase(newdeck.begin() + i);
+                dmg->setDefenseMode(true);
+                dmg->setFacedown(false);
+                dmg->setJustSummoned(true);
+                newfield.push_back(dmg);
+                hasDMG = true;
+                break;
+            }
+        }
+    }
+
+    if (!hasDMG) {
+        cout << "[Bond Between The Teacher and Student] Activation failed: No Dark Magician Girl in deck" << endl;
+        return false;
+    }
+
+    cout << "[Bond Between The Teacher and Student] Special Summoned Dark Magician Girl in defense position!" << endl;
+    writeLog("Opponent used [Bond Between The Teacher and Student] to Special Summon Dark Magician Girl in defense position. One more target!\n");
+
+    // Kiểm tra trong deck có Dark Burning Magic không
+    for (int i = 0; i < static_cast<int>(newdeck.size()); i++) {
+        if (newdeck[i]->getName() == "Dark Burning Magic") {
+            hasDBM = true;
+            indexDBM = i;
+            break;
+        }
+    }
+
+    if (hasDBM) {
+        char choice;
+        cout << "[Bond Between The Teacher and Student] Do you want to add [Dark Burning Magic] from your deck to your hand? (y/n): ";
+        cin >> choice;
+
+        if (choice == 'y' || choice == 'Y') {
+            Card* dbm = newdeck[indexDBM];
+            newhand.push_back(dbm);
+            newdeck.erase(newdeck.begin() + indexDBM);
+            cout << "[Bond Between The Teacher and Student] Dark Burning Magic added to your hand!" << endl;
+            writeLog("Opponent chose to add [Dark Burning Magic] to their hand using [Bond Between The Teacher and Student].\n");
+        } else {
+            cout << "[Bond Between The Teacher and Student] You chose not to add Dark Burning Magic." << endl;
+        }
+    } else {
+        cout << "[Bond Between The Teacher and Student] You do not have Dark Burning Magic in your deck." << endl;
+    }
+
+    // Cập nhật lại game state
+    self.setDeck(newdeck);
+    self.setField(newfield);
+    self.setHand(newhand);
+    self.setSkipBattlePhaseCount(0);
+
+    return true;
+}
 
 
 bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) { //sm tình bạn, 1 hit là nằm
@@ -760,90 +797,59 @@ return true; // Indicate success
 }
 
 bool CruelPact::ActivateEffect(Player& self, Player& opponent) {
-    vector<Card*> newField = self.getField();
-    vector<Card*> newHand = self.getHand();
-    vector<Card*> newDeck = self.getDeck();
-
-    bool hasMonster = false;
+    vector<Card*> newfield = self.getField();
+    vector<Card*> newhand = self.getHand();
+    vector<Card*> newdeck = self.getDeck();
+    vector<Card*> newdeckself;
     bool hasDM = false;
-
-    // Kiểm tra có quái vật trên sân không
-    for (Card* card : newField) {
-        if (card->getType() == "Monster") {
-            hasMonster = true;
+    bool hasM = false;
+    for(auto card1 : newfield){
+        if(card1->getType() == "Monster"){
+            hasM = true;
             break;
         }
     }
-
-    if (!hasMonster) {
-        cout << "[Cruel Pact] Activation Failed: You do not control any monster card!" << endl;
+    if(hasM == false){
+        cout << "[Cruel Pact] Activation Failed : You do not control any monster card!" << endl;
         return false;
     }
-
-    // Tìm Dark Magician và tạo bản sao an toàn
-    MonsterCard* copiedDM = nullptr;
-    int DMIndex = -1;
-
-    for (int i = 0; i < static_cast<int>(newDeck.size()); ++i) {
-        if (newDeck[i]->getName() == "Dark Magician") {
-            MonsterCard* originalDM = dynamic_cast<MonsterCard*>(newDeck[i]);
-
-            if (originalDM) {
-                copiedDM = new MonsterCard(*originalDM); // Sao chép an toàn
-                copiedDM->setAtk(copiedDM->getAtk() + 200);
-                DMIndex = i;
-                hasDM = true;
-                break;
-            }
+    for(int i = 0; i < newdeck.size();i++){     
+        if(newdeck[i]->getName() == "Dark Magician"){
+            MonsterCard *DM = dynamic_cast<MonsterCard *>(newdeck[i]);
+            newdeck.erase(newdeck.begin()+i);
+            DM->setAtk(DM->getAtk() + 600);
+            newhand.push_back(DM);
+            hasDM = true;  
+            break;
         }
     }
-
-    if (!hasDM || copiedDM == nullptr) {
-        cout << "[Cruel Pact] Activation Failed: No usable Dark Magician in deck!" << endl;
-        return false;
-    }
-
-    // Chọn quái vật để hi sinh
-    int tributeIndex = -1;
-    do {
-        cout << "[Cruel Pact] Choose a monster card to tribute: " << endl;
-        for (int i = 0; i < static_cast<int>(newField.size()); ++i) {
-            if (newField[i]->getType() == "Monster") {
-                cout << "  [" << i << "] " << newField[i]->getName() << endl;
+    if(hasM == true && hasDM == true){
+        int in;
+        do{
+            cout << "[Cruel Pact] Choose a monster card to tribute : " << endl;
+            cin >> in;
+            if(in<0 || in >=newfield.size()){
+                cout << "Invalid Index. Please choose again!" << endl;
+                continue;
             }
-        }
+            if(newfield[in]->getType() != "Monster"){
+                cout << "You need to choose a monster card. Try again!" << endl;
+            }
+        }while(newfield[in]->getType() != "Monster" || in<0 || in >=newfield.size());
 
-        cin >> tributeIndex;
-
-        if (tributeIndex < 0 || tributeIndex >= static_cast<int>(newField.size())) {
-            cout << "Invalid index. Please choose again!" << endl;
-            tributeIndex = -1;
-        } else if (newField[tributeIndex]->getType() != "Monster") {
-            cout << "You must tribute a monster. Try again!" << endl;
-            tributeIndex = -1;
-        }
-    } while (tributeIndex == -1);
-
-    // Lưu tên để ghi log
-    string tributeName = newField[tributeIndex]->getName();
-
-    // Thực hiện hi sinh và cập nhật
-    newField.erase(newField.begin() + tributeIndex);
-    newHand.push_back(copiedDM);
-    newDeck.erase(newDeck.begin() + DMIndex); // Xoá sau khi sao chép
-
-    self.setHp(self.getHp() - 1000);
-    self.setField(newField);
-    self.setHand(newHand);
-    self.setDeck(newDeck);
-
-    cout << "[Cruel Pact] Successfully sacrificed " << tributeName
-         << " and 1000 HP to add a powered-up Dark Magician to your hand!" << endl;
-
-    writeLog("Player used [Cruel Pact], sacrificed " + tributeName +
-             " and 1000 HP to add a Dark Magician (+200 ATK) from their deck to hand.\n");
-
+        string namecard = newfield[in]->getName();
+        
+    newfield.erase(newfield.begin() + in);
+    self.setHp(self.getHp() - 500);
+    self.setDeck(newdeck);
+    self.setField(newfield);
+    self.setHand(newhand);
+    cout << "[Cruel Pact] Successfully sacrifice " << namecard << " and 500 Hp to add a Dark Magician with 600 bonus atk from your deck to hand!" << endl;
+    writeLog("Opponent signed [Cruel Pact] and sacrificed "  + namecard + " and 500 Hp to add a Dark Magician with 600 bonus atk from their deck to hand! They really go that far? \n");
     return true;
+
+
+}
 }
 
 
@@ -957,6 +963,7 @@ bool CallofTheSky::ActivateEffect(Player& self, Player& opponent) {
             }
             opponent.setField(newfieldopp);
             cout << "[Ash Again] Activate successfully! All opponent's trap cards have returned to ashes. Destroy the enemy now!" << endl;
+            writeLog("Opponent used [Ash Again] to disable all trap cards in our field. We can not fool them.");
         }
     return true;
 }
@@ -967,7 +974,6 @@ bool TheAncientKnowledge::ActivateEffect(Player& self, Player& opponent) {
 
     vector<pair<int, Card*>> validCards;
 
-    // Tìm tất cả lá có mô tả chứa "Dark Magician"
     for (int i = 0; i < static_cast<int>(newDeck.size()); ++i) {
         string desc = newDeck[i]->getDescription();
         if (desc.find("Dark Magician") != string::npos) {
@@ -980,7 +986,6 @@ bool TheAncientKnowledge::ActivateEffect(Player& self, Player& opponent) {
         return false;
     }
 
-    // Hiển thị danh sách cho người chơi chọn
     cout << "[The Ancient Knowledge] Cards that mention 'Dark Magician':" << endl;
     for (int i = 0; i < static_cast<int>(validCards.size()); ++i) {
         cout << "  [" << i << "] " << validCards[i].second->getName()
@@ -1003,11 +1008,9 @@ bool TheAncientKnowledge::ActivateEffect(Player& self, Player& opponent) {
     newHand.push_back(selectedCard);
     newDeck.erase(newDeck.begin() + deckIndex);
 
-    // Cập nhật lại deck và hand
     self.setDeck(newDeck);
     self.setHand(newHand);
 
-    // Shuffle bằng hàm có sẵn
     self.shuffleDeck();
 
     cout << "[The Ancient Knowledge] You have added " << selectedCard->getName()
@@ -1019,12 +1022,356 @@ bool TheAncientKnowledge::ActivateEffect(Player& self, Player& opponent) {
     return true;
 }
 
+bool SoulServant::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> deck = self.getDeck();
+    vector<Card*> field = self.getField();
+    vector<Card*> newDeck;
 
+    if (deck.empty()) {
+        cout << "[Soul Servant] Your deck is empty. Activation failed." << endl;
+        return false;
+    }
 
+    int selectedIndex = -1;
 
+    while (true) {
+        cout << "[Soul Servant] Choose a card that mentions 'Dark Magician':" << endl;
+        for (int i = 0; i < deck.size(); ++i) {
+            cout << "[" << i << "] " << deck[i]->getName() << " - " << deck[i]->getDescription() << endl;
+        }
 
+        cout << "Index: ";
+        cin >> selectedIndex;
 
+        if (selectedIndex < 0 || selectedIndex >= deck.size()) {
+            cout << "[Soul Servant] Invalid index. Try again." << endl;
+            continue;
+        }
 
+        if (deck[selectedIndex]->getDescription().find("Dark Magician") == string::npos) {
+            cout << "[Soul Servant] That card does NOT mention 'Dark Magician'. Try again." << endl;
+            continue;
+        }
+
+        break;
+    }
+
+    Card* selectedCard = deck[selectedIndex];
+
+    for (int i = 0; i < deck.size(); ++i) {
+        if (i != selectedIndex) newDeck.push_back(deck[i]);
+    }
+    newDeck.push_back(selectedCard); 
+
+    self.setDeck(newDeck);
+
+    cout << "[Soul Servant] Placed " << selectedCard->getName() << " on top of your deck." << endl;
+    writeLog("Opponent used [Soul Servant] to place " + selectedCard->getName() + " to the top of their deck.");
+
+    int count = 0;
+    for (Card* c : field) {
+        if (c->getType() == "Monster" &&
+            c->getDescription().find("Dark Magician") != string::npos) {
+            count++;
+        }
+    }
+
+    int drawAmount = min(count, 2);
+    for (int i = 0; i < drawAmount; ++i) {
+        self.drawCard();
+    }
+
+    cout << "[Soul Servant] You control " << count << " monster(s) that mention 'Dark Magician'. You draw " << drawAmount << " card(s)." << endl;
+    writeLog("Opponent drew " + to_string(drawAmount) + " card(s) using [Soul Servant].");
+
+    return true;
+}
+
+bool EnternalSoul::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> hand = self.getHand();
+    vector<Card*> deck = self.getDeck();
+    vector<Card*> field = self.getField();
+
+    vector<int> revealableIndexes;
+    for (int i = 0; i < hand.size(); ++i) {
+        if (hand[i]->getDescription().find("Dark Magician") != string::npos) {
+            revealableIndexes.push_back(i);
+        }
+    }
+
+    if (revealableIndexes.empty()) {
+        cout << "[Enternal Soul] Activation failed: You must reveal a card in your hand that mentions 'Dark Magician'." << endl;
+        return false;
+    }
+
+    cout << "[Enternal Soul] Reveal a card from your hand that mentions 'Dark Magician':" << endl;
+    for (int i = 0; i < revealableIndexes.size(); ++i) {
+        int idx = revealableIndexes[i];
+        cout << "[" << i << "] " << hand[idx]->getName() << endl;
+    }
+
+    int revealChoice = -1;
+    do {
+        cout << "Choose index to reveal: ";
+        cin >> revealChoice;
+    } while (revealChoice < 0 || revealChoice >= revealableIndexes.size());
+
+    int handIndex = revealableIndexes[revealChoice];
+    Card* revealedCard = hand[handIndex];
+    cout << "[Enternal Soul] You revealed: " << revealedCard->getName() << endl;
+
+    // Không đưa lại vào deck nữa — giữ nguyên trên tay
+
+    // Tìm quái vật có mention "Dark Magician" trong deck
+    vector<int> validIndexes;
+    for (int i = 0; i < deck.size(); ++i) {
+        if (deck[i]->getType() == "Monster" &&
+            deck[i]->getDescription().find("Dark Magician") != string::npos) {
+            validIndexes.push_back(i);
+        }
+    }
+
+    if (validIndexes.empty()) {
+        cout << "[Enternal Soul] No valid monsters in your deck to summon." << endl;
+        return false;
+    }
+
+    cout << "[Enternal Soul] Choose up to 2 monsters to summon:" << endl;
+    for (int i = 0; i < validIndexes.size(); ++i) {
+        cout << "[" << i << "] " << deck[validIndexes[i]]->getName() << endl;
+    }
+
+    vector<Card*> summoned;
+    int choice1 = -1, choice2 = -1;
+
+    cout << "First index: ";
+    cin >> choice1;
+    if (choice1 < 0 || choice1 >= validIndexes.size()) return false;
+
+    int index1 = validIndexes[choice1];
+    MonsterCard* m1 = dynamic_cast<MonsterCard*>(deck[index1]);
+    m1->setDefenseMode(true);
+    m1->setFacedown(false);
+    m1->setJustSummoned(true);
+    summoned.push_back(m1);
+    deck.erase(deck.begin() + index1);
+
+    if (validIndexes.size() >= 2) {
+        cout << "Second index (optional, -1 to skip): ";
+        cin >> choice2;
+        if (choice2 != -1 && choice2 >= 0 && choice2 < validIndexes.size() && choice2 != choice1) {
+            int index2 = validIndexes[choice2];
+            // Nếu index2 đứng sau index1 đã bị xóa thì giảm 1
+            if (index2 > index1) index2--;
+
+            MonsterCard* m2 = dynamic_cast<MonsterCard*>(deck[index2]);
+            m2->setDefenseMode(true);
+            m2->setFacedown(false);
+            m2->setJustSummoned(true);
+            summoned.push_back(m2);
+            deck.erase(deck.begin() + index2);
+        }
+    }
+
+    for (Card* c : summoned) {
+        field.push_back(c);
+    }
+
+    self.setDeck(deck);
+    self.setField(field);
+    self.setHand(hand); // hand vẫn giữ nguyên
+
+    if (!summoned.empty()) {
+        cout << "[Enternal Soul] You summoned: ";
+        for (int i = 0; i < summoned.size(); ++i) {
+            cout << summoned[i]->getName();
+            if (i != summoned.size() - 1) cout << " and ";
+        }
+        cout << "." << endl;
+    }
+
+    bool hasRod = false, hasSoul = false;
+    for (Card* c : summoned) {
+        if (c->getName() == "Magicians Rod") hasRod = true;
+        if (c->getName() == "Magicians Soul") hasSoul = true;
+    }
+
+    if (hasRod && hasSoul) {
+        for (int i = 0; i < 2; ++i) {
+            self.drawCard();
+        }
+        cout << "[Enternal Soul] You summoned both Rod and Soul, so you draw 2 cards successfully!" << endl;
+    }
+
+    string logMsg = "Opponent activated [Enternal Soul], special summoned ";
+    for (int i = 0; i < summoned.size(); ++i) {
+        logMsg += summoned[i]->getName();
+        if (i != summoned.size() - 1) logMsg += " and ";
+    }
+    logMsg += " from their deck.";
+    writeLog(logMsg);
+
+    return true;
+}
+
+bool IllusionMagic::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> field = self.getField();
+    vector<Card*> hand = self.getHand();
+    vector<Card*> deck = self.getDeck();
+
+    // Tìm monster trên sân có mention "Dark Magician"
+    vector<int> tributeCandidates;
+    for (int i = 0; i < field.size(); ++i) {
+        if (field[i]->getType() == "Monster" &&
+            field[i]->getDescription().find("Dark Magician") != string::npos) {
+            tributeCandidates.push_back(i);
+        }
+    }
+
+    if (tributeCandidates.empty()) {
+        cout << "[Illusion Magic] Activation Failed: You have no monster on the field that mentions 'Dark Magician'." << endl;
+        return false;
+    }
+
+    // Chọn 1 quái vật để hiến tế
+    cout << "[Illusion Magic] Choose 1 monster that mentions 'Dark Magician' to tribute:" << endl;
+    for (int i = 0; i < tributeCandidates.size(); ++i) {
+        int idx = tributeCandidates[i];
+        cout << "[" << i << "] " << field[idx]->getName() << " - " << field[idx]->getDescription() << endl;
+    }
+
+    int tributeChoice = -1;
+    do {
+        cout << "Index: ";
+        cin >> tributeChoice;
+    } while (tributeChoice < 0 || tributeChoice >= tributeCandidates.size());
+
+    int fieldIndex = tributeCandidates[tributeChoice];
+    string tributedName = field[fieldIndex]->getName();
+    field.erase(field.begin() + fieldIndex);
+
+    // Tìm các quái vật trong deck mention "Dark Magician"
+    vector<int> validIndexes;
+    for (int i = 0; i < deck.size(); ++i) {
+        if (deck[i]->getType() == "Monster" &&
+            deck[i]->getDescription().find("Dark Magician") != string::npos) {
+            validIndexes.push_back(i);
+        }
+    }
+
+    if (validIndexes.size() < 2) {
+        cout << "[Illusion Magic] Failed: Not enough valid monsters in deck that mention 'Dark Magician'." << endl;
+        return false;
+    }
+
+    // Chọn 2 bài để thêm vào tay
+    cout << "[Illusion Magic] Choose 2 monster cards from your deck that mention 'Dark Magician':" << endl;
+    for (int i = 0; i < validIndexes.size(); ++i) {
+        cout << "[" << i << "] " << deck[validIndexes[i]]->getName()
+             << " - " << deck[validIndexes[i]]->getDescription() << endl;
+    }
+
+    int index1 = -1, index2 = -1;
+    do {
+        cout << "First index: ";
+        cin >> index1;
+        cout << "Second index: ";
+        cin >> index2;
+
+        if (index1 == index2) {
+            cout << "You must choose two different cards." << endl;
+        }
+
+    } while (
+        index1 < 0 || index1 >= validIndexes.size() ||
+        index2 < 0 || index2 >= validIndexes.size() ||
+        index1 == index2
+    );
+
+    int deckIndex1 = validIndexes[index1];
+    int deckIndex2 = validIndexes[index2];
+
+    // Thêm vào tay (giữ nguyên cách làm giống Call of The Sky)
+    Card* card1 = deck[deckIndex1];
+    Card* card2 = deck[deckIndex2];
+
+    hand.push_back(card1);
+    hand.push_back(card2);
+
+    // Xoá khỏi deck (theo thứ tự lớn trước)
+    if (deckIndex1 > deckIndex2) {
+        deck.erase(deck.begin() + deckIndex1);
+        deck.erase(deck.begin() + deckIndex2);
+    } else {
+        deck.erase(deck.begin() + deckIndex2);
+        deck.erase(deck.begin() + deckIndex1);
+    }
+
+    cout << "[Illusion Magic] You tributed " << tributedName
+         << " and added " << card1->getName() << " and " << card2->getName() << " to your hand!" << endl;
+
+    writeLog("Opponent activated [Illusion Magic]. Tributed " + tributedName +
+             ", added " + card1->getName() + " and " + card2->getName() + " to their hand.");
+
+    // Cập nhật lại trạng thái
+    self.setField(field);
+    self.setDeck(deck);
+    self.setHand(hand);
+    return true;
+}
+
+bool ApprenticeHelper::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> newfield = self.getField();
+    vector<Card*> newdeck = self.getDeck();
+    bool hasApprentice = false;
+
+    for (int i = 0; i < newdeck.size(); i++) {
+        if (newdeck[i]->getName() == "Magicians Apprentice") {
+            MonsterCard* apprentice = dynamic_cast<MonsterCard*>(newdeck[i]);
+            newdeck.erase(newdeck.begin() + i);
+            apprentice->setDefenseMode(true);
+            apprentice->setFacedown(false);
+            apprentice->setJustSummoned(true);
+            newfield.push_back(apprentice);
+            hasApprentice = true;
+            break;
+        }
+    }
+
+    if (!hasApprentice) {
+        cout << "[Apprentice Helper] Activation failed: No 'Magicians Apprentice' in your deck." << endl;
+        return false;
+    }
+
+    cout << "[Apprentice Helper] Special Summon 'Magicians Apprentice' successfully in defense position." << endl;
+
+    // Tính số lá rút
+    int drawCount = 0;
+    for (Card* c : newfield) {
+        if (c->getType() == "Monster" &&
+            c->getDescription().find("Dark Magician") != string::npos) {
+            drawCount++;
+        }
+    }
+
+    if (drawCount > 2) drawCount = 2;
+
+    for (int i = 0; i < drawCount; ++i) {
+        self.drawCard();
+    }
+
+    if (drawCount > 0) {
+        cout << "[Apprentice Helper] You control monster(s) that mention 'Dark Magician', so you draw " << drawCount << " card(s)." << endl;
+    } else {
+        cout << "[Apprentice Helper] No monster you control mentions 'Dark Magician', you draw nothing." << endl;
+    }
+
+    writeLog("Opponent used [Apprentice Helper] to Special Summon 'Magicians Apprentice' and drew " + to_string(drawCount) + " card(s).");
+
+    self.setDeck(newdeck);
+    self.setField(newfield);
+    return true;
+}
 
 
 
@@ -1047,9 +1394,9 @@ bool MirrorForce::ActivateEffect(Player& self, Player& opponent) { //cần check
             newfieldopp.push_back(card1);
         }
     }
-    if(candestroy == false){
+    /*if(candestroy == false){
         cout << "[Mirror Force] Opponent do not have any monster in attack position" << endl;
-    }
+    }*/
     writeLog(" has been destroyed! Be careful nextime. \n");
     opponent.setField(newfieldopp);
     return true; // Indicate success
