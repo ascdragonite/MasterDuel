@@ -95,6 +95,10 @@ class SoulServant : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
 
+class EnternalSoul : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
+
 //Trap Card
 class MirrorForce : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;

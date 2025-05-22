@@ -1027,34 +1027,196 @@ bool TheAncientKnowledge::ActivateEffect(Player& self, Player& opponent) {
 }
 
 bool SoulServant::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> deck = self.getDeck();
     vector<Card*> field = self.getField();
-    int drawCount = 0;
 
-    for (Card* card : field) {
-        MonsterCard* mc = dynamic_cast<MonsterCard*>(card);
-        if (mc && !mc->isFacedown()) {
-            string name = mc->getName();
-            if (name == "Dark Magician" || name == "Dark Magician Girl") {
-                drawCount++;
-            }
+    // Tìm các lá trong deck mention "Dark Magician"
+    vector<int> validIndexes;
+    for (int i = 0; i < deck.size(); ++i) {
+        if (deck[i]->getDescription().find("Dark Magician") != string::npos) {
+            validIndexes.push_back(i);
         }
     }
 
-    if (drawCount == 0) {
-        cout << "[Soul Servant] Activation failed: You control no face-up Dark Magician or Dark Magician Girl." << endl;
+    if (validIndexes.empty()) {
+        cout << "[Soul Servant] No card in your deck mentions 'Dark Magician'. Activation failed." << endl;
         return false;
     }
 
-    cout << "[Soul Servant] You control " << drawCount << " valid target(s). Drawing " << drawCount << " card(s)..." << endl;
-    for (int i = 0; i < drawCount; ++i) {
-    self.drawCard();
-}
+    cout << "[Soul Servant] Choose 1 card from your deck to place on top of your deck:" << endl;
+    for (int i = 0; i < validIndexes.size(); ++i) {
+        cout << "[" << i << "] " << deck[validIndexes[i]]->getName() << " - " << deck[validIndexes[i]]->getDescription() << endl;
+    }
 
-    writeLog("Player activated [Soul Servant] and drew " + to_string(drawCount) + " card(s).");
+    int choice = -1;
+    do {
+        cout << "Index: ";
+        cin >> choice;
+    } while (choice < 0 || choice >= validIndexes.size());
 
+    int chosenIndex = validIndexes[choice];
+    Card* chosenCard = deck[chosenIndex];
+
+    vector<Card*> newDeck;
+    for (int i = 0; i < deck.size(); ++i) {
+        if (i != chosenIndex) {
+            newDeck.push_back(deck[i]);
+        }
+    }
+    newDeck.insert(newDeck.begin(), chosenCard); // đặt lên đầu
+
+    cout << "[Soul Servant] " << chosenCard->getName() << " was placed on top of your deck." << endl;
+    writeLog("Opponent activated [Soul Servant] and placed " + chosenCard->getName() + " on top of their deck.");
+
+    int count = 0;
+    for (Card* c : field) {
+        if (c->getType() == "Monster" && c->getDescription().find("Dark Magician") != string::npos) {
+            count++;
+        }
+    }
+
+    int drawAmount = min(count, 2);
+    for (int i = 0; i < drawAmount; ++i) {
+        self.drawCard();
+    }
+
+    if (drawAmount > 0) {
+        cout << "[Soul Servant] You control " << count << " monster(s) that mention 'Dark Magician'. You draw " << drawAmount << " card(s)." << endl;
+        writeLog("Opponent drew " + to_string(drawAmount) + " card(s) using [Soul Servant].");
+    } else {
+        cout << "[Soul Servant] You control no monster that mentions 'Dark Magician'. You draw 0 cards." << endl;
+        writeLog("Opponent used [Soul Servant] but drew no cards due to no monster on field mentioning 'Dark Magician'.");
+    }
+
+    self.setDeck(newDeck);
     return true;
 }
 
+bool EnternalSoul::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> hand = self.getHand();
+    vector<Card*> deck = self.getDeck();
+    vector<Card*> field = self.getField();
+
+    // Bước 1: Reveal 1 card mention "Dark Magician" từ tay
+    vector<int> revealableIndexes;
+    for (int i = 0; i < hand.size(); ++i) {
+        if (hand[i]->getDescription().find("Dark Magician") != string::npos) {
+            revealableIndexes.push_back(i);
+        }
+    }
+
+    if (revealableIndexes.empty()) {
+        cout << "[Enternal Soul] Activation failed: You must reveal a card in your hand that mentions Dark Magician." << endl;
+        return false;
+    }
+
+    cout << "[Enternal Soul] Reveal a card from your hand that mentions Dark Magician:" << endl;
+    for (int i = 0; i < revealableIndexes.size(); ++i) {
+        int idx = revealableIndexes[i];
+        cout << "[" << i << "] " << hand[idx]->getName() << endl;
+    }
+
+    int revealChoice = -1;
+    do {
+        cout << "Choose index to reveal: ";
+        cin >> revealChoice;
+    } while (revealChoice < 0 || revealChoice >= revealableIndexes.size());
+
+    int handIndex = revealableIndexes[revealChoice];
+    Card* revealedCard = hand[handIndex];
+
+    cout << "[Enternal Soul] You revealed: " << revealedCard->getName() << endl;
+
+    deck.insert(deck.begin(), revealedCard);
+    hand.erase(hand.begin() + handIndex);
+
+    vector<int> validIndexes;
+    for (int i = 0; i < deck.size(); ++i) {
+        if (deck[i]->getType() == "Monster" &&
+            deck[i]->getDescription().find("Dark Magician") != string::npos) {
+            validIndexes.push_back(i);
+        }
+    }
+
+    if (validIndexes.empty()) {
+        cout << "[Enternal Soul] No valid monsters in your deck to summon." << endl;
+        return false;
+    }
+
+    cout << "[Enternal Soul] Choose up to 2 monsters to summon:" << endl;
+    for (int i = 0; i < validIndexes.size(); ++i) {
+        cout << "[" << i << "] " << deck[validIndexes[i]]->getName() << endl;
+    }
+
+    vector<Card*> summoned;
+    int choice1 = -1, choice2 = -1;
+
+    cout << "First index: ";
+    cin >> choice1;
+    if (choice1 < 0 || choice1 >= validIndexes.size()) return false;
+
+    int index1 = validIndexes[choice1];
+    MonsterCard* m1 = dynamic_cast<MonsterCard*>(deck[index1]);
+    m1->setDefenseMode(true);
+    m1->setFacedown(false);
+    m1->setJustSummoned(true);
+    summoned.push_back(m1);
+    deck.erase(deck.begin() + index1);
+
+    if (validIndexes.size() >= 2) {
+        cout << "Second index (optional, -1 to skip): ";
+        cin >> choice2;
+        if (choice2 != -1 && choice2 >= 0 && choice2 < validIndexes.size() && choice2 != choice1) {
+            int index2 = validIndexes[choice2];
+            if (index2 > index1) index2--; // adjust if needed
+            MonsterCard* m2 = dynamic_cast<MonsterCard*>(deck[index2]);
+            m2->setDefenseMode(true);
+            m2->setFacedown(false);
+            m2->setJustSummoned(true);
+            summoned.push_back(m2);
+            deck.erase(deck.begin() + index2);
+        }
+    }
+
+    for (Card* c : summoned) field.push_back(c);
+
+    self.setDeck(deck);
+    self.shuffleDeck();
+
+    if (!summoned.empty()) {
+        cout << "[Enternal Soul] You summoned: ";
+        for (int i = 0; i < summoned.size(); ++i) {
+            cout << summoned[i]->getName();
+            if (i != summoned.size() - 1) cout << " and ";
+        }
+        cout << "." << endl;
+    }
+
+    bool hasRod = false, hasSoul = false;
+    for (Card* c : summoned) {
+        if (c->getName() == "Magicians Rod") hasRod = true;
+        if (c->getName() == "Magicians Soul") hasSoul = true;
+    }
+
+    if (hasRod && hasSoul) {
+        self.drawCard();
+        self.drawCard();
+        cout << "[Enternal Soul] You summoned both Rod and Soul, so you draw 2 cards successfully!" << endl;
+    }
+
+    self.setField(field);
+    self.setHand(hand);
+
+    string logMsg = "Opponent activated [Enternal Soul], special summoned ";
+    for (int i = 0; i < summoned.size(); ++i) {
+        logMsg += summoned[i]->getName();
+        if (i != summoned.size() - 1) logMsg += " and ";
+    }
+    logMsg += " from their deck.";
+    writeLog(logMsg);
+
+    return true;
+}
 
 
 
