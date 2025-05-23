@@ -115,8 +115,25 @@ class Overdose : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
 
+class ChaosMagic : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
 
+class TheWorldDestroyer : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
 
+class TheTruePowerOfChaosDual : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
+
+class TrueLight : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
+
+class TheMelodyOfTheAwakeningDragon : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
 //Trap Card
 class MirrorForce : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;

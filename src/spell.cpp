@@ -1259,7 +1259,6 @@ bool IllusionMagic::ActivateEffect(Player& self, Player& opponent) {
         return false;
     }
 
-    // Chọn 2 bài để thêm vào tay
     cout << "[Illusion Magic] Choose 2 monster cards from your deck that mention 'Dark Magician':" << endl;
     for (int i = 0; i < validIndexes.size(); ++i) {
         cout << "[" << i << "] " << deck[validIndexes[i]]->getName()
@@ -1366,7 +1365,6 @@ bool ApprenticeHelper::ActivateEffect(Player& self, Player& opponent) {
 }
 
 bool WishesforEyesofBlue::ActivateEffect(Player& self, Player& opponent) {
-    
     vector<Card*> hand = self.getHand();
     vector<Card*> deck = self.getDeck();
     vector<Card*> field = self.getField();
@@ -1385,8 +1383,7 @@ bool WishesforEyesofBlue::ActivateEffect(Player& self, Player& opponent) {
 
     cout << "[Wishes for Eyes of Blue] Reveal a card from your hand that mentions 'Blue Eyes':" << endl;
     for (int i = 0; i < revealableIndexes.size(); ++i) {
-        int idx = revealableIndexes[i];
-        cout << "[" << i << "] " << hand[idx]->getName() << endl;
+        cout << "[" << i << "] " << hand[revealableIndexes[i]]->getName() << endl;
     }
 
     int revealChoice = -1;
@@ -1395,13 +1392,10 @@ bool WishesforEyesofBlue::ActivateEffect(Player& self, Player& opponent) {
         cin >> revealChoice;
     } while (revealChoice < 0 || revealChoice >= revealableIndexes.size());
 
-    int handIndex = revealableIndexes[revealChoice];
-    Card* revealedCard = hand[handIndex];
+    Card* revealedCard = hand[revealableIndexes[revealChoice]];
     cout << "[Wishes for Eyes of Blue] You revealed: " << revealedCard->getName() << endl;
 
-    // Không đưa lại vào deck nữa — giữ nguyên trên tay
-
-    // Tìm quái vật có mention "Dark Magician" trong deck
+    // Tìm các quái vật có mô tả chứa "Blue Eyes"
     vector<int> validIndexes;
     for (int i = 0; i < deck.size(); ++i) {
         if (deck[i]->getType() == "Monster" &&
@@ -1435,14 +1429,19 @@ bool WishesforEyesofBlue::ActivateEffect(Player& self, Player& opponent) {
     summoned.push_back(m1);
     deck.erase(deck.begin() + index1);
 
-    if (validIndexes.size() >= 2) {
+    validIndexes.clear();
+    for (int i = 0; i < deck.size(); ++i) {
+        if (deck[i]->getType() == "Monster" &&
+            deck[i]->getDescription().find("Blue Eyes") != string::npos) {
+            validIndexes.push_back(i);
+        }
+    }
+
+    if (validIndexes.size() >= 1) {
         cout << "Second index (optional, -1 to skip): ";
         cin >> choice2;
-        if (choice2 != -1 && choice2 >= 0 && choice2 < validIndexes.size() && choice2 != choice1) {
+        if (choice2 != -1 && choice2 >= 0 && choice2 < validIndexes.size()) {
             int index2 = validIndexes[choice2];
-            // Nếu index2 đứng sau index1 đã bị xóa thì giảm 1
-            if (index2 > index1) index2--;
-
             MonsterCard* m2 = dynamic_cast<MonsterCard*>(deck[index2]);
             m2->setDefenseMode(true);
             m2->setFacedown(false);
@@ -1458,21 +1457,24 @@ bool WishesforEyesofBlue::ActivateEffect(Player& self, Player& opponent) {
 
     self.setDeck(deck);
     self.setField(field);
-    self.setHand(hand); // hand vẫn giữ nguyên
+    self.setHand(hand);  
 
     if (!summoned.empty()) {
         cout << "[Wishes for Eyes of Blue] You summoned: ";
-        writeLog("Opponent used [Wishes for Eyes of Blue] to summon ");
+        string logMsg = "Opponent used [Wishes for Eyes of Blue] to summon ";
         for (int i = 0; i < summoned.size(); ++i) {
             cout << summoned[i]->getName();
-            writeLog(summoned[i]->getName());
+            logMsg += summoned[i]->getName();
             if (i != summoned.size() - 1) {
-                cout << " and " << endl;
-                writeLog(" and ");
-            };
+                cout << " and ";
+                logMsg += " and ";
+            }
         }
         cout << "." << endl;
+        writeLog(logMsg);
     }
+
+    return true;
 }
 
 
@@ -1518,23 +1520,20 @@ bool Overdose::ActivateEffect(Player& self, Player& opponent) {
         writeLog("Opponent used [Overdose] to sacrifice " + to_string(minushp) + " for a " + newfield[in]->getName() + " with " + to_string(newatk) + " atk" );
         card2->setAtk(newatk);
         card2->setFacedown(false);
+        self.setHp(hp - minushp);
     }
     return true;
 }
 
 
-
-
-
-
-
-
 bool ChaosMagic::ActivateEffect(Player& self, Player& opponent) {
     vector<Card*> newfield = self.getField();
     vector<Card*> newdeck = self.getDeck();
+    vector<Card*> newhand = self.getHand();
     bool hasDMOC = false;
     bool hasBLS = false;
     vector<int> tributeIndexes;
+
     for (int i = 0; i < newfield.size(); ++i) {
         if (newfield[i]->getType() == "Monster" &&
             newfield[i]->getDescription().find("Dark Magician") != string::npos) {
@@ -1562,14 +1561,13 @@ bool ChaosMagic::ActivateEffect(Player& self, Player& opponent) {
 
     int idx1 = tributeIndexes[in1];
     int idx2 = tributeIndexes[in2];
+    if (idx1 > idx2) swap(idx1, idx2);
 
     string name1 = newfield[idx1]->getName();
     string name2 = newfield[idx2]->getName();
 
-    if (idx1 > idx2) swap(idx1, idx2);
     newfield.erase(newfield.begin() + idx2);
     newfield.erase(newfield.begin() + idx1);
-
 
     for (int i = 0; i < newdeck.size(); ++i) {
         if (newdeck[i]->getName() == "Dark Magician of Chaos" && !hasDMOC) {
@@ -1591,21 +1589,60 @@ bool ChaosMagic::ActivateEffect(Player& self, Player& opponent) {
             hasBLS = true;
             i--;
         }
+        if (hasDMOC && hasBLS) break;
+    }
 
+    for (int i = 0; i < newhand.size(); ++i) {
+        if (!hasDMOC && newhand[i]->getName() == "Dark Magician of Chaos") {
+            MonsterCard* dmoc = dynamic_cast<MonsterCard*>(newhand[i]);
+            newhand.erase(newhand.begin() + i);
+            dmoc->setDefenseMode(true);
+            dmoc->setFacedown(false);
+            dmoc->setJustSummoned(true);
+            newfield.push_back(dmoc);
+            hasDMOC = true;
+            i--;
+        } else if (!hasBLS && newhand[i]->getName() == "Black Luster Soldier") {
+            MonsterCard* bls = dynamic_cast<MonsterCard*>(newhand[i]);
+            newhand.erase(newhand.begin() + i);
+            bls->setDefenseMode(true);
+            bls->setFacedown(false);
+            bls->setJustSummoned(true);
+            newfield.push_back(bls);
+            hasBLS = true;
+            i--;
+        }
         if (hasDMOC && hasBLS) break;
     }
 
     if (!hasDMOC || !hasBLS) {
-        cout << "[Chaos Magic] Activation failed: Missing Dark Magician of Chaos or Black Luster Soldier in your deck." << endl;
+        cout << "[Chaos Magic] Activation failed: Missing Dark Magician of Chaos or Black Luster Soldier in your deck or hand." << endl;
         return false;
+    }
+
+    bool addedChaosPower = false;
+    for (int i = 0; i < newdeck.size(); ++i) {
+        if (newdeck[i]->getName() == "The True Power of Chaos Dual") {
+            Card* spell = newdeck[i];
+            newdeck.erase(newdeck.begin() + i);
+            newhand.push_back(spell);
+            addedChaosPower = true;
+            cout << "[Chaos Magic] You also added 'The True Power of Chaos Dual' to your hand!" << endl;
+            writeLog("Opponent searched 'The True Power of Chaos Dual' after summoning DMOC and BLS.");
+            break;
+        }
     }
 
     cout << "[Chaos Magic] You tributed " << name1 << " and " << name2 << " to Special Summon 'Dark Magician of Chaos' and 'Black Luster Soldier' in defense position!" << endl;
 
-    writeLog("Opponent used [Chaos Magic], tributed " + name1 + " and " + name2 +
-             " to summon DMOC and BLS in defense position.");
+    writeLog("Opponent used [Chaos Magic], tributed " + name1 + " and " + name2 + " to summon DMOC and BLS in defense position.");
+
+    if (!addedChaosPower) {
+        cout << "[Chaos Magic] Summon succeeded, but 'The True Power of Chaos Dual' was not found in your deck." << endl;
+    }
 
     self.setDeck(newdeck);
+    self.setHand(newhand);
     self.setField(newfield);
     return true;
 }
@@ -1623,7 +1660,7 @@ bool TheWorldDestroyer::ActivateEffect(Player& self, Player& opponent) {
     }
 
     if (revealableIndexes.empty()) {
-        cout << "[The World Destroyer] Activation failed: You must reveal a card in your hand that mentions 'Dark Magician'." << endl;
+        cout << "[The World Destroyer] Activation failed: You must reveal a card that mentions 'Dark Magician'." << endl;
         return false;
     }
 
@@ -1634,58 +1671,73 @@ bool TheWorldDestroyer::ActivateEffect(Player& self, Player& opponent) {
 
     int choice = -1;
     do {
-        cout << "Choose index: ";
+        cout << "Choose index to reveal: ";
         cin >> choice;
     } while (choice < 0 || choice >= revealableIndexes.size());
 
-    cout << "[The World Destroyer] You revealed: " << hand[revealableIndexes[choice]]->getName() << endl;
+    Card* revealedCard = hand[revealableIndexes[choice]];
+    cout << "[The World Destroyer] You revealed: " << revealedCard->getName() << endl;
 
-
-    bool hasGandora = false;
+    MonsterCard* gandora = nullptr;
     for (Card* c : fieldSelf) {
         if (c->getName() == "Gandora-X the Dragon of Demolition") {
-            hasGandora = true;
-            break;
+            MonsterCard* mc = dynamic_cast<MonsterCard*>(c);
+            if (mc && !mc->isFacedown()) {
+                gandora = mc;
+                break;
+            }
         }
     }
 
-    if (!hasGandora) {
-        cout << "[The World Destroyer] Activation failed: You do not control 'Gandora-X the Dragon of Demolition'." << endl;
+    if (!gandora) {
+        cout << "[The World Destroyer] Activation failed: You do not control a face-up 'Gandora-X the Dragon of Demolition'." << endl;
         return false;
     }
 
-    int destroyedMonsterCount = 0;
-    int totalDestroyed = 0;
+    int halfHp = self.getHp() / 2;
+    self.takeDamage(halfHp);
+    cout << "[The World Destroyer] You paid half your LP (" << halfHp << " LP) to activate the effect." << endl;
+
+    int destroyedCount = 0;
+    vector<Card*> updatedFieldSelf;
 
     for (Card* c : fieldSelf) {
-        if (c->getType() == "Monster") destroyedMonsterCount++;
-        totalDestroyed++;
+        if (c == gandora) {
+            updatedFieldSelf.push_back(c);
+            continue;
+        }
+        cout << "[The World Destroyer] Destroyed (your side): " << c->getName() << endl;
+        destroyedCount++;
     }
 
     for (Card* c : fieldOpp) {
-        if (c->getType() == "Monster") destroyedMonsterCount++;
-        totalDestroyed++;
+        cout << "[The World Destroyer] Destroyed (opponent's side): " << c->getName() << endl;
+        destroyedCount++;
     }
 
-    fieldSelf.clear();
-    fieldOpp.clear();
+    self.setField(updatedFieldSelf);
+    opponent.setField(vector<Card*>());
 
-    int damage = destroyedMonsterCount * 500;
-    opponent.takeDamage(damage);
+    int atkGain = destroyedCount * 500;
+    int burnDmg = destroyedCount * 500;
 
-    cout << "[The World Destroyer] Destroyed all cards on the field!" << endl;
-    cout << "[The World Destroyer] Inflicted " << damage << " damage to your opponent!" << endl;
-    cout << "[The World Destroyer] You must skip your battle phase this turn." << endl;
+    gandora->setAtk(gandora->getAtk() + atkGain);
+    opponent.takeDamage(burnDmg);
 
-    writeLog("Opponent activated [The World Destroyer], revealed a card that mentions 'Dark Magician'.");
-    writeLog("All cards on the field were destroyed.");
-    writeLog("Inflicted " + to_string(damage) + " damage to opponent from destroyed monsters.");
-    writeLog("Battle Phase skipped this turn.");
+    cout << "[The World Destroyer] Gandora gained " << atkGain << " ATK!" << endl;
+    cout << "[The World Destroyer] Opponent took " << burnDmg << " damage from Gandora's wrath!" << endl;
 
-    self.setField(fieldSelf);
-    opponent.setField(fieldOpp);
+    self.setSkipBattlePhaseCount(1);
+    cout << "[The World Destroyer] You must skip your Battle Phase this turn." << endl;
 
-    self.setSkipBattlePhaseCount(1); 
+    writeLog("Opponent activated [The World Destroyer].");
+    writeLog("They revealed '" + revealedCard->getName());
+    writeLog("Paid half their LP...");
+    writeLog("Every card burned to dust. Gandora alone remains.");
+    writeLog("Gandora grew stronger — +" + to_string(atkGain) + " ATK — feeding on everyone losses.");
+    writeLog("You took " + to_string(burnDmg) + " damage.");
+    writeLog("They skipped their Battle Phase.");
+    writeLog("Get up. You're still in the game. For now.");
 
     return true;
 }
@@ -1750,6 +1802,198 @@ bool TheTruePowerOfChaosDual::ActivateEffect(Player& self, Player& opponent) {
     self.setField(fieldSelf);
     opponent.setField(fieldOpp);
     self.setSkipBattlePhaseCount(1);
+    return true;
+}
+
+bool TrueLight::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> hand = self.getHand();
+    vector<Card*> deck = self.getDeck();
+    vector<Card*> field = self.getField();
+
+    vector<int> revealableIndexes;
+    for (int i = 0; i < hand.size(); ++i) {
+        if (hand[i]->getDescription().find("Blue-Eyes") != string::npos) {
+            revealableIndexes.push_back(i);
+        }
+    }
+
+    if (revealableIndexes.empty()) {
+        cout << "[True Light] Activation failed: You must reveal a card in your hand that mentions 'Blue-Eyes'." << endl;
+        return false;
+    }
+
+    cout << "[True Light] Reveal a card from your hand that mentions 'Blue-Eyes':" << endl;
+    for (int i = 0; i < revealableIndexes.size(); ++i) {
+        cout << "[" << i << "] " << hand[revealableIndexes[i]]->getName() << endl;
+    }
+
+    int revealChoice = -1;
+    do {
+        cout << "Choose index to reveal: ";
+        cin >> revealChoice;
+    } while (revealChoice < 0 || revealChoice >= revealableIndexes.size());
+
+    int handIndex = revealableIndexes[revealChoice];
+    Card* revealedCard = hand[handIndex];
+    cout << "[True Light] You revealed: " << revealedCard->getName() << endl;
+
+    // 2. Tìm monster trong deck có mention "Blue-Eyes"
+    vector<int> validIndexes;
+    for (int i = 0; i < deck.size(); ++i) {
+        if (deck[i]->getType() == "Monster" &&
+            deck[i]->getDescription().find("Blue-Eyes") != string::npos) {
+            validIndexes.push_back(i);
+        }
+    }
+
+    if (validIndexes.empty()) {
+        cout << "[True Light] No valid monsters in your deck to summon." << endl;
+        return false;
+    }
+
+    cout << "[True Light] Choose up to 2 monsters to summon:" << endl;
+    for (int i = 0; i < validIndexes.size(); ++i) {
+        cout << "[" << i << "] " << deck[validIndexes[i]]->getName() << endl;
+    }
+
+    vector<Card*> summoned;
+    int choice1 = -1, choice2 = -1;
+
+    cout << "First index: ";
+    cin >> choice1;
+    if (choice1 < 0 || choice1 >= validIndexes.size()) return false;
+
+    int index1 = validIndexes[choice1];
+    MonsterCard* m1 = dynamic_cast<MonsterCard*>(deck[index1]);
+    m1->setDefenseMode(true);
+    m1->setFacedown(false);
+    m1->setJustSummoned(true);
+    summoned.push_back(m1);
+    deck.erase(deck.begin() + index1);
+
+    if (validIndexes.size() >= 2) {
+        cout << "Second index (optional, -1 to skip): ";
+        cin >> choice2;
+        if (choice2 != -1 && choice2 >= 0 && choice2 < validIndexes.size() && choice2 != choice1) {
+            int index2 = validIndexes[choice2];
+            if (index2 > index1) index2--;
+
+            MonsterCard* m2 = dynamic_cast<MonsterCard*>(deck[index2]);
+            m2->setDefenseMode(true);
+            m2->setFacedown(false);
+            m2->setJustSummoned(true);
+            summoned.push_back(m2);
+            deck.erase(deck.begin() + index2);
+        }
+    }
+
+    for (Card* c : summoned) {
+        field.push_back(c);
+    }
+
+    self.setDeck(deck);
+    self.setField(field);
+    self.setHand(hand);
+
+    if (!summoned.empty()) {
+        cout << "[True Light] You summoned: ";
+        for (int i = 0; i < summoned.size(); ++i) {
+            cout << summoned[i]->getName();
+            if (i != summoned.size() - 1) cout << " and ";
+        }
+        cout << "." << endl;
+    }
+
+    bool hasSage = false, hasMaiden = false;
+    for (Card* c : summoned) {
+        if (c->getName() == "Sage with Eyes of Blue") hasSage = true;
+        if (c->getName() == "Maiden of white") hasMaiden = true;
+    }
+
+    if (hasSage && hasMaiden) {
+        for (int i = 0; i < deck.size(); ++i) {
+            if (deck[i]->getDescription().find("Blue-Eyes") != string::npos) {
+                Card* added = deck[i];
+                deck.erase(deck.begin() + i);
+                hand.push_back(added);
+                self.setDeck(deck);
+                self.setHand(hand);
+                cout << "[True Light] You summoned both Sage and Maiden, so you add '" << added->getName() << "' to your hand!" << endl;
+                break;
+            }
+        }
+    }
+
+    string logMsg = "Opponent activated [True Light], special summoned ";
+    for (int i = 0; i < summoned.size(); ++i) {
+        logMsg += summoned[i]->getName();
+        if (i != summoned.size() - 1) logMsg += " and ";
+    }
+    logMsg += " from their deck.";
+    writeLog(logMsg);
+
+    return true;
+}
+
+bool TheMelodyOfTheAwakeningDragon::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> field = self.getField();
+    vector<Card*> deck = self.getDeck();
+    vector<Card*> hand = self.getHand();
+
+    bool controlMentionBE = false;
+    bool hasSage = false;
+    bool hasMaiden = false;
+
+    for (Card* c : field) {
+        if (c->getDescription().find("Blue-Eyes") != string::npos) {
+            controlMentionBE = true;
+        }
+        if (c->getName() == "Sage with Eyes of Blue") hasSage = true;
+        if (c->getName() == "Maiden of white") hasMaiden = true;
+    }
+
+    if (!controlMentionBE) {
+        cout << "[The Melody of the Awakening Dragon] Activation failed: You do not control any monster that mentions 'Blue-Eyes'." << endl;
+        return false;
+    }
+
+    bool fullPower = (hasSage && hasMaiden);
+    vector<int> searchableIndexes;
+
+    cout << "[The Melody of the Awakening Dragon] You can search the following cards:" << endl;
+
+    for (int i = 0; i < deck.size(); ++i) {
+        if (deck[i]->getDescription().find("Blue-Eyes") != string::npos) {
+            if (fullPower || deck[i]->getType() == "Monster") {
+                searchableIndexes.push_back(i);
+                cout << "[" << searchableIndexes.size() - 1 << "] " << deck[i]->getName() << endl;
+            }
+        }
+    }
+
+    if (searchableIndexes.empty()) {
+        cout << "[The Melody of the Awakening Dragon] No card found in your deck that can be searched." << endl;
+        return false;
+    }
+
+    int choice = -1;
+    do {
+        cout << "Choose index to add to your hand: ";
+        cin >> choice;
+    } while (choice < 0 || choice >= searchableIndexes.size());
+
+    int selectedIdx = searchableIndexes[choice];
+    Card* selected = deck[selectedIdx];
+    deck.erase(deck.begin() + selectedIdx);
+    hand.push_back(selected);
+
+    self.setDeck(deck);
+    self.setHand(hand);
+
+    cout << "[The Melody of the Awakening Dragon] You added '" << selected->getName() << "' to your hand." << endl;
+
+    writeLog("Opponent activated [The Melody of the Awakening Dragon] and searched '" + selected->getName() + "'.");
+
     return true;
 }
 

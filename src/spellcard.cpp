@@ -94,7 +94,12 @@ shared_ptr<Spell> SpellCard::getEffectInstance(const std::string& type) {
     else if (type == "Illusion Magic") effect = std::make_shared<IllusionMagic>();
     else if (type == "Apprentice Helper") effect = std::make_shared<ApprenticeHelper>();
     else if (type == "Wishes for Eyes of Blue") effect = std::make_shared<WishesforEyesofBlue>();
+    else if (type == "Chaos Magic") effect = std::make_shared<ChaosMagic>();
     else if (type == "Overdose") effect = std::make_shared<Overdose>();
+    else if (type == "The World Destroyer") effect = std::make_shared<TheWorldDestroyer>();
+    else if (type == "The True Power of Chaos Dual") effect = std::make_shared<TheTruePowerOfChaosDual>();
+    else if (type == "True Light") effect = std::make_shared<TrueLight>();
+    else if (type == "The Melody of the Awakening Dragon") effect = std::make_shared<TheMelodyOfTheAwakeningDragon>();
   //Step 3: add spell effect names here
     else 
     {
