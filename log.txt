@@ -1,0 +1,3 @@
+[Fri May 23 11:17:49 2025] Opponent activated [The Ancient Knowledge], added Black Luster Soldier to their hand, then shuffled the deck.
+[Fri May 23 11:18:11 2025] Opponent activated [Enternal Soul], special summoned Magicians Soul and Magicians Rod from their deck.
+[Fri May 23 11:18:28 2025] Opponent used [Chaos Magic] to summon DMOC and BLS in defense position.

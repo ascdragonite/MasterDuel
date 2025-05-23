@@ -1561,33 +1561,43 @@ bool ChaosMagic::ActivateEffect(Player& self, Player& opponent) {
 
     int idx1 = tributeIndexes[in1];
     int idx2 = tributeIndexes[in2];
-    if (idx1 > idx2) swap(idx1, idx2);
 
-    string name1 = newfield[idx1]->getName();
-    string name2 = newfield[idx2]->getName();
+    // Xóa từ chỉ số lớn hơn trước
+    if (idx1 > idx2) {
+        newfield.erase(newfield.begin() + idx1);
+        newfield.erase(newfield.begin() + idx2);
+    } else {
+        newfield.erase(newfield.begin() + idx2);
+        newfield.erase(newfield.begin() + idx1);
+    }
 
-    newfield.erase(newfield.begin() + idx2);
-    newfield.erase(newfield.begin() + idx1);
+    string name1 = newfield.size() > idx1 ? newfield[idx1]->getName() : "??";
+    string name2 = newfield.size() > idx2 ? newfield[idx2]->getName() : "??";
 
+    // Tìm DMOC và BLS
     for (int i = 0; i < newdeck.size(); ++i) {
-        if (newdeck[i]->getName() == "Dark Magician of Chaos" && !hasDMOC) {
+        if (!hasDMOC && newdeck[i]->getName() == "Dark Magician of Chaos") {
             MonsterCard* dmoc = dynamic_cast<MonsterCard*>(newdeck[i]);
-            newdeck.erase(newdeck.begin() + i);
-            dmoc->setDefenseMode(true);
-            dmoc->setFacedown(false);
-            dmoc->setJustSummoned(true);
-            newfield.push_back(dmoc);
-            hasDMOC = true;
-            i--;
-        } else if (newdeck[i]->getName() == "Black Luster Soldier" && !hasBLS) {
+            if (dmoc) {
+                newdeck.erase(newdeck.begin() + i);
+                dmoc->setDefenseMode(true);
+                dmoc->setFacedown(false);
+                dmoc->setJustSummoned(true);
+                newfield.push_back(dmoc);
+                hasDMOC = true;
+                i--;
+            }
+        } else if (!hasBLS && newdeck[i]->getName() == "Black Luster Soldier") {
             MonsterCard* bls = dynamic_cast<MonsterCard*>(newdeck[i]);
-            newdeck.erase(newdeck.begin() + i);
-            bls->setDefenseMode(true);
-            bls->setFacedown(false);
-            bls->setJustSummoned(true);
-            newfield.push_back(bls);
-            hasBLS = true;
-            i--;
+            if (bls) {
+                newdeck.erase(newdeck.begin() + i);
+                bls->setDefenseMode(true);
+                bls->setFacedown(false);
+                bls->setJustSummoned(true);
+                newfield.push_back(bls);
+                hasBLS = true;
+                i--;
+            }
         }
         if (hasDMOC && hasBLS) break;
     }
@@ -1595,22 +1605,26 @@ bool ChaosMagic::ActivateEffect(Player& self, Player& opponent) {
     for (int i = 0; i < newhand.size(); ++i) {
         if (!hasDMOC && newhand[i]->getName() == "Dark Magician of Chaos") {
             MonsterCard* dmoc = dynamic_cast<MonsterCard*>(newhand[i]);
-            newhand.erase(newhand.begin() + i);
-            dmoc->setDefenseMode(true);
-            dmoc->setFacedown(false);
-            dmoc->setJustSummoned(true);
-            newfield.push_back(dmoc);
-            hasDMOC = true;
-            i--;
+            if (dmoc) {
+                newhand.erase(newhand.begin() + i);
+                dmoc->setDefenseMode(true);
+                dmoc->setFacedown(false);
+                dmoc->setJustSummoned(true);
+                newfield.push_back(dmoc);
+                hasDMOC = true;
+                i--;
+            }
         } else if (!hasBLS && newhand[i]->getName() == "Black Luster Soldier") {
             MonsterCard* bls = dynamic_cast<MonsterCard*>(newhand[i]);
-            newhand.erase(newhand.begin() + i);
-            bls->setDefenseMode(true);
-            bls->setFacedown(false);
-            bls->setJustSummoned(true);
-            newfield.push_back(bls);
-            hasBLS = true;
-            i--;
+            if (bls) {
+                newhand.erase(newhand.begin() + i);
+                bls->setDefenseMode(true);
+                bls->setFacedown(false);
+                bls->setJustSummoned(true);
+                newfield.push_back(bls);
+                hasBLS = true;
+                i--;
+            }
         }
         if (hasDMOC && hasBLS) break;
     }
@@ -1620,6 +1634,7 @@ bool ChaosMagic::ActivateEffect(Player& self, Player& opponent) {
         return false;
     }
 
+    // Tìm spell bonus
     bool addedChaosPower = false;
     for (int i = 0; i < newdeck.size(); ++i) {
         if (newdeck[i]->getName() == "The True Power of Chaos Dual") {
@@ -1633,9 +1648,8 @@ bool ChaosMagic::ActivateEffect(Player& self, Player& opponent) {
         }
     }
 
-    cout << "[Chaos Magic] You tributed " << name1 << " and " << name2 << " to Special Summon 'Dark Magician of Chaos' and 'Black Luster Soldier' in defense position!" << endl;
-
-    writeLog("Opponent used [Chaos Magic], tributed " + name1 + " and " + name2 + " to summon DMOC and BLS in defense position.");
+    cout << "[Chaos Magic] You tributed 2 monsters to Special Summon 'Dark Magician of Chaos' and 'Black Luster Soldier' in defense position!" << endl;
+    writeLog("Opponent used [Chaos Magic] to summon DMOC and BLS in defense position.");
 
     if (!addedChaosPower) {
         cout << "[Chaos Magic] Summon succeeded, but 'The True Power of Chaos Dual' was not found in your deck." << endl;
@@ -1646,6 +1660,7 @@ bool ChaosMagic::ActivateEffect(Player& self, Player& opponent) {
     self.setField(newfield);
     return true;
 }
+
 
 bool TheWorldDestroyer::ActivateEffect(Player& self, Player& opponent) {
     vector<Card*> hand = self.getHand();
