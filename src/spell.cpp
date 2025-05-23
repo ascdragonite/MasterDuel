@@ -36,7 +36,7 @@ bool ReEndOfADream::ActivateEffect(Player &self, Player &opponent) { // thÃªm lÆ
     if (self.getHp() > 1000)
     {
         cout << "[Re:End of a Dream] HP is too high"; //Disabled for testing purposes, uncomment line below to activate
-        //return false;
+        return false;
     }
     json j = readFromFile();
     if (j["ExtraTurn"])
@@ -331,9 +331,9 @@ bool DarkMagic::ActivateEffect(Player& self, Player& opponent) {
                 cout << "[Dark Magic] Destroyed: " << card2->getName() << endl;
             } 
         }
-        cout << "[Dark Magic] Activate successfully! All opponent's monster cards are destroyed. You can not attack for 2 turns!" << endl;
+        cout << "[Dark Magic] Activate successfully! All opponent's monster cards are destroyed. You can not attack for 1 turns!" << endl;
 
-        writeLog("Opponent used [Dark Magic] to destroy all of your monster cards in the cost of losing 2 battle phases. Attack them now!");
+        writeLog("Opponent used [Dark Magic] to destroy all of your monster cards in the cost of losing 1 battle phases. Attack them now!");
         self.setSkipBattlePhaseCount(1);
         opponent.setField(newfieldopp);
     }
