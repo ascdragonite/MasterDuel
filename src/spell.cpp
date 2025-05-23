@@ -969,7 +969,7 @@ bool CallofTheSky::ActivateEffect(Player& self, Player& opponent) {
         }
     return true;
 }
-
+/*
 bool TheAncientKnowledge::ActivateEffect(Player& self, Player& opponent) {
     vector<Card*> newDeck = self.getDeck();
     vector<Card*> newHand = self.getHand();
@@ -2299,6 +2299,7 @@ bool TheMagicCurtain::ActivateEffect(Player& self, Player& opponent) {
 
     return true;
 }
+*/
 
 //trap
 bool MirrorForce::ActivateEffect(Player& self, Player& opponent) { //cần check kĩ writeLog
@@ -2319,9 +2320,9 @@ bool MirrorForce::ActivateEffect(Player& self, Player& opponent) { //cần check
             newfieldopp.push_back(card1);
         }
     }
-    /*if(candestroy == false){
+    if(candestroy == false){
         cout << "[Mirror Force] Opponent do not have any monster in attack position" << endl;
-    }*/
+    }
     writeLog(" has been destroyed! Be careful nextime. \n");
     opponent.setField(newfieldopp);
     return true; // Indicate success

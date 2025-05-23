@@ -86,7 +86,7 @@ class CallofTheSky : public Spell{
 class AshAgain : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
-
+/*
 class TheAncientKnowledge : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
@@ -145,7 +145,7 @@ class DarkMagicalCircle : public Spell{
 class TheMagicCurtain : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
-
+*/
 //Trap Card
 class MirrorForce : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;

@@ -63,7 +63,6 @@ int main() {
     cout << "Each turn, you can Normal Summon 1 monster in face-up attack or face-down defense position." << endl;
     cout << "You can flip summon a monster from face-down defense to face-up attack position once per turn," << endl;
     cout << "as long as it was already on the field since a previous turn." << endl;
-    cout << "You can change a monster's battle position (attack <-> defense) once per turn," << endl;
     cout << "as long as it was not summoned this turn." << endl;
     cout << "NOTE: Face-down monsters can only change position by flip summoning." << endl;
     cout << "You can activate multiple Spell Cards per turn." << endl;
@@ -81,13 +80,13 @@ int main() {
    cout << "- ATK vs DEF: If ATK > DEF, the defending monster is destroyed." << endl;
    cout << "             If ATK < DEF, the attacker takes damage = DEF - ATK." << endl;
    cout << "             If ATK == DEF, no monsters are destroyed and no damage is taken." << endl;
+   cout << "Note: If you have already entered battle this turn, you cannot summon a monster and attack again." << endl;
    cout << "====================================================" << endl;
-
+   
    cout << "==================== TURN PHASES ===================" << endl;
    cout << "1. Draw Phase    : Draw 1 card from your deck." << endl;
    cout << "2. Main Phase    : Summon monsters, activate Spells/Traps, and change battle positions." << endl;
    cout << "3. Battle Phase  : Declare attacks using your monsters." << endl;
-   cout << "4. End Phase     : End your turn and resolve any lingering effects." << endl;
    cout << "====================================================" << endl;
 
     cout << "====================================================" << endl;
