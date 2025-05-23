@@ -371,11 +371,11 @@ bool DarkBurningMagic::ActivateEffect(Player& self, Player& opponent) {
                 cout << "[Dark Burning Magic] Destroyed: " << card2->getName() << endl;
             } 
         }
-        cout << "[Dark Burning Magic] Activate successfully! All opponent's monster cards are destroyed. You can not attack in 2 turn!" << endl;
+        cout << "[Dark Burning Magic] Activate successfully! All opponent's monster cards are destroyed. You can not attack in 1 turn!" << endl;
         
-        writeLog("Opponent used [Dark Burning Magic] to destroy all of your monster cards at the cost of losing 2 battle phases. Attack them! \n");
+        writeLog("Opponent used [Dark Burning Magic] to destroy all of your monster cards at the cost of losing 1 battle phases. Attack them! \n");
         
-        self.setSkipBattlePhaseCount(2);
+        self.setSkipBattlePhaseCount(1);
         opponent.setField(newfieldopp);
     }
 
@@ -408,9 +408,9 @@ bool BurstStreamofDestruction::ActivateEffect(Player& self, Player& opponent) {
                 cout << "[Burst Stream of Destruction] Destroyed: " << card2->getName() << endl;
             } 
         }
-        cout << "[Burst Stream of Destruction] Activate successfully! All opponent's monster cards are destroyed. You can not attack in 2 turn!" << endl;
-        self.setSkipBattlePhaseCount(2);
-        writeLog("Opponent used [Burst Stream of Destruction] to destroy all of your monster cards at the cost of losing 2 battle phases. Try your best! \n");
+        cout << "[Burst Stream of Destruction] Activate successfully! All opponent's monster cards are destroyed. You can not attack in 1 turn!" << endl;
+        self.setSkipBattlePhaseCount(1);
+        writeLog("Opponent used [Burst Stream of Destruction] to destroy all of your monster cards at the cost of losing 1 battle phases. Try your best! \n");
         opponent.setField(newfieldopp);
     }
 

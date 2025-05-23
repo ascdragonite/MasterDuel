@@ -11,15 +11,24 @@
         "canTrap": [],
         "deck": [
             {
-                "atk": 1600,
-                "def": 100,
-                "defenseMode": false,
-                "description": "This mystical staff has chosen its wielder and resonates only with those who follow the path of the Dark Magician. Channeling ancient magic, it guides spellcasters to the secrets long forgotten.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Magicians Rod",
-                "owner": 1,
-                "type": "Monster"
+                "description": "When an opponent's monster declares an attack: Negate the attack and end the battle phase.",
+                "name": "Tsunagite",
+                "type": "Trap"
+            },
+            {
+                "description": "Special Summon 1 Magicians Apprentice from your deck in faceup defend position.Then, draw equal to number of monster that mentions Dark Magician you controll max 2.",
+                "name": "Apprentice Helper",
+                "type": "Spell"
+            },
+            {
+                "description": "Special summon a Dark Magician in the deck in defend position.",
+                "name": "Dark Magic Veil",
+                "type": "Spell"
+            },
+            {
+                "description": "Search any card that mention Dark Magician in it's description.",
+                "name": "The Ancient knowledge",
+                "type": "Spell"
             },
             {
                 "description": "Reveal 1 card in your hand that mention Dark Magician special Summon up to 2 monsters from your deck in face-up Defense Position, each of which mentions “Dark Magician” in their description.If you summon both Magicians Rod” and “Magicians Soul this way, draw 2 cards.",
@@ -27,15 +36,19 @@
                 "type": "Spell"
             },
             {
-                "atk": 2500,
-                "def": 2100,
-                "defenseMode": false,
-                "description": "The ultimate wizard in term of attack and defense.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Dark Magician",
-                "owner": 1,
-                "type": "Monster"
+                "description": "Search any card that mention Dark Magician in it's description.",
+                "name": "The Ancient knowledge",
+                "type": "Spell"
+            },
+            {
+                "description": " If you controll faceup a Dark Magician monster, destroy all monster your opponent controll and skip your battle phase.",
+                "name": "Dark Magic",
+                "type": "Spell"
+            },
+            {
+                "description": "Combine all of your faceup monster atk to 1 single attack in this turn.",
+                "name": "The Power of Friendship",
+                "type": "Spell"
             },
             {
                 "description": "When an opponent's monster declares an attack: Target the attacking monster, and if you do, inflict damage to your opponent equal to its atk.",
@@ -43,35 +56,19 @@
                 "type": "Trap"
             },
             {
-                "description": "Search any card that mention Dark Magician in it's description.",
-                "name": "The Ancient knowledge",
-                "type": "Spell"
-            },
-            {
                 "description": "Reveal 1 card in your hand that mentions Dark Magician to activate this card then pay half of your Hp : If you control Gandora-X the Dragon of Demolition: Destroy all cards on the field exepct Gandora and for each destroyed monster, inflict 500 damage to your opponent Hp then raise it atk 500 but skip your battle phase this turn.",
                 "name": "The World Destroyer",
                 "type": "Spell"
             },
             {
-                "description": "Reveal 1 card in your hand that mention Dark Magician special Summon up to 2 monsters from your deck in face-up Defense Position, each of which mentions “Dark Magician” in their description.If you summon both Magicians Rod” and “Magicians Soul this way, draw 2 cards.",
-                "name": "Enternal Soul",
+                "description": "Place a card that mention Dark Magician from your deck to your top of the deck and draw card equal to number of monster that mention Dark Magician on the field max 2 cards.",
+                "name": "Soul Servant",
                 "type": "Spell"
             },
             {
-                "description": "Search any card that mention Dark Magician in it's description.",
-                "name": "The Ancient knowledge",
+                "description": "If you control faceup Dark Magician: Target 1 monster your opponent controls; destroy that target..",
+                "name": "Thousand Knifes",
                 "type": "Spell"
-            },
-            {
-                "atk": 1600,
-                "def": 100,
-                "defenseMode": false,
-                "description": "This mystical staff has chosen its wielder and resonates only with those who follow the path of the Dark Magician. Channeling ancient magic, it guides spellcasters to the secrets long forgotten.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Magicians Rod",
-                "owner": 1,
-                "type": "Monster"
             },
             {
                 "atk": 2500,
@@ -85,104 +82,27 @@
                 "type": "Monster"
             },
             {
+                "description": "If you controll a Dark Magician, special summon from your deck a Dark Magician Girl in defend position ",
+                "name": "Bond Between The Teacher and Student",
+                "type": "Spell"
+            },
+            {
                 "description": "When an opponent's monster declares an attack: Destroy all your opponent's Attack Position monsters.",
                 "name": "Mirror Force",
                 "type": "Trap"
             },
             {
-                "atk": 0,
-                "def": 0,
-                "defenseMode": false,
-                "description": "A destructive force awakened by the incantations of the Dark Magician, forged to erase everything in its path. The dragon exists solely to fulfill the will of absolute magical judgment.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Gandora-X the Dragon of Demolition",
-                "owner": 1,
-                "type": "Monster"
-            },
-            {
-                "atk": 3200,
-                "def": 3000,
-                "defenseMode": false,
-                "description": "A noble warrior summoned through ancient chaos rituals inspired by the teachings of the Dark Magician. Though his path diverges, their souls resonate through battle and destiny.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Black Luster Soldier",
-                "owner": 1,
-                "type": "Monster"
-            },
-            {
-                "description": "Special Summon 1 Magicians Apprentice from your deck in faceup defend position.Then, draw equal to number of monster that mentions Dark Magician you controll max 2.",
-                "name": "Apprentice Helper",
-                "type": "Spell"
-            },
-            {
-                "description": "Special Summon 1 Magicians Apprentice from your deck in faceup defend position.Then, draw equal to number of monster that mentions Dark Magician you controll max 2.",
-                "name": "Apprentice Helper",
-                "type": "Spell"
-            },
-            {
                 "description": "Place a card that mention Dark Magician from your deck to your top of the deck and draw card equal to number of monster that mention Dark Magician on the field max 2 cards.",
                 "name": "Soul Servant",
                 "type": "Spell"
             },
             {
-                "atk": 0,
-                "def": 0,
-                "defenseMode": false,
-                "description": "The remnant spirit of the first disciple who ever trained under the Dark Magician. Though he possesses no form of his own, his essence amplifies the will of every magician he supports.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Magicians Soul",
-                "owner": 1,
-                "type": "Monster"
-            },
-            {
-                "description": "If you control both Black Luster Soldier and Dark Magician of Chaos:Destroy random cards on the opponent field up to the number of monsters that mention “Dark Magician” you control.Then, boost the ATK of those monsters by 100 for each card destroyed but skip your battle phase this turn.",
-                "name": "The True Power of Chaos Dual",
-                "type": "Spell"
-            },
-            {
-                "description": "Tribute 1 monster that mention Dark Magician: Add 2 monster cards from your deck to your hand, each of which mentions Dark Magician in their description.",
-                "name": "Illusion Magic",
-                "type": "Spell"
-            },
-            {
-                "atk": 2800,
-                "def": 2600,
-                "defenseMode": false,
-                "description": "A dark reincarnation born when the powers of the Dark Magician merge with the forbidden magic of chaos. His mastery over destruction and revival surpasses mortal boundaries.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Dark Magician of Chaos",
-                "owner": 1,
-                "type": "Monster"
-            },
-            {
-                "description": "Reveal 1 card in your hand that mention Dark Magician special Summon up to 2 monsters from your deck in face-up Defense Position, each of which mentions “Dark Magician” in their description.If you summon both Magicians Rod” and “Magicians Soul this way, draw 2 cards.",
-                "name": "Enternal Soul",
-                "type": "Spell"
-            },
-            {
-                "description": "Place a card that mention Dark Magician from your deck to your top of the deck and draw card equal to number of monster that mention Dark Magician on the field max 2 cards.",
-                "name": "Soul Servant",
-                "type": "Spell"
-            },
-            {
-                "description": "If you control a face up Dark Magician, Dark magician girl you can destroy all of your oponent card but skip your battle phase",
-                "name": "Dark Burning Magic",
-                "type": "Spell"
-            },
-            {
-                "description": "Tribute 1 monster that mention Dark Magician: Add 2 monster cards from your deck to your hand, each of which mentions Dark Magician in their description.",
-                "name": "Illusion Magic",
-                "type": "Spell"
-            },
-            {
-                "description": "Place a card that mention Dark Magician from your deck to your top of the deck and draw card equal to number of monster that mention Dark Magician on the field max 2 cards.",
-                "name": "Soul Servant",
-                "type": "Spell"
-            },
+                "description": "When an opponent's monster declares an attack: Destroy all your opponent's Attack Position monsters.",
+                "name": "Mirror Force",
+                "type": "Trap"
+            }
+        ],
+        "field": [
             {
                 "atk": 2000,
                 "def": 1700,
@@ -191,6 +111,17 @@
                 "isSet": false,
                 "justSummoned": false,
                 "name": "Magicians Apprentice",
+                "owner": 1,
+                "type": "Monster"
+            },
+            {
+                "atk": 3100,
+                "def": 2600,
+                "defenseMode": false,
+                "description": "A dark reincarnation born when the powers of the Dark Magician merge with the forbidden magic of chaos. His mastery over destruction and revival surpasses mortal boundaries.",
+                "isSet": false,
+                "justSummoned": false,
+                "name": "Dark Magician of Chaos",
                 "owner": 1,
                 "type": "Monster"
             },
@@ -206,84 +137,80 @@
                 "type": "Monster"
             },
             {
-                "description": "Search any card that mention Dark Magician in it's description.",
-                "name": "The Ancient knowledge",
-                "type": "Spell"
-            },
-            {
-                "description": "tribute 2 monster that mentions Dark Magician: special summon 1 Dark Magician of Chaos and 1 Black Luster Soldier from your deck or your hand to your field in face up defend position and add The True Power of Chaos duel if your deck have them.",
-                "name": "Chaos Magic",
-                "type": "Spell"
-            },
+                "atk": 2500,
+                "def": 2100,
+                "defenseMode": false,
+                "description": "The ultimate wizard in term of attack and defense.",
+                "isSet": false,
+                "justSummoned": false,
+                "name": "Dark Magician",
+                "owner": 1,
+                "type": "Monster"
+            }
+        ],
+        "hand": [
             {
                 "description": "Pay 500 Hp and tribute 1 monster on the field to search 1 Dark Magician from your deck and increase 600 ATK for the Dark Magician summon next turn.",
                 "name": "Cruel Pact",
                 "type": "Spell"
             },
             {
-                "description": " If you controll faceup a Dark Magician monster, destroy all monster your opponent controll and skip your battle phase.",
-                "name": "Dark Magic",
+                "description": "Tribute 1 monster that mention Dark Magician: Add 2 monster cards from your deck to your hand, each of which mentions Dark Magician in their description.",
+                "name": "Illusion Magic",
                 "type": "Spell"
             },
-            {
-                "atk": 0,
-                "def": 0,
-                "defenseMode": false,
-                "description": "The remnant spirit of the first disciple who ever trained under the Dark Magician. Though he possesses no form of his own, his essence amplifies the will of every magician he supports.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Magicians Soul",
-                "owner": 1,
-                "type": "Monster"
-            },
-            {
-                "description": "If you control faceup Dark Magician: Target 1 monster your opponent controls; destroy that target..",
-                "name": "Thousand Knifes",
-                "type": "Spell"
-            },
-            {
-                "description": "Special summon a Dark Magician in the deck in defend position.",
-                "name": "Dark Magic Veil",
-                "type": "Spell"
-            }
-        ],
-        "field": [
             {
                 "atk": 2000,
                 "def": 1700,
-                "defenseMode": true,
+                "defenseMode": false,
                 "description": "A devoted young sorcerer who studies every incantation recorded by the legendary Dark Magician. Though her power is still blooming, her will to protect her master is unwavering.",
                 "isSet": false,
-                "justSummoned": true,
+                "justSummoned": false,
                 "name": "Magicians Apprentice",
                 "owner": 1,
                 "type": "Monster"
             },
             {
-                "description": "When an opponent's monster declares an attack: Destroy all your opponent's Attack Position monsters.",
-                "name": "Mirror Force",
-                "type": "Trap"
-            }
-        ],
-        "hand": [
-            {
-                "description": "When an opponent's monster declares an attack: Negate the attack and end the battle phase.",
-                "name": "Tsunagite",
-                "type": "Trap"
+                "atk": 0,
+                "def": 0,
+                "defenseMode": false,
+                "description": "A destructive force awakened by the incantations of the Dark Magician, forged to erase everything in its path. The dragon exists solely to fulfill the will of absolute magical judgment.",
+                "isSet": false,
+                "justSummoned": false,
+                "name": "Gandora-X the Dragon of Demolition",
+                "owner": 1,
+                "type": "Monster"
             },
             {
-                "description": "If you controll a Dark Magician, special summon from your deck a Dark Magician Girl in defend position ",
-                "name": "Bond Between The Teacher and Student",
+                "atk": 1600,
+                "def": 100,
+                "defenseMode": false,
+                "description": "This mystical staff has chosen its wielder and resonates only with those who follow the path of the Dark Magician. Channeling ancient magic, it guides spellcasters to the secrets long forgotten.",
+                "isSet": false,
+                "justSummoned": false,
+                "name": "Magicians Rod",
+                "owner": 1,
+                "type": "Monster"
+            },
+            {
+                "description": "Reveal 1 card in your hand that mention Dark Magician special Summon up to 2 monsters from your deck in face-up Defense Position, each of which mentions “Dark Magician” in their description.If you summon both Magicians Rod” and “Magicians Soul this way, draw 2 cards.",
+                "name": "Enternal Soul",
                 "type": "Spell"
             },
             {
-                "description": "Combine all of your faceup monster atk to 1 single attack in this turn.",
-                "name": "The Power of Friendship",
-                "type": "Spell"
+                "atk": 2500,
+                "def": 2100,
+                "defenseMode": false,
+                "description": "The ultimate wizard in term of attack and defense.",
+                "isSet": false,
+                "justSummoned": false,
+                "name": "Dark Magician",
+                "owner": 1,
+                "type": "Monster"
             },
             {
-                "description": "Special summon a Dark Magician in the deck in defend position.",
-                "name": "Dark Magic Veil",
+                "description": "Special Summon 1 Magicians Apprentice from your deck in faceup defend position.Then, draw equal to number of monster that mentions Dark Magician you controll max 2.",
+                "name": "Apprentice Helper",
                 "type": "Spell"
             }
         ],
@@ -301,42 +228,51 @@
         "canTrap": [],
         "deck": [
             {
-                "atk": 3500,
-                "def": 2500,
+                "atk": 2500,
+                "def": 2100,
                 "defenseMode": false,
-                "description": "This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale.",
+                "description": "Twin Burst embodies the relentless fury of Blue Eyes evolved.",
                 "isSet": false,
                 "justSummoned": false,
-                "name": "Deep-Eyes White Dragon",
+                "name": "Blue-Eyes Twin Burst Dragon",
                 "owner": 2,
                 "type": "Monster"
             },
             {
-                "atk": 0,
-                "def": 1500,
-                "defenseMode": false,
-                "description": "A wise sorcerer who communes with the Blue Eyes White Dragon. His incantations call forth the dragon’s power and unlock its hidden might..",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Sage with Eyes of Blue",
-                "owner": 2,
-                "type": "Monster"
-            },
-            {
-                "description": "Special summon a Blue Eyes White Dragon in the deck in defend position.",
-                "name": "Roar of The Blue-Eyed Dragons",
+                "description": "Reveal 1 card in your hand that mention Blue Eyes. Special Summon up to 2 monsters from your deck in face-up Defense Position, each of which mentions “Blue Eyes” in their description.",
+                "name": "Wishes for Eyes of Blue",
                 "type": "Spell"
             },
             {
-                "atk": 3000,
-                "def": 2500,
+                "atk": 4000,
+                "def": 0,
                 "defenseMode": false,
-                "description": "A legendary dragon whose power is unmatched. With piercing eyes and roaring might, the Blue Eyes White Dragon obliterates all who stand in its path. Its name strikes fear in every heart.",
+                "description": "An incarnation of chaos forged from the spirit of Blue Eyes. With piercing power and absolute defense, the Chaos MAX Dragon crushes foes in a single overwhelming blow.",
                 "isSet": false,
                 "justSummoned": false,
-                "name": "Blue-Eyes White Dragon",
+                "name": "Blue-Eyes Chaos MAX Dragon",
                 "owner": 2,
                 "type": "Monster"
+            },
+            {
+                "description": "Flip coin, winner gets draw 2 cards",
+                "name": "Flower Snow Drum n Bass",
+                "type": "Spell"
+            },
+            {
+                "description": "If and only if your lifepoint is lower or equal to 1000 you can activate this card. When this card is activated, you can conduct anorther turn",
+                "name": "Re:End of a Dream",
+                "type": "Spell"
+            },
+            {
+                "description": "If you controll a Blue Eyes White Dragon destroy all card your opponent controll but skip your next 2 battle phase.",
+                "name": "Burst Stream of Destruction",
+                "type": "Spell"
+            },
+            {
+                "description": "Tribute 2 monster on the field to search 1 BLue Eyes White Dragon and Majesty of The White Dragons from your deck to your hand.",
+                "name": "Call of the Sky",
+                "type": "Spell"
             },
             {
                 "description": "If you control a monster that mentions 'Blue-Eyes' in its description, add 1 monster that mentions 'Blue Eyes' from your deck to your hand; if you also control both 'Sage with Eyes of Blue' and 'Maiden of White', you can instead add any 1 card that mentions 'Blue-Eyes' in its description.",
@@ -344,23 +280,13 @@
                 "type": "Spell"
             },
             {
-                "description": "Flip coin, winner gets draw 2 cards",
-                "name": "Flower Snow Drum n Bass",
-                "type": "Spell"
-            },
-            {
-                "description": "Flip coin, winner gets draw 2 cards",
-                "name": "Flower Snow Drum n Bass",
+                "description": "Buff a monster attack by 1000 when this card is activated.",
+                "name": "World Vanquisher",
                 "type": "Spell"
             },
             {
                 "description": "Destroy random card in your opponent field up to the number of faceup “Blue Eyes White Dragon” you control",
                 "name": "Majesty of The White Dragons",
-                "type": "Spell"
-            },
-            {
-                "description": "Look at your full deck and place a card you like at the top of the deck.",
-                "name": "Disorted Fate",
                 "type": "Spell"
             },
             {
@@ -386,82 +312,8 @@
                 "type": "Monster"
             },
             {
-                "description": "Reveal 1 card in your hand that mention Blue Eyes, special Summon up to 2 monsters from your deck in face-up Defense Position, each of which mentions Blue Eyes in their description.If you summon both Sage with Eyes of Blue and Maiden of white this way add 1 card that mention Blue Eyes form your deck to your hand,",
-                "name": "True Light",
-                "type": "Spell"
-            },
-            {
-                "atk": 4500,
-                "def": 2100,
-                "defenseMode": false,
-                "description": "The final fusion of three Blue Eyes White Dragons. It stands as the pinnacle of Blue-Eyes power, capable of wiping out foes with consecutive assaults beyond mortal comprehension.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Neo Blue-Eyes Ultimate Dragon",
-                "owner": 2,
-                "type": "Monster"
-            },
-            {
-                "atk": 2500,
-                "def": 2100,
-                "defenseMode": false,
-                "description": "Twin Burst embodies the relentless fury of Blue Eyes evolved.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Blue-Eyes Twin Burst Dragon",
-                "owner": 2,
-                "type": "Monster"
-            },
-            {
-                "description": "Buff a monster attack and defense by 500 for each faceup monster you control when this card is activated.",
-                "name": "Dragon United",
-                "type": "Spell"
-            },
-            {
-                "description": "Tribute 2 monster on the field to search 1 BLue Eyes White Dragon and Majesty of The White Dragons from your deck to your hand.",
-                "name": "Call of the Sky",
-                "type": "Spell"
-            },
-            {
-                "description": "Destroy random card in your opponent field up to the number of faceup “Blue Eyes White Dragon” you control",
-                "name": "Majesty of The White Dragons",
-                "type": "Spell"
-            },
-            {
-                "atk": 0,
-                "def": 0,
-                "defenseMode": false,
-                "description": "A mysterious girl linked by fate to the Blue Eyes White Dragon. Her silent resolve conceals a force that will awaken when she’s threatened, summoning Blue-Eyes to her side in an instant.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Maiden of white",
-                "owner": 2,
-                "type": "Monster"
-            },
-            {
                 "description": "Flip coin, winner gets draw 2 cards",
                 "name": "Flower Snow Drum n Bass",
-                "type": "Spell"
-            },
-            {
-                "description": "Sacrifice 2/3 of your lifepoint, “Blue Eyes White Dragon” you controll can now attack twice in a turn ( can not active “Re:End of a dream” the turn you activate this card).",
-                "name": "Rage of The Blue Eyes",
-                "type": "Spell"
-            },
-            {
-                "atk": 2500,
-                "def": 2100,
-                "defenseMode": false,
-                "description": "Twin Burst embodies the relentless fury of Blue Eyes evolved.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Blue-Eyes Twin Burst Dragon",
-                "owner": 2,
-                "type": "Monster"
-            },
-            {
-                "description": "Special summon a Blue Eyes White Dragon in the deck in defend position.",
-                "name": "Roar of The Blue-Eyed Dragons",
                 "type": "Spell"
             },
             {
@@ -470,30 +322,24 @@
                 "type": "Spell"
             },
             {
+                "description": "If you control a monster that mentions 'Blue-Eyes' in its description, add 1 monster that mentions 'Blue Eyes' from your deck to your hand; if you also control both 'Sage with Eyes of Blue' and 'Maiden of White', you can instead add any 1 card that mentions 'Blue-Eyes' in its description.",
+                "name": "The Melody of the Awakening Dragon",
+                "type": "Spell"
+            },
+            {
                 "description": "Reveal 1 card in your hand that mention Blue Eyes, special Summon up to 2 monsters from your deck in face-up Defense Position, each of which mentions Blue Eyes in their description.If you summon both Sage with Eyes of Blue and Maiden of white this way add 1 card that mention Blue Eyes form your deck to your hand,",
                 "name": "True Light",
                 "type": "Spell"
             },
             {
-                "description": "Can destroy a monster card in defense mode",
-                "name": "Destr0yer",
+                "description": "Special summon a Blue Eyes White Dragon in the deck in defend position.",
+                "name": "Roar of The Blue-Eyed Dragons",
                 "type": "Spell"
             },
             {
-                "description": "If you controll a faceup Blue-Eyes White Dragon destroy all trap cards your opponent control",
-                "name": "Ash Again",
+                "description": "You can exchange 1 point of your HP to increase the ATK of a monster card that mentions 'Blue Eyes' in its description by 1. The total increase cannot exceed half of your current HP.",
+                "name": "Overdose",
                 "type": "Spell"
-            },
-            {
-                "atk": 3000,
-                "def": 2500,
-                "defenseMode": false,
-                "description": "A legendary dragon whose power is unmatched. With piercing eyes and roaring might, the Blue Eyes White Dragon obliterates all who stand in its path. Its name strikes fear in every heart.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Blue-Eyes White Dragon",
-                "owner": 2,
-                "type": "Monster"
             },
             {
                 "atk": 0,
@@ -507,62 +353,40 @@
                 "type": "Monster"
             },
             {
-                "description": "If and only if your lifepoint is lower or equal to 1000 you can activate this card. When this card is activated, you can conduct anorther turn",
-                "name": "Re:End of a Dream",
+                "description": "Destroy random card in your opponent field up to the number of faceup “Blue Eyes White Dragon” you control",
+                "name": "Majesty of The White Dragons",
                 "type": "Spell"
             },
             {
-                "description": "If you controll a Blue Eyes White Dragon destroy all card your opponent controll but skip your next 2 battle phase.",
-                "name": "Burst Stream of Destruction",
-                "type": "Spell"
-            },
-            {
-                "description": "Reveal 1 card in your hand that mention Blue Eyes. Special Summon up to 2 monsters from your deck in face-up Defense Position, each of which mentions “Blue Eyes” in their description.",
-                "name": "Wishes for Eyes of Blue",
-                "type": "Spell"
-            },
-            {
-                "description": "You can exchange 1 point of your HP to increase the ATK of a monster card that mentions 'Blue Eyes' in its description by 1. The total increase cannot exceed half of your current HP.",
-                "name": "Overdose",
-                "type": "Spell"
-            },
-            {
-                "atk": 0,
-                "def": 0,
+                "atk": 3500,
+                "def": 2500,
                 "defenseMode": false,
-                "description": "A mysterious girl linked by fate to the Blue Eyes White Dragon. Her silent resolve conceals a force that will awaken when she’s threatened, summoning Blue-Eyes to her side in an instant.",
+                "description": "This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale.",
                 "isSet": false,
                 "justSummoned": false,
-                "name": "Maiden of white",
+                "name": "Deep-Eyes White Dragon",
                 "owner": 2,
                 "type": "Monster"
             },
             {
-                "description": "Reveal 1 card in your hand that mention Blue Eyes. Special Summon up to 2 monsters from your deck in face-up Defense Position, each of which mentions “Blue Eyes” in their description.",
-                "name": "Wishes for Eyes of Blue",
-                "type": "Spell"
-            }
-        ],
-        "field": [],
-        "hand": [
+                "atk": 4500,
+                "def": 2100,
+                "defenseMode": false,
+                "description": "The final fusion of three Blue Eyes White Dragons. It stands as the pinnacle of Blue-Eyes power, capable of wiping out foes with consecutive assaults beyond mortal comprehension.",
+                "isSet": false,
+                "justSummoned": false,
+                "name": "Neo Blue-Eyes Ultimate Dragon",
+                "owner": 2,
+                "type": "Monster"
+            },
             {
-                "description": "If you control a monster that mentions 'Blue-Eyes' in its description, add 1 monster that mentions 'Blue Eyes' from your deck to your hand; if you also control both 'Sage with Eyes of Blue' and 'Maiden of White', you can instead add any 1 card that mentions 'Blue-Eyes' in its description.",
-                "name": "The Melody of the Awakening Dragon",
+                "description": "Special summon a Blue Eyes White Dragon in the deck in defend position.",
+                "name": "Roar of The Blue-Eyed Dragons",
                 "type": "Spell"
             },
             {
-                "description": "Buff a monster attack by 1000 when this card is activated.",
-                "name": "World Vanquisher",
-                "type": "Spell"
-            },
-            {
-                "description": "If you control a monster that mentions 'Blue-Eyes' in its description, add 1 monster that mentions 'Blue Eyes' from your deck to your hand; if you also control both 'Sage with Eyes of Blue' and 'Maiden of White', you can instead add any 1 card that mentions 'Blue-Eyes' in its description.",
-                "name": "The Melody of the Awakening Dragon",
-                "type": "Spell"
-            },
-            {
-                "description": "You can exchange 1 point of your HP to increase the ATK of a monster card that mentions 'Blue Eyes' in its description by 1. The total increase cannot exceed half of your current HP.",
-                "name": "Overdose",
+                "description": "Flip coin, winner gets draw 2 cards",
+                "name": "Flower Snow Drum n Bass",
                 "type": "Spell"
             },
             {
@@ -571,15 +395,32 @@
                 "type": "Spell"
             },
             {
-                "atk": 4000,
-                "def": 0,
-                "defenseMode": false,
-                "description": "An incarnation of chaos forged from the spirit of Blue Eyes. With piercing power and absolute defense, the Chaos MAX Dragon crushes foes in a single overwhelming blow.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Blue-Eyes Chaos MAX Dragon",
-                "owner": 2,
-                "type": "Monster"
+                "description": "If you control a monster that mentions 'Blue-Eyes' in its description, add 1 monster that mentions 'Blue Eyes' from your deck to your hand; if you also control both 'Sage with Eyes of Blue' and 'Maiden of White', you can instead add any 1 card that mentions 'Blue-Eyes' in its description.",
+                "name": "The Melody of the Awakening Dragon",
+                "type": "Spell"
+            }
+        ],
+        "field": [],
+        "hand": [
+            {
+                "description": "Sacrifice 2/3 of your lifepoint, “Blue Eyes White Dragon” you controll can now attack twice in a turn ( can not active “Re:End of a dream” the turn you activate this card).",
+                "name": "Rage of The Blue Eyes",
+                "type": "Spell"
+            },
+            {
+                "description": "You can exchange 1 point of your HP to increase the ATK of a monster card that mentions 'Blue Eyes' in its description by 1. The total increase cannot exceed half of your current HP.",
+                "name": "Overdose",
+                "type": "Spell"
+            },
+            {
+                "description": "Buff a monster attack and defense by 500 for each faceup monster you control when this card is activated.",
+                "name": "Dragon United",
+                "type": "Spell"
+            },
+            {
+                "description": "If you controll a faceup Blue-Eyes White Dragon destroy all trap cards your opponent control",
+                "name": "Ash Again",
+                "type": "Spell"
             }
         ],
         "hp": 8000,
