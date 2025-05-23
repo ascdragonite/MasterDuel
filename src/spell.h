@@ -137,6 +137,15 @@ class TheMelodyOfTheAwakeningDragon : public Spell{
 class BlessingfromtheRoaringSky : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
+
+class DarkMagicalCircle : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
+
+class TheMagicCurtain : public Spell{
+  bool ActivateEffect(Player& self, Player& opponent) override;
+};
+
 //Trap Card
 class MirrorForce : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;

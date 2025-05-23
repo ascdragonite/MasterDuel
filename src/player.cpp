@@ -277,11 +277,11 @@ vector<Card*>& Player::getHandRef() {
 
 void Player :: loadDeckDarkMagician(){
     cout << "Loading deck for player " << index << endl;
-    deck.push_back(new MonsterCard("Dark Magician", 2500, 2100, "The ultimate wizard in term of attack and defense.", index));
-    deck.push_back(new MonsterCard("Dark Magician", 2500, 2100, "The ultimate wizard in term of attack and defense.", index));
+    deck.push_back(new MonsterCard("Dark Magician", 2500, 2100, "Dark Magician the ultimate wizard in term of attack and defense.", index));
+    deck.push_back(new MonsterCard("Dark Magician", 2500, 2100, "Dark Magician the ultimate wizard in term of attack and defense.", index));
     deck.push_back(new MonsterCard("Magicians Apprentice", 2000, 1700, "A devoted young sorcerer who studies every incantation recorded by the legendary Dark Magician. Though her power is still blooming, her will to protect her master is unwavering.", index));
     deck.push_back(new MonsterCard("Magicians Apprentice", 2000, 1700, "A devoted young sorcerer who studies every incantation recorded by the legendary Dark Magician. Though her power is still blooming, her will to protect her master is unwavering.", index));
-    deck.push_back(new MonsterCard("Dark Magician Girl", 2000, 1700, "Dark Magician favourite student.", index));
+    //deck.push_back(new MonsterCard("Dark Magician Girl", 2000, 1700, "Dark Magician favourite student.", index));
     deck.push_back(new MonsterCard("Magicians Soul", 0, 0, "The remnant spirit of the first disciple who ever trained under the Dark Magician. Though he possesses no form of his own, his essence amplifies the will of every magician he supports.", index));
     deck.push_back(new MonsterCard("Magicians Soul", 0, 0, "The remnant spirit of the first disciple who ever trained under the Dark Magician. Though he possesses no form of his own, his essence amplifies the will of every magician he supports.", index));
     deck.push_back(new MonsterCard("Black Luster Soldier", 3200, 3000, "A noble warrior summoned through ancient chaos rituals inspired by the teachings of the Dark Magician. Though his path diverges, their souls resonate through battle and destiny.", index));
@@ -293,6 +293,11 @@ void Player :: loadDeckDarkMagician(){
     deck.push_back(new SpellCard("The Ancient knowledge", "Search any card that mention Dark Magician in it's description."));
     deck.push_back(new SpellCard("The Ancient knowledge", "Search any card that mention Dark Magician in it's description."));
     deck.push_back(new SpellCard("The Ancient knowledge", "Search any card that mention Dark Magician in it's description."));
+    deck.push_back(new SpellCard("The Magic Curtain", "Reveal 1 Spell card in your hand that mentions Dark Magician; if you do, search your deck for 1 different Spell card that also mentions Dark Magician and add it to your hand."));
+    deck.push_back(new SpellCard("The Magic Curtain", "Reveal 1 Spell card in your hand that mentions Dark Magician; if you do, search your deck for 1 different Spell card that also mentions Dark Magician and add it to your hand."));
+    deck.push_back(new SpellCard("Dark Magical Circle", "Reveal top 3 card on top of your deck, add 1 card that mention dark magician and if you controll at least one monster that mention Dark Magician destroy 1 card on your opponent field or draw 1 card instead"));
+    deck.push_back(new SpellCard("Dark Magical Circle", "Reveal top 3 card on top of your deck, add 1 card that mention dark magician and if you controll at least one monster that mention Dark Magician destroy 1 card on your opponent field or draw 1 card instead"));
+    deck.push_back(new SpellCard("Dark Magical Circle", "Reveal top 3 card on top of your deck, add 1 card that mention dark magician and if you controll at least one monster that mention Dark Magician destroy 1 card on your opponent field or draw 1 card instead"));
     deck.push_back(new SpellCard("The True Power of Chaos Dual", "If you control both Black Luster Soldier and Dark Magician of Chaos:Destroy random cards on the opponent field up to the number of monsters that mention “Dark Magician” you control.Then, boost the ATK of those monsters by 100 for each card destroyed but skip your battle phase this turn."));
     deck.push_back(new SpellCard("The World Destroyer", "Reveal 1 card in your hand that mentions Dark Magician to activate this card then pay half of your Hp : If you control Gandora-X the Dragon of Demolition: Destroy all cards on the field exepct Gandora and for each destroyed monster, inflict 500 damage to your opponent Hp then raise it atk 500 but skip your battle phase this turn."));
     deck.push_back(new SpellCard("Apprentice Helper", "Special Summon 1 Magicians Apprentice from your deck in faceup defend position.Then, draw equal to number of monster that mentions Dark Magician you controll max 2."));
@@ -300,20 +305,18 @@ void Player :: loadDeckDarkMagician(){
     deck.push_back(new SpellCard("Apprentice Helper", "Special Summon 1 Magicians Apprentice from your deck in faceup defend position.Then, draw equal to number of monster that mentions Dark Magician you controll max 2."));
     deck.push_back(new SpellCard("Chaos Magic", "tribute 2 monster that mentions Dark Magician: special summon 1 Dark Magician of Chaos and 1 Black Luster Soldier from your deck or your hand to your field in face up defend position and add The True Power of Chaos duel if your deck have them."));
     deck.push_back(new SpellCard("Illusion Magic", "Tribute 1 monster that mention Dark Magician: Add 2 monster cards from your deck to your hand, each of which mentions Dark Magician in their description."));
-    deck.push_back(new SpellCard("Illusion Magic", "Tribute 1 monster that mention Dark Magician: Add 2 monster cards from your deck to your hand, each of which mentions Dark Magician in their description."));
-    deck.push_back(new SpellCard("Enternal Soul", "Reveal 1 card in your hand that mention Dark Magician special Summon up to 2 monsters from your deck in face-up Defense Position, each of which mentions “Dark Magician” in their description.If you summon both Magicians Rod” and “Magicians Soul this way, draw 2 cards."));
-    deck.push_back(new SpellCard("Enternal Soul", "Reveal 1 card in your hand that mention Dark Magician special Summon up to 2 monsters from your deck in face-up Defense Position, each of which mentions “Dark Magician” in their description.If you summon both Magicians Rod” and “Magicians Soul this way, draw 2 cards."));
-    deck.push_back(new SpellCard("Enternal Soul", "Reveal 1 card in your hand that mention Dark Magician special Summon up to 2 monsters from your deck in face-up Defense Position, each of which mentions “Dark Magician” in their description.If you summon both Magicians Rod” and “Magicians Soul this way, draw 2 cards."));
+    deck.push_back(new SpellCard("Enternal Soul", "Reveal 1 card in your hand that mention Dark Magician special Summon up to 2 monsters from your deck or handin face-up Defense Position, each of which mentions “Dark Magician” in their description.If you summon both Magicians Rod” and “Magicians Soul this way, draw 2 cards."));
+    deck.push_back(new SpellCard("Enternal Soul", "Reveal 1 card in your hand that mention Dark Magician special Summon up to 2 monsters from your deck or hand in face-up Defense Position, each of which mentions “Dark Magician” in their description.If you summon both Magicians Rod” and “Magicians Soul this way, draw 2 cards."));
+    deck.push_back(new SpellCard("Enternal Soul", "Reveal 1 card in your hand that mention Dark Magician special Summon up to 2 monsters from your deck or hand in face-up Defense Position, each of which mentions “Dark Magician” in their description.If you summon both Magicians Rod” and “Magicians Soul this way, draw 2 cards."));
     deck.push_back(new SpellCard("Soul Servant", "Place a card that mention Dark Magician from your deck to your top of the deck and draw card equal to number of monster that mention Dark Magician on the field max 2 cards."));
     deck.push_back(new SpellCard("Soul Servant", "Place a card that mention Dark Magician from your deck to your top of the deck and draw card equal to number of monster that mention Dark Magician on the field max 2 cards."));
     deck.push_back(new SpellCard("Soul Servant", "Place a card that mention Dark Magician from your deck to your top of the deck and draw card equal to number of monster that mention Dark Magician on the field max 2 cards."));
-    deck.push_back(new SpellCard("Cruel Pact", "Pay 500 Hp and tribute 1 monster on the field to search 1 Dark Magician from your deck and increase 600 ATK for the Dark Magician summon next turn."));
-    deck.push_back(new SpellCard("Thousand Knifes", "If you control faceup Dark Magician: Target 1 monster your opponent controls; destroy that target.."));
+    //deck.push_back(new SpellCard("Cruel Pact", "Pay 500 Hp and tribute 1 monster on the field to search 1 Dark Magician from your deck and increase 600 ATK for the Dark Magician summon next turn."));
+    //deck.push_back(new SpellCard("Thousand Knifes", "If you control faceup Dark Magician: Target 1 monster your opponent controls; destroy that target.."));
     deck.push_back(new SpellCard("Dark Magic", " If you controll faceup a Dark Magician monster, destroy all monster your opponent controll and skip your battle phase."));
-    deck.push_back(new SpellCard("Bond Between The Teacher and Student", "If you controll a Dark Magician, special summon from your deck a Dark Magician Girl in defend position "));
-    deck.push_back(new SpellCard("Dark Burning Magic", "If you control a face up Dark Magician, Dark magician girl you can destroy all of your oponent card but skip your battle phase"));
+    //deck.push_back(new SpellCard("Bond Between The Teacher and Student", "If you controll a Dark Magician, special summon from your deck a Dark Magician Girl in defend position "));
+    //deck.push_back(new SpellCard("Dark Burning Magic", "If you control a face up Dark Magician, Dark magician girl you can destroy all of your oponent card but skip your battle phase"));
     deck.push_back(new SpellCard("The Power of Friendship", "Combine all of your faceup monster atk to 1 single attack in this turn."));
-    deck.push_back(new TrapCard("Mirror Force", "When an opponent's monster declares an attack: Destroy all your opponent's Attack Position monsters."));
     deck.push_back(new TrapCard("Mirror Force", "When an opponent's monster declares an attack: Destroy all your opponent's Attack Position monsters."));
     deck.push_back(new TrapCard("Tsunagite", "When an opponent's monster declares an attack: Negate the attack and end the battle phase."));
     deck.push_back(new TrapCard("Trrricksters!!", "When an opponent's monster declares an attack: Target the attacking monster, and if you do, inflict damage to your opponent equal to its atk."));
@@ -350,8 +353,8 @@ void Player :: loadDeckBlueEyes(){
     deck.push_back(new SpellCard("Destr0yer",("Can destroy a monster card in defense mode")));
     deck.push_back(new SpellCard("Roar of The Blue-Eyed Dragons", "Special summon a Blue Eyes White Dragon in the deck in defend position."));
     deck.push_back(new SpellCard("Roar of The Blue-Eyed Dragons", "Special summon a Blue Eyes White Dragon in the deck in defend position."));
-    deck.push_back(new SpellCard("Majesty of The White Dragons","Destroy random card in your opponent field up to the number of faceup “Blue Eyes White Dragon” you control"));
-    deck.push_back(new SpellCard("Majesty of The White Dragons","Destroy random card in your opponent field up to the number of faceup “Blue Eyes White Dragon” you control"));
+    deck.push_back(new SpellCard("Majesty of The White Dragons","Destroy random card in your opponent field up to the number of faceup Blue Eyes White Dragon you control"));
+    deck.push_back(new SpellCard("Majesty of The White Dragons","Destroy random card in your opponent field up to the number of faceup Blue Eyes White Dragon you control"));
     deck.push_back(new SpellCard("Ash Again","If you controll a faceup Blue Eyes White Dragon destroy all trap cards your opponent control")); 
     deck.push_back(new SpellCard("Wishes for Eyes of Blue","Reveal 1 card in your hand that mention Blue Eyes. Special Summon up to 2 monsters from your deck in face-up Defense Position, each of which mentions “Blue Eyes” in their description."));
     deck.push_back(new SpellCard("Wishes for Eyes of Blue","Reveal 1 card in your hand that mention Blue Eyes. Special Summon up to 2 monsters from your deck in face-up Defense Position, each of which mentions “Blue Eyes” in their description."));

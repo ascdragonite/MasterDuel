@@ -1094,6 +1094,7 @@ bool EnternalSoul::ActivateEffect(Player& self, Player& opponent) {
     vector<Card*> deck = self.getDeck();
     vector<Card*> field = self.getField();
 
+    // Tìm các bài trên tay có mention "Dark Magician"
     vector<int> revealableIndexes;
     for (int i = 0; i < hand.size(); ++i) {
         if (hand[i]->getDescription().find("Dark Magician") != string::npos) {
@@ -1108,8 +1109,7 @@ bool EnternalSoul::ActivateEffect(Player& self, Player& opponent) {
 
     cout << "[Enternal Soul] Reveal a card from your hand that mentions 'Dark Magician':" << endl;
     for (int i = 0; i < revealableIndexes.size(); ++i) {
-        int idx = revealableIndexes[i];
-        cout << "[" << i << "] " << hand[idx]->getName() << endl;
+        cout << "[" << i << "] " << hand[revealableIndexes[i]]->getName() << endl;
     }
 
     int revealChoice = -1;
@@ -1122,22 +1122,29 @@ bool EnternalSoul::ActivateEffect(Player& self, Player& opponent) {
     Card* revealedCard = hand[handIndex];
     cout << "[Enternal Soul] You revealed: " << revealedCard->getName() << endl;
 
-    vector<int> validIndexes;
-    for (int i = 0; i < deck.size(); ++i) {
-        if (deck[i]->getType() == "Monster" &&
-            deck[i]->getDescription().find("Dark Magician") != string::npos) {
-            validIndexes.push_back(i);
+    // Xây dựng danh sách summon từ hand + deck
+    vector<pair<Card*, string>> summonables;
+
+    for (Card* c : deck) {
+        if (c->getType() == "Monster" && c->getDescription().find("Dark Magician") != string::npos) {
+            summonables.emplace_back(c, "deck");
+        }
+    }
+    for (Card* c : hand) {
+        if (c->getType() == "Monster" && c->getDescription().find("Dark Magician") != string::npos) {
+            summonables.emplace_back(c, "hand");
         }
     }
 
-    if (validIndexes.empty()) {
-        cout << "[Enternal Soul] No valid monsters in your deck to summon." << endl;
+    if (summonables.empty()) {
+        cout << "[Enternal Soul] No valid monsters in your hand or deck to summon." << endl;
         return false;
     }
 
-    cout << "[Enternal Soul] Choose up to 2 monsters to summon:" << endl;
-    for (int i = 0; i < validIndexes.size(); ++i) {
-        cout << "[" << i << "] " << deck[validIndexes[i]]->getName() << endl;
+    cout << "[Enternal Soul] Choose up to 2 monsters to special summon (from deck or hand):" << endl;
+    for (int i = 0; i < summonables.size(); ++i) {
+        cout << "[" << i << "] " << summonables[i].first->getName()
+             << " (" << summonables[i].second << ")" << endl;
     }
 
     vector<Card*> summoned;
@@ -1145,39 +1152,52 @@ bool EnternalSoul::ActivateEffect(Player& self, Player& opponent) {
 
     cout << "First index: ";
     cin >> choice1;
-    if (choice1 < 0 || choice1 >= validIndexes.size()) return false;
+    if (choice1 < 0 || choice1 >= summonables.size()) return false;
 
-    int index1 = validIndexes[choice1];
-    MonsterCard* m1 = dynamic_cast<MonsterCard*>(deck[index1]);
+    Card* c1 = summonables[choice1].first;
+    string src1 = summonables[choice1].second;
+    MonsterCard* m1 = dynamic_cast<MonsterCard*>(c1);
     m1->setDefenseMode(true);
     m1->setFacedown(false);
     m1->setJustSummoned(true);
     summoned.push_back(m1);
-    deck.erase(deck.begin() + index1);
 
-    if (validIndexes.size() >= 2) {
+    if (src1 == "deck") {
+        deck.erase(remove(deck.begin(), deck.end(), c1), deck.end());
+    } else {
+        hand.erase(remove(hand.begin(), hand.end(), c1), hand.end());
+    }
+
+    // Second summon
+    if (summonables.size() >= 2) {
         cout << "Second index (optional, -1 to skip): ";
         cin >> choice2;
-        if (choice2 != -1 && choice2 >= 0 && choice2 < validIndexes.size() && choice2 != choice1) {
-            int index2 = validIndexes[choice2];
-            if (index2 > index1) index2--;
-
-            MonsterCard* m2 = dynamic_cast<MonsterCard*>(deck[index2]);
+        if (choice2 != -1 && choice2 >= 0 && choice2 < summonables.size() && choice2 != choice1) {
+            Card* c2 = summonables[choice2].first;
+            string src2 = summonables[choice2].second;
+            MonsterCard* m2 = dynamic_cast<MonsterCard*>(c2);
             m2->setDefenseMode(true);
             m2->setFacedown(false);
             m2->setJustSummoned(true);
             summoned.push_back(m2);
-            deck.erase(deck.begin() + index2);
+
+            if (src2 == "deck") {
+                deck.erase(remove(deck.begin(), deck.end(), c2), deck.end());
+            } else {
+                hand.erase(remove(hand.begin(), hand.end(), c2), hand.end());
+            }
         }
     }
 
+    // Add lên field
     for (Card* c : summoned) {
         field.push_back(c);
     }
 
+    // Cập nhật lại bộ bài, tay, sân
     self.setDeck(deck);
+    self.setHand(hand);
     self.setField(field);
-    self.setHand(hand); 
 
     if (!summoned.empty()) {
         cout << "[Enternal Soul] You summoned: ";
@@ -1188,6 +1208,7 @@ bool EnternalSoul::ActivateEffect(Player& self, Player& opponent) {
         cout << "." << endl;
     }
 
+    // Check phần thưởng nếu summon được cả Rod + Soul
     bool hasRod = false, hasSoul = false;
     for (Card* c : summoned) {
         if (c->getName() == "Magicians Rod") hasRod = true;
@@ -1198,15 +1219,16 @@ bool EnternalSoul::ActivateEffect(Player& self, Player& opponent) {
         for (int i = 0; i < 2; ++i) {
             self.drawCard();
         }
-        cout << "[Enternal Soul] You summoned both Rod and Soul, so you draw 2 cards successfully!" << endl;
+        cout << "[Enternal Soul] You summoned both Rod and Soul, draw 2 cards successfully!" << endl;
     }
 
-    string logMsg = "Opponent activated [Enternal Soul], special summoned ";
+    // Ghi log
+    string logMsg = "[Enternal Soul] opens the gate — ";
     for (int i = 0; i < summoned.size(); ++i) {
         logMsg += summoned[i]->getName();
         if (i != summoned.size() - 1) logMsg += " and ";
     }
-    logMsg += " from their deck.";
+    logMsg += " emerged through eternal magic.";
     writeLog(logMsg);
 
     return true;
@@ -2102,6 +2124,182 @@ bool BlessingfromtheRoaringSky::ActivateEffect(Player& self, Player& opponent) {
     return true;
 }
 
+bool DarkMagicalCircle::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> deck = self.getDeck();
+    vector<Card*> field = self.getField();
+    vector<Card*> hand = self.getHand();
+
+    if (deck.size() < 3) {
+        cout << "[Dark Magical Circle] You must have at least 3 cards in your deck to activate this effect." << endl;
+        return false;
+    }
+
+    vector<Card*> top3(deck.end() - 3, deck.end());
+    cout << "[Dark Magical Circle] Revealing top 3 cards:" << endl;
+    for (int i = 0; i < 3; ++i) {
+        cout << "[" << i << "] " << top3[i]->getName() << " - " << top3[i]->getDescription() << endl;
+    }
+
+    int choice = -1;
+    do {
+        cout << "Choose a card to add to your hand (index), or -1 to skip: ";
+        cin >> choice;
+
+        if (choice == -1) break;
+
+        if (choice < 0 || choice >= 3) {
+            cout << "[Dark Magical Circle] Invalid choice." << endl;
+            choice = -2;
+            continue;
+        }
+
+        if (top3[choice]->getDescription().find("Dark Magician") == string::npos) {
+            cout << "[Dark Magical Circle] That card does not mention 'Dark Magician'. Try again." << endl;
+            choice = -2;
+        }
+    } while (choice == -2);
+
+    if (choice != -1) {
+        Card* chosen = top3[choice];
+        hand.push_back(chosen);
+        top3.erase(top3.begin() + choice);
+        cout << "[Dark Magical Circle] Added " << chosen->getName() << " to hand." << endl;
+        writeLog("Opponent used [Dark Magical Circle] to add " + chosen->getName() + " to their hand.");
+    }
+
+    vector<Card*> newDeck(deck.begin(), deck.end() - 3);
+    for (Card* c : top3) newDeck.push_back(c);
+    self.setDeck(newDeck);
+    self.setHand(hand);
+
+    bool hasDM = false;
+    for (Card* c : field) {
+        if (c->getDescription().find("Dark Magician") != string::npos && c->getType() == "Monster") {
+            hasDM = true;
+            break;
+        }
+    }
+
+    if (hasDM) {
+        int option = -1;
+        cout << "[Dark Magical Circle] You control a monster that mentions 'Dark Magician'. Choose an effect:" << endl;
+        cout << "  [1] Destroy 1 card your opponent controls" << endl;
+        cout << "  [2] Draw 1 card" << endl;
+        do {
+            cout << "Choice: ";
+            cin >> option;
+        } while (option != 1 && option != 2);
+
+        if (option == 1) {
+            vector<Card*> oppField = opponent.getField();
+            if (oppField.empty()) {
+                cout << "[Dark Magical Circle] No cards to destroy." << endl;
+            } else {
+                int destroyIndex = -1;
+                do {
+                    cout << "[Dark Magical Circle] Choose card to destroy:" << endl;
+                    for (int i = 0; i < oppField.size(); ++i) {
+                        cout << "  [" << i << "] " << oppField[i]->getName() << endl;
+                    }
+                    cout << "Index: ";
+                    cin >> destroyIndex;
+                } while (destroyIndex < 0 || destroyIndex >= oppField.size());
+
+                cout << "[Dark Magical Circle] Destroyed " << oppField[destroyIndex]->getName() << "." << endl;
+                writeLog("Opponent used [Dark Magical Circle] to destroy " + oppField[destroyIndex]->getName() + ".");
+                oppField.erase(oppField.begin() + destroyIndex);
+                opponent.setField(oppField);
+            }
+        } else {
+            self.drawCard();
+            cout << "[Dark Magical Circle] Drew 1 card." << endl;
+            writeLog("Opponent used [Dark Magical Circle] to draw 1 card.");
+        }
+    }
+
+    return true;
+}
+
+bool TheMagicCurtain::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> hand = self.getHand();
+    vector<Card*> deck = self.getDeck();
+
+    vector<int> revealableIndexes;
+     for (int i = 0; i < hand.size(); ++i) {
+        if (hand[i]->getType() == "Spell" && hand[i]->getDescription().find("Dark Magician") != string::npos) {
+            revealableIndexes.push_back(i);
+        }
+    }
+
+    if (revealableIndexes.empty()) {
+        cout << "[The Magic Curtain] Activation failed: You must reveal a Spell card in your hand that mentions 'Dark Magician'." << endl;
+        return false;
+    }
+
+    cout << "[The Magic Curtain] Reveal a Spell card in your hand that mentions 'Dark Magician':" << endl;
+    for (int i = 0; i < revealableIndexes.size(); ++i) {
+        cout << "[" << i << "] " << hand[revealableIndexes[i]]->getName() << endl;
+    }
+
+    int revealChoice = -1;
+    do {
+        cout << "Choose index to reveal: ";
+        cin >> revealChoice;
+    } while (revealChoice < 0 || revealChoice >= revealableIndexes.size());
+
+    string revealedName = hand[revealableIndexes[revealChoice]]->getName();
+    cout << "[The Magic Curtain] You revealed: " << revealedName << endl;
+
+    vector<pair<int, Card*>> validSpells;
+    for (int i = 0; i < deck.size(); ++i) {
+        if (deck[i]->getType() == "Spell" &&
+            deck[i]->getName() != revealedName &&
+            deck[i]->getDescription().find("Dark Magician") != string::npos) {
+            validSpells.push_back({i, deck[i]});
+        }
+    }
+
+    if (validSpells.empty()) {
+        cout << "[The Magic Curtain] No valid target found in your deck." << endl;
+        return false;
+    }
+
+    cout << "[The Magic Curtain] Spells that mention 'Dark Magician':" << endl;
+    for (int i = 0; i < validSpells.size(); ++i) {
+        cout << "[" << i << "] " << validSpells[i].second->getName() << endl;
+    }
+
+    int choice = -1;
+    do {
+        cout << "Choose a card to add to your hand: ";
+        cin >> choice;
+
+        if (choice < 0 || choice >= validSpells.size()) {
+            cout << "Invalid choice. Try again." << endl;
+            choice = -1;
+        }
+    } while (choice == -1);
+
+    int deckIndex = validSpells[choice].first;
+    Card* selected = deck[deckIndex];
+    deck.erase(deck.begin() + deckIndex);
+    hand.push_back(selected);
+
+    self.setDeck(deck);
+    self.setHand(hand);
+
+    self.shuffleDeck();
+
+    cout << "[The Magic Curtain] You added " << selected->getName()
+         << " to your hand! The deck has been shuffled." << endl;
+
+    writeLog("Opponent activated [The Magic Curtain], revealed '" + revealedName +
+             "' and drew forth '" + selected->getName() +
+             "' from the shadows of magic.");
+
+    return true;
+}
+
 //trap
 bool MirrorForce::ActivateEffect(Player& self, Player& opponent) { //cần check kĩ writeLog
     vector<Card*> newfield = opponent.getField();
@@ -2128,6 +2326,8 @@ bool MirrorForce::ActivateEffect(Player& self, Player& opponent) { //cần check
     opponent.setField(newfieldopp);
     return true; // Indicate success
 }
+
+
 
 bool Tsunagite::ActivateEffect(Player& self, Player& opponent) {
     cout << "[Tsunagite] End opponent battle phase!" << endl;

@@ -1,3 +1,2 @@
-[Fri May 23 15:01:20 2025] Opponent summoned a monster in attack position.
-[Fri May 23 15:01:29 2025] Opponent searched 'The True Power of Chaos Dual' after summoning DMOC and BLS.
-[Fri May 23 15:01:29 2025] Opponent used [Chaos Magic] to summon DMOC and BLS in defense position.
+[Fri May 23 21:17:29 2025] Opponent activated [Illusion Magic]. Tributed Magicians Soul, added Magicians Soul and Dark Magician to their hand.
+[Fri May 23 21:17:49 2025] [Enternal Soul] opens the gate — Magicians Soul and Magicians Rod emerged through eternal magic.
