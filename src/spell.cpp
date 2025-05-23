@@ -1827,7 +1827,7 @@ bool TrueLight::ActivateEffect(Player& self, Player& opponent) {
 
     vector<int> revealableIndexes;
     for (int i = 0; i < hand.size(); ++i) {
-        if (hand[i]->getDescription().find("Blue-Eyes") != string::npos) {
+        if (hand[i]->getDescription().find("Blue Eyes") != string::npos) {
             revealableIndexes.push_back(i);
         }
     }
@@ -1837,7 +1837,7 @@ bool TrueLight::ActivateEffect(Player& self, Player& opponent) {
         return false;
     }
 
-    cout << "[True Light] Reveal a card from your hand that mentions 'Blue-Eyes':" << endl;
+    cout << "[True Light] Reveal a card from your hand that mentions 'Blue Eyes':" << endl;
     for (int i = 0; i < revealableIndexes.size(); ++i) {
         cout << "[" << i << "] " << hand[revealableIndexes[i]]->getName() << endl;
     }
@@ -1856,7 +1856,7 @@ bool TrueLight::ActivateEffect(Player& self, Player& opponent) {
     vector<int> validIndexes;
     for (int i = 0; i < deck.size(); ++i) {
         if (deck[i]->getType() == "Monster" &&
-            deck[i]->getDescription().find("Blue-Eyes") != string::npos) {
+            deck[i]->getDescription().find("Blue Eyes") != string::npos) {
             validIndexes.push_back(i);
         }
     }
@@ -1927,7 +1927,7 @@ bool TrueLight::ActivateEffect(Player& self, Player& opponent) {
 
     if (hasSage && hasMaiden) {
         for (int i = 0; i < deck.size(); ++i) {
-            if (deck[i]->getDescription().find("Blue-Eyes") != string::npos) {
+            if (deck[i]->getDescription().find("Blue Eyes") != string::npos) {
                 Card* added = deck[i];
                 deck.erase(deck.begin() + i);
                 hand.push_back(added);
@@ -1960,7 +1960,7 @@ bool TheMelodyOfTheAwakeningDragon::ActivateEffect(Player& self, Player& opponen
     bool hasMaiden = false;
 
     for (Card* c : field) {
-        if (c->getDescription().find("Blue-Eyes") != string::npos) {
+        if (c->getDescription().find("Blue Eyes") != string::npos) {
             controlMentionBE = true;
         }
         if (c->getName() == "Sage with Eyes of Blue") hasSage = true;
@@ -1968,7 +1968,7 @@ bool TheMelodyOfTheAwakeningDragon::ActivateEffect(Player& self, Player& opponen
     }
 
     if (!controlMentionBE) {
-        cout << "[The Melody of the Awakening Dragon] Activation failed: You do not control any monster that mentions 'Blue-Eyes'." << endl;
+        cout << "[The Melody of the Awakening Dragon] Activation failed: You do not control any monster that mentions 'Blue Eyes'." << endl;
         return false;
     }
 
@@ -1978,7 +1978,7 @@ bool TheMelodyOfTheAwakeningDragon::ActivateEffect(Player& self, Player& opponen
     cout << "[The Melody of the Awakening Dragon] You can search the following cards:" << endl;
 
     for (int i = 0; i < deck.size(); ++i) {
-        if (deck[i]->getDescription().find("Blue-Eyes") != string::npos) {
+        if (deck[i]->getDescription().find("Blue Eyes") != string::npos) {
             if (fullPower || deck[i]->getType() == "Monster") {
                 searchableIndexes.push_back(i);
                 cout << "[" << searchableIndexes.size() - 1 << "] " << deck[i]->getName() << endl;
