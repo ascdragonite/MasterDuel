@@ -1451,7 +1451,6 @@ bool TheWorldDestroyer::ActivateEffect(Player& self, Player& opponent) {
     vector<Card*> fieldSelf = self.getField();
     vector<Card*> fieldOpp = opponent.getField();
 
-    // Kiểm tra bài trên tay có mention Dark Magician
     vector<int> revealableIndexes;
     for (int i = 0; i < hand.size(); ++i) {
         if (hand[i]->getDescription().find("Dark Magician") != string::npos) {
