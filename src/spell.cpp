@@ -511,6 +511,10 @@ bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) { //sm
     vector<Card*> newfield1 = self.getField();
     vector<Card*> newfield2 = opponent.getField();
     vector<Card*> newfieldself;
+    if (!self.getCanUsePowerOfFriendship()) {
+        cout << "[The Power of Friendship] Activation failed: You cannot use this card on the first turn.\n";
+    return false;
+    }
     for(auto card1 : newfield1){
         if(card1->getType() == "Monster"){
             countm++;

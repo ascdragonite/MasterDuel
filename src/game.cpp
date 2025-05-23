@@ -141,8 +141,12 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
 
     self.resetAttackFlags();
     if (!isFirstTurn) {
+        self.setCanUsePowerOfFriendship(true);
         self.drawCard();
         cout << " draws a card.\n";
+    }
+    else{
+         self.setCanUsePowerOfFriendship(false);
     }
 
     while (true) {

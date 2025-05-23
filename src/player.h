@@ -18,6 +18,7 @@ private:
     int hp;
     int skipBattlePhaseCount;
     bool hasBattledThisTurn;
+    bool canUsePowerOfFriendship;
 
 public:
     vector<int> canTrap;
@@ -37,6 +38,9 @@ public:
 
     void revealMonster(int fieldIndex);
     void switchPosition(int fieldIndex);
+
+    bool getCanUsePowerOfFriendship() const;
+    void setCanUsePowerOfFriendship(bool value);
 
     void takeDamage(int amount);
     int getHp() const;

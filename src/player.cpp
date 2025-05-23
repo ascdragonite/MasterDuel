@@ -53,7 +53,8 @@ Player :: Player(int i){
     index = i;
     hp = 4000;
     skipBattlePhaseCount = 0;
-    hasBattledThisTurn = false; 
+    hasBattledThisTurn = false;
+    canUsePowerOfFriendship = false; 
 }
 
 Player::~Player()
@@ -274,6 +275,14 @@ vector<Card*>& Player::getHandRef() {
     return hand;
 }
 
+bool Player::getCanUsePowerOfFriendship() const {
+    return canUsePowerOfFriendship;
+}
+
+void Player::setCanUsePowerOfFriendship(bool value) {
+    canUsePowerOfFriendship = value;
+}
+
 
 void Player :: loadDeckDarkMagician(){
     cout << "Loading deck for player " << index << endl;
@@ -300,7 +309,7 @@ void Player :: loadDeckDarkMagician(){
     deck.push_back(new SpellCard("Dark Magic", " If you controll faceup a Dark Magician monster, destroy all monster your opponent controll and skip your battle phase."));
     deck.push_back(new SpellCard("Bond Between The Teacher and Student", "If you controll a Dark Magician, special summon from your deck a Dark Magician Girl in defend position "));
     deck.push_back(new SpellCard("Dark Burning Magic", "If you control a face up Dark Magician, Dark magician girl you can destroy all of your oponent card but skip your battle phase"));
-    deck.push_back(new SpellCard("The Power of Friendship", "Combine all of your faceup monster atk to 1 single attack in this turn."));
+    deck.push_back(new SpellCard("The Power of Friendship", "Combine all of your faceup monster atk to 1 single attack in this turn, you can not use this card on your first turn."));
     deck.push_back(new TrapCard("Mirror Force", "When an opponent's monster declares an attack: Destroy all your opponent's Attack Position monsters."));
     deck.push_back(new TrapCard("Tsunagite", "When an opponent's monster declares an attack: Negate the attack and end the battle phase."));
     deck.push_back(new TrapCard("Trrricksters!!", "When an opponent's monster declares an attack: Target the attacking monster, and if you do, inflict damage to your opponent equal to its atk."));
