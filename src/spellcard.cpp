@@ -100,6 +100,7 @@ shared_ptr<Spell> SpellCard::getEffectInstance(const std::string& type) {
     else if (type == "The True Power of Chaos Dual") effect = std::make_shared<TheTruePowerOfChaosDual>();
     else if (type == "True Light") effect = std::make_shared<TrueLight>();
     else if (type == "The Melody of the Awakening Dragon") effect = std::make_shared<TheMelodyOfTheAwakeningDragon>();
+    else if (type == "Blessing from the Roaring Sky") effect = std::make_shared<BlessingfromtheRoaringSky>();
   //Step 3: add spell effect names here
     else 
     {

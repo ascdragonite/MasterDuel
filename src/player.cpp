@@ -335,11 +335,14 @@ void Player :: loadDeckBlueEyes(){
     deck.push_back(new MonsterCard("Deep-Eyes White Dragon", 3500, 2500, "This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale.", index));
     deck.push_back(new MonsterCard("Blue-Eyes Chaos MAX Dragon", 4000, 0, "An incarnation of chaos forged from the spirit of Blue Eyes. With piercing power and absolute defense, the Chaos MAX Dragon crushes foes in a single overwhelming blow.", index));
     deck.push_back(new SpellCard("Re:End of a Dream", "If and only if your lifepoint is lower or equal to 1000 you can activate this card. When this card is activated, you can conduct anorther turn"));
-    deck.push_back(new SpellCard("Disorted Fate", "Look at your full deck and place a card you like at the top of the deck."));
+    //deck.push_back(new SpellCard("Disorted Fate", "Look at your full deck and place a card you like at the top of the deck."));
+    deck.push_back(new SpellCard("Blessing from the Roaring Sky", "Search any card that mention Blue Eyes in it's description."));
+    deck.push_back(new SpellCard("Blessing from the Roaring Sky", "Search any card that mention Blue Eyes in it's description."));
+    deck.push_back(new SpellCard("Blessing from the Roaring Sky", "Search any card that mention Blue Eyes in it's description."));
     deck.push_back(new SpellCard("Flower Snow Drum n Bass", "Flip coin, winner gets draw 2 cards"));
     deck.push_back(new SpellCard("Flower Snow Drum n Bass", "Flip coin, winner gets draw 2 cards"));
-    deck.push_back(new SpellCard("Flower Snow Drum n Bass", "Flip coin, winner gets draw 2 cards"));
-    deck.push_back(new SpellCard("World Vanquisher", "Buff a monster attack by 1000 when this card is activated."));
+    //deck.push_back(new SpellCard("Flower Snow Drum n Bass", "Flip coin, winner gets draw 2 cards"));
+    //deck.push_back(new SpellCard("World Vanquisher", "Buff a monster attack by 1000 when this card is activated."));
     deck.push_back(new SpellCard("Call of the Sky", "Tribute 2 monster on the field to search 1 BLue Eyes White Dragon and Majesty of The White Dragons from your deck to your hand."));
     deck.push_back(new SpellCard("Dragon United", "Buff a monster attack and defense by 500 for each faceup monster you control when this card is activated."));
     deck.push_back(new SpellCard("Burst Stream of Destruction", "If you controll a Blue Eyes White Dragon destroy all card your opponent controll but skip your next 2 battle phase."));
@@ -349,7 +352,7 @@ void Player :: loadDeckBlueEyes(){
     deck.push_back(new SpellCard("Roar of The Blue-Eyed Dragons", "Special summon a Blue Eyes White Dragon in the deck in defend position."));
     deck.push_back(new SpellCard("Majesty of The White Dragons","Destroy random card in your opponent field up to the number of faceup “Blue Eyes White Dragon” you control"));
     deck.push_back(new SpellCard("Majesty of The White Dragons","Destroy random card in your opponent field up to the number of faceup “Blue Eyes White Dragon” you control"));
-    deck.push_back(new SpellCard("Ash Again","If you controll a faceup Blue-Eyes White Dragon destroy all trap cards your opponent control")); 
+    deck.push_back(new SpellCard("Ash Again","If you controll a faceup Blue Eyes White Dragon destroy all trap cards your opponent control")); 
     deck.push_back(new SpellCard("Wishes for Eyes of Blue","Reveal 1 card in your hand that mention Blue Eyes. Special Summon up to 2 monsters from your deck in face-up Defense Position, each of which mentions “Blue Eyes” in their description."));
     deck.push_back(new SpellCard("Wishes for Eyes of Blue","Reveal 1 card in your hand that mention Blue Eyes. Special Summon up to 2 monsters from your deck in face-up Defense Position, each of which mentions “Blue Eyes” in their description."));
     deck.push_back(new SpellCard("Wishes for Eyes of Blue","Reveal 1 card in your hand that mention Blue Eyes. Special Summon up to 2 monsters from your deck in face-up Defense Position, each of which mentions “Blue Eyes” in their description."));
@@ -358,9 +361,9 @@ void Player :: loadDeckBlueEyes(){
     deck.push_back(new SpellCard("True Light", "Reveal 1 card in your hand that mention Blue Eyes, special Summon up to 2 monsters from your deck in face-up Defense Position, each of which mentions Blue Eyes in their description.If you summon both Sage with Eyes of Blue and Maiden of white this way add 1 card that mention Blue Eyes form your deck to your hand,"));
     deck.push_back(new SpellCard("True Light", "Reveal 1 card in your hand that mention Blue Eyes, special Summon up to 2 monsters from your deck in face-up Defense Position, each of which mentions Blue Eyes in their description.If you summon both Sage with Eyes of Blue and Maiden of white this way add 1 card that mention Blue Eyes form your deck to your hand,"));
     deck.push_back(new SpellCard("True Light", "Reveal 1 card in your hand that mention Blue Eyes, special Summon up to 2 monsters from your deck in face-up Defense Position, each of which mentions Blue Eyes in their description.If you summon both Sage with Eyes of Blue and Maiden of white this way add 1 card that mention Blue Eyes form your deck to your hand,"));
-    deck.push_back(new SpellCard("The Melody of the Awakening Dragon", "If you control a monster that mentions 'Blue-Eyes' in its description, add 1 monster that mentions 'Blue Eyes' from your deck to your hand; if you also control both 'Sage with Eyes of Blue' and 'Maiden of White', you can instead add any 1 card that mentions 'Blue-Eyes' in its description."));
-    deck.push_back(new SpellCard("The Melody of the Awakening Dragon", "If you control a monster that mentions 'Blue-Eyes' in its description, add 1 monster that mentions 'Blue Eyes' from your deck to your hand; if you also control both 'Sage with Eyes of Blue' and 'Maiden of White', you can instead add any 1 card that mentions 'Blue-Eyes' in its description."));
-    deck.push_back(new SpellCard("The Melody of the Awakening Dragon", "If you control a monster that mentions 'Blue-Eyes' in its description, add 1 monster that mentions 'Blue Eyes' from your deck to your hand; if you also control both 'Sage with Eyes of Blue' and 'Maiden of White', you can instead add any 1 card that mentions 'Blue-Eyes' in its description."));
+    deck.push_back(new SpellCard("The Melody of the Awakening Dragon", "If you control a monster that mentions 'Blue-Eyes' in its description, add 1 monster that mentions 'Blue Eyes' from your deck to your hand; if you also control both 'Sage with Eyes of Blue' and 'Maiden of White', you can instead add any 1 card that mentions 'Blue Eyes' in its description."));
+    deck.push_back(new SpellCard("The Melody of the Awakening Dragon", "If you control a monster that mentions 'Blue-Eyes' in its description, add 1 monster that mentions 'Blue Eyes' from your deck to your hand; if you also control both 'Sage with Eyes of Blue' and 'Maiden of White', you can instead add any 1 card that mentions 'Blue Eyes' in its description."));
+    deck.push_back(new SpellCard("The Melody of the Awakening Dragon", "If you control a monster that mentions 'Blue-Eyes' in its description, add 1 monster that mentions 'Blue Eyes' from your deck to your hand; if you also control both 'Sage with Eyes of Blue' and 'Maiden of White', you can instead add any 1 card that mentions 'Blue Eyes' in its description."));
 }
 
 void Player::shuffleDeck(){
