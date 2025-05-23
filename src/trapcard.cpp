@@ -8,10 +8,10 @@ TrapCard :: TrapCard(string name, string description) : Card(name, "Trap", descr
     isSetTrap = true;
 }
 
-void TrapCard :: showInfo() const{
-    cout << "Name: " << getName() << endl;
-    cout << "Type: " << getType() << endl;
-    cout << "Description: " << getDescription() << endl;
+void TrapCard :: showInfo(bool hidden) const{
+
+    if (hidden) cout << " | _____<@>_____ |  (Trap)" << endl;
+    else cout << " | " << getName() << " | " << endl;
 }
 
 void TrapCard::PlayCard(vector<Card*>& field)
@@ -33,13 +33,6 @@ void TrapCard::PlayCard(vector<Card*>& field)
     
 }
 
-void TrapCard::showInfoHiddenTrap() const {
-    if (isSetTrap) {
-        cout << "Facedown Trap Card";
-    } else {
-        showInfo(); 
-    }
-}
 
 void TrapCard::setIsSetTrap(bool val) {
     isSetTrap = val;

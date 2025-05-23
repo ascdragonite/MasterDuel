@@ -19,9 +19,8 @@ class TrapCard : public Card{
 
     bool activateEffect(Player& self, Player& opponent, int attackerIndex) override;
 
-    void showInfo() const override;
+    void showInfo(bool hidden) const override;
 
-    void showInfoHiddenTrap() const;
 
     void setIsSetTrap(bool val);
 

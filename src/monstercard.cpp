@@ -13,7 +13,7 @@ MonsterCard :: MonsterCard(string name, int atk, int def, string description, in
     this -> owner = owner;
     this -> justSummoned = false;
     this -> canSwitchPosition = true;
-    
+
 }
 
 MonsterCard :: MonsterCard(string name, int atk, int def, string description, int owner, bool defenseMode, bool isSet) : Card(name, "Monster", description){
@@ -26,32 +26,17 @@ MonsterCard :: MonsterCard(string name, int atk, int def, string description, in
     this -> canSwitchPosition = true;
 }
 
-void MonsterCard::showInfo() const {
-    cout << "Name: " << getName() << endl;
-    cout << "Type: " << getType() << endl;
-    cout << "Atk: " << atk << " Def: " << def << endl;
-
-    cout << "Position: ";
-    if (defenseMode) {
-        cout << "Defense";
+void MonsterCard::showInfo(bool hidden) const {
+    if (isSet && hidden) {
+        cout << "[[ _____<@>_____ ]] (Monster)";
     } else {
-        cout << "Attack";
-    }
 
-    if (isSet) {
-        cout << " (Facedown)";
+        cout << (defenseMode ? "[[ " : " | ") << getName() << (defenseMode ? " ]] " : " |  ") << (isSet ? "(Facedown)" : "" ) << endl;
+        cout << "   Atk: " << atk << " Def: " << def << endl;
+        
     }
-
-    cout << endl;
 }
 
-void MonsterCard::showInfoHidden() const {
-    if (isSet) {
-        cout << "Facedown Defense Position Monster";
-    } else {
-        showInfo(); 
-    }
-}
 
 int MonsterCard::getOwner() const{
     return owner;
@@ -110,13 +95,13 @@ MonsterCard& MonsterCard::operator+=(MonsterCard& other) {
             int loss = defValue - atk;
             self->takeDamage(loss);
             cout << this->getName() << " failed to destroy " << other.getName()
-                 << " in defense and took " << loss << " damage!\n";
+                << " in defense and took " << loss << " damage!\n";
             cout << "Your HP: " << self->getHp() << endl;
             writeLog(this->getName() + " failed to destroy " + other.getName() +
                      " in defense. Took " + to_string(loss) + " damage.");
         } else {
             cout << this->getName() << " attacked " << other.getName()
-                 << ", but both had equal power. No one destroyed.\n";
+                << ", but both had equal power. No one destroyed.\n";
             writeLog(this->getName() + " attacked " + other.getName() +
                      " in defense. Equal ATK and DEF.");
         }
@@ -128,7 +113,7 @@ MonsterCard& MonsterCard::operator+=(MonsterCard& other) {
         int loss = atk - defValue;
         target->takeDamage(loss);
         cout << this->getName() << " destroyed " << other.getName()
-             << " and dealt " << loss << " damage!\n";
+            << " and dealt " << loss << " damage!\n";
         cout << "Opponent HP: " << target->getHp() << endl;
         writeLog(this->getName() + " destroyed " + other.getName() +
                  " and dealt " + to_string(loss) + " damage.");
@@ -142,7 +127,7 @@ MonsterCard& MonsterCard::operator+=(MonsterCard& other) {
         int loss = defValue - atk;
         self->takeDamage(loss);
         cout << this->getName() << " was destroyed by " << other.getName()
-             << " and took " << loss << " damage!\n";
+            << " and took " << loss << " damage!\n";
         cout << "Your HP: " << self->getHp() << endl;
         writeLog(this->getName() + " was destroyed by " + other.getName() +
                  " and took " + to_string(loss) + " damage.");
@@ -153,7 +138,7 @@ MonsterCard& MonsterCard::operator+=(MonsterCard& other) {
         }
     } else {
         cout << this->getName() << " and " << other.getName()
-             << " destroyed each other in a tie!\n";
+            << " destroyed each other in a tie!\n";
         writeLog(this->getName() + " and " + other.getName() +
                  " destroyed each other in battle.");
 
@@ -246,7 +231,7 @@ void MonsterCard::PlayCard(vector<Card*>& field)
         cout << "Monster card played: " << getName() << endl;
     }
     else
-    {
+{
         cout << "Cannot play monster card. Field is full." << endl;
     }
 }

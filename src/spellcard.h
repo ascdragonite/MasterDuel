@@ -17,7 +17,7 @@ class SpellCard : public Card{
     bool activateEffect(Player& self, Player& opponent) override;
     bool activateEffect(Player& self, Player& opponent, int attackerIndex) override;
 
-    void showInfo() const override;
+    void showInfo(bool hidden) const override;
 
     void PlayCard(vector<Card*>& field) override;
     
