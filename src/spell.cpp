@@ -84,9 +84,9 @@ bool WorldVanquisher::ActivateEffect(Player &self, Player &opponent) { // buff 2
             }
         } while (newfield[in]->getType() != "Monster");
         MonsterCard *card = dynamic_cast<MonsterCard *>(newfield[in]);
-        card->setAtk(card->getAtk() + 200);
-        cout << "[World Vanquisher] Successfully gained " << card->getName() << " 200 atk" << endl;
-        writeLog("Opponent used [World Vanquisher] and increase " + card->getName() + " 200 atk! \n");
+        card->setAtk(card->getAtk() + 1000);
+        cout << "[World Vanquisher] Successfully gained " << card->getName() << " 1000 atk" << endl;
+        writeLog("Opponent used [World Vanquisher] and increase " + card->getName() + " 1000 atk! \n");
     }
     return true; // Indicate success
 }
@@ -212,13 +212,14 @@ bool DragonUnited::ActivateEffect(Player &self, Player &opponent) {// hiện t�
             }
         }while(in < 0 || in > newfield.size() || newfield[in]->getType() != "Monster");
 
-        cout << "You have " << count << " face up monster cards. Your " << newfield[in]->getName() << " gained " << 100 * count << " atk!" << endl;
+        cout << "You have " << count << " face up monster cards. Your " << newfield[in]->getName() << " gained " << 500 * count << " atk and def!" << endl;
 
         MonsterCard *card3 = dynamic_cast<MonsterCard *>(newfield[in]);
 
-        card3->setAtk(card3->getAtk() + (100 * count));
+        card3->setAtk(card3->getAtk() + (500 * count));
+        card3->setDef(card3->getDef() + (500 * count));
 
-        writeLog("Opponent used [Dragon United] to gain " + to_string(100*count) + " atk for " + newfield[in]->getName() + ". Stay focus! \n");
+        writeLog("Opponent used [Dragon United] to gain " + to_string(100*count) + " atk and def for " + newfield[in]->getName() + ". Stay focus! \n");
     }
        
     return true; // Indicate success
@@ -1364,12 +1365,175 @@ bool ApprenticeHelper::ActivateEffect(Player& self, Player& opponent) {
     return true;
 }
 
+bool WishesforEyesofBlue::ActivateEffect(Player& self, Player& opponent) {
+    
+    vector<Card*> hand = self.getHand();
+    vector<Card*> deck = self.getDeck();
+    vector<Card*> field = self.getField();
+
+    vector<int> revealableIndexes;
+    for (int i = 0; i < hand.size(); ++i) {
+        if (hand[i]->getDescription().find("Blue Eyes") != string::npos) {
+            revealableIndexes.push_back(i);
+        }
+    }
+
+    if (revealableIndexes.empty()) {
+        cout << "[Wishes for Eyes of Blue] Activation failed: You must reveal a card in your hand that mentions 'Blue Eyes'." << endl;
+        return false;
+    }
+
+    cout << "[Wishes for Eyes of Blue] Reveal a card from your hand that mentions 'Blue Eyes':" << endl;
+    for (int i = 0; i < revealableIndexes.size(); ++i) {
+        int idx = revealableIndexes[i];
+        cout << "[" << i << "] " << hand[idx]->getName() << endl;
+    }
+
+    int revealChoice = -1;
+    do {
+        cout << "Choose index to reveal: ";
+        cin >> revealChoice;
+    } while (revealChoice < 0 || revealChoice >= revealableIndexes.size());
+
+    int handIndex = revealableIndexes[revealChoice];
+    Card* revealedCard = hand[handIndex];
+    cout << "[Wishes for Eyes of Blue] You revealed: " << revealedCard->getName() << endl;
+
+    // Không đưa lại vào deck nữa — giữ nguyên trên tay
+
+    // Tìm quái vật có mention "Dark Magician" trong deck
+    vector<int> validIndexes;
+    for (int i = 0; i < deck.size(); ++i) {
+        if (deck[i]->getType() == "Monster" &&
+            deck[i]->getDescription().find("Blue Eyes") != string::npos) {
+            validIndexes.push_back(i);
+        }
+    }
+
+    if (validIndexes.empty()) {
+        cout << "[Wishes for Eyes of Blue] No valid monsters in your deck to summon." << endl;
+        return false;
+    }
+
+    cout << "[Wishes for Eyes of Blue] Choose up to 2 monsters to summon:" << endl;
+    for (int i = 0; i < validIndexes.size(); ++i) {
+        cout << "[" << i << "] " << deck[validIndexes[i]]->getName() << endl;
+    }
+
+    vector<Card*> summoned;
+    int choice1 = -1, choice2 = -1;
+
+    cout << "First index: ";
+    cin >> choice1;
+    if (choice1 < 0 || choice1 >= validIndexes.size()) return false;
+
+    int index1 = validIndexes[choice1];
+    MonsterCard* m1 = dynamic_cast<MonsterCard*>(deck[index1]);
+    m1->setDefenseMode(true);
+    m1->setFacedown(false);
+    m1->setJustSummoned(true);
+    summoned.push_back(m1);
+    deck.erase(deck.begin() + index1);
+
+    if (validIndexes.size() >= 2) {
+        cout << "Second index (optional, -1 to skip): ";
+        cin >> choice2;
+        if (choice2 != -1 && choice2 >= 0 && choice2 < validIndexes.size() && choice2 != choice1) {
+            int index2 = validIndexes[choice2];
+            // Nếu index2 đứng sau index1 đã bị xóa thì giảm 1
+            if (index2 > index1) index2--;
+
+            MonsterCard* m2 = dynamic_cast<MonsterCard*>(deck[index2]);
+            m2->setDefenseMode(true);
+            m2->setFacedown(false);
+            m2->setJustSummoned(true);
+            summoned.push_back(m2);
+            deck.erase(deck.begin() + index2);
+        }
+    }
+
+    for (Card* c : summoned) {
+        field.push_back(c);
+    }
+
+    self.setDeck(deck);
+    self.setField(field);
+    self.setHand(hand); // hand vẫn giữ nguyên
+
+    if (!summoned.empty()) {
+        cout << "[Wishes for Eyes of Blue] You summoned: ";
+        writeLog("Opponent used [Wishes for Eyes of Blue] to summon ");
+        for (int i = 0; i < summoned.size(); ++i) {
+            cout << summoned[i]->getName();
+            writeLog(summoned[i]->getName());
+            if (i != summoned.size() - 1) {
+                cout << " and " << endl;
+                writeLog(" and ");
+            };
+        }
+        cout << "." << endl;
+    }
+}
+
+
+bool Overdose::ActivateEffect(Player& self, Player& opponent) {
+    vector<Card*> newfield = self.getField();
+    int countBE = 0;
+        for (auto card1 : newfield) {
+        if (card1->getType() == "Monster" && card1->getDescription().find("Blue Eyes") != string::npos) {
+            countBE++;
+        }
+    }
+    if(countBE == 0){
+        cout << "[Overdose] Activation Failed : You do not control any Blue Eyes Monster!" << endl;
+        return false;
+    }
+    if(countBE > 0){
+        int minushp;
+        int in;
+        int newatk;
+        int hp = self.getHp();
+        do{
+            cout << "[Overdose] Choose the monster you want to buff : " << endl;
+            cin >> in;
+            if(in<0 || in >= newfield.size()){
+                cout << "Invalid Index! Choose again" << endl;
+                continue;
+            }
+            if(newfield[in]->getType() != "Monster" || newfield[in]->getDescription().find("Blue Eyes") == string::npos){
+                cout << "Invalid Index! You have to choose a monster card which has mentioned 'Blue Eyes'" << endl;
+            }
+        }while(newfield[in]->getType() != "Monster" || newfield[in]->getDescription().find("Blue Eyes") == string::npos);
+        do{
+            cout << "[Overdose] Choose the amount of Hp you want to exchange : " << endl;
+            cin >> minushp;
+            if(minushp < 1 || minushp > (hp / 2)){
+                cout << "Invalid amount! You can not exchange more than half of your current Hp ( " << hp << " ) or less than 1 hp " << endl;
+            }
+        }while(minushp < 1 || minushp > (hp / 2));
+        MonsterCard* card2 = dynamic_cast<MonsterCard*>(newfield[in]);
+        newatk = card2->getAtk() + minushp;
+        cout << "[Overdose] Succesfully exchanged " << minushp << " Hp for the same amount of atk" << endl;
+        cout << "[Overdose] The monster gained the effect was : " << newfield[in]->getName() << endl;
+        writeLog("Opponent used [Overdose] to sacrifice " + to_string(minushp) + " for a " + newfield[in]->getName() + " with " + to_string(newatk) + " atk" );
+        card2->setAtk(newatk);
+        card2->setFacedown(false);
+    }
+    return true;
+}
+
+
+
+
+
+
+
+
 bool ChaosMagic::ActivateEffect(Player& self, Player& opponent) {
     vector<Card*> newfield = self.getField();
     vector<Card*> newdeck = self.getDeck();
     bool hasDMOC = false;
     bool hasBLS = false;
-
     vector<int> tributeIndexes;
     for (int i = 0; i < newfield.size(); ++i) {
         if (newfield[i]->getType() == "Monster" &&

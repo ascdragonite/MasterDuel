@@ -107,17 +107,15 @@ class ApprenticeHelper : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
 
-class ChaosMagic : public Spell{
+class WishesforEyesofBlue : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
 
-class TheWorldDestroyer : public Spell{
+class Overdose : public Spell{
   bool ActivateEffect(Player& self, Player& opponent) override;
 };
 
-class TheTruePowerOfChaosDual : public Spell{
-  bool ActivateEffect(Player& self, Player& opponent) override;
-};
+
 
 //Trap Card
 class MirrorForce : public Spell{

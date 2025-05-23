@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 [Fri May 23 00:46:22 2025] Opponent activated [The Ancient Knowledge], added The World Destroyer to their hand, then shuffled the deck.
 [Fri May 23 00:46:31 2025] Opponent summoned a monster in attack position.
+=======
+[Fri May 23 00:53:02 2025] Opponent used [Dragon United] to gain 300 atk and def for Camellia. Stay focus! 
+
+>>>>>>> 0ce3b8e741c536f9c0369183503e796e9ffe7071
