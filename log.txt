@@ -1,8 +1,2 @@
-[Sat May 24 10:37:13 2025] Opponent used [Dark Magic Veil] to Special Summon Dark Magician in defense position. Be careful! 
-
-[Sat May 24 10:37:22 2025] Opponent summoned a monster in attack position.
-[Sat May 24 10:37:28 2025] Opponent used [The Power of Friendship] and gained 4500 atk in one single attack. Focus on defense! 
-
-[Sat May 24 10:37:28 2025] You do not have any monster card on field. [The Power of Friendship] attacked directly to your Hp and cost you 4500 Hp 
- You have 0 Hp left 
-
+[Sat May 24 16:07:32 2025] Opponent flip summon their monster: Dark Magician
+[Sat May 24 16:07:51 2025] Opponent summoned a monster in attack position.

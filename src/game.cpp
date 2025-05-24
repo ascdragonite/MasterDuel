@@ -393,11 +393,6 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
         return;
     }
 
-    if (atkCard->isJustSummoned() && self.getHasBattledThisTurn()) {
-        cout << atkCard->getName() << " was summoned after a battle already happened this turn. It cannot attack.\n";
-        return;
-    }
-
     if (self.hasAttacked(index)) {
         cout << "This monster already attacked this turn.\n";
         return;
@@ -438,7 +433,6 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
 
         if (choice == 'y' || choice == 'Y') {
             self.setAttacked(index, true);
-            self.setHasBattledThisTurn(true);
 
             json j = readFromFile(); //write to json
             string turn = j.at("turn");
@@ -506,7 +500,6 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
     }
 
     // Ghi lại trap
-    self.setHasBattledThisTurn(true);
     self.setAttacked(index, true);
     json j = readFromFile();
     j[string("Player") + to_string(self.getIndex())] = self;

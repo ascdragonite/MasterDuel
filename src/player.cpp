@@ -53,7 +53,6 @@ Player :: Player(int i){
     index = i;
     hp = 4000;
     skipBattlePhaseCount = 0;
-    hasBattledThisTurn = false;
     canUsePowerOfFriendship = false; 
 }
 
@@ -87,13 +86,9 @@ void Player::Summon(int handIndex) {
         MonsterCard* monster = dynamic_cast<MonsterCard*>(card);
 
         if (monster) {
-            // Ngăn switch tư thế trong lượt được triệu hồi
-            // Nếu đã battle trước khi triệu hồi → không được phép attack
-            if (getHasBattledThisTurn()) {
-                monster->setJustSummoned(true);
-            } else {
-                monster->setJustSummoned(false); // được phép attack
-            }
+
+            monster->setJustSummoned(true);
+            
         }
 
         card->PlayCard(field); // thêm vào sân (và hỏi attack/defense mode)
@@ -105,27 +100,10 @@ void Player::Summon(int handIndex) {
 
 void Player::resetAttackFlags() {
     attackedThisTurn = vector<bool>(5, false);
-    hasBattledThisTurn = false;
-
-    // Reset quyền đổi vị trí cho quái vật mỗi lượt
-    for (Card* card : field) {
-        MonsterCard* m = dynamic_cast<MonsterCard*>(card);
-        if (m) {
-            m->setCanSwitchPosition(true); 
-        }
-    }
 }
 
 bool Player::hasAttacked(int index) const {
     return index >= 0 && index < attackedThisTurn.size() && attackedThisTurn[index];
-}
-
-bool Player::getHasBattledThisTurn() const {
-    return hasBattledThisTurn;
-}
-
-void Player::setHasBattledThisTurn(bool value) {
-    hasBattledThisTurn = value;
 }
 
 void Player::setAttacked(int index, bool value) {

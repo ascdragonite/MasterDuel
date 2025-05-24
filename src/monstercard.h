@@ -38,9 +38,6 @@ class MonsterCard : public Card{
         bool isJustSummoned() const;
         void setJustSummoned(bool value);     
         void clearSummonFlag();
-
-        void setCanSwitchPosition(bool val);
-        bool getCanSwitchPosition() const; 
          
         void setAtk(int atk);
         void setDef(int def);
