@@ -10,7 +10,6 @@ using json = nlohmann::json;
 class TrapCard : public Card{
     private:
     shared_ptr<Spell> trap;
-    bool isSetTrap; // Use shared_ptr for better memory management
     public:
 
     TrapCard(string name, string description);
@@ -22,7 +21,6 @@ class TrapCard : public Card{
     void showInfo(bool hidden) const override;
 
 
-    void setIsSetTrap(bool val);
 
     void PlayCard(vector<Card*>& field) override;
 

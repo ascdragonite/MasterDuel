@@ -68,15 +68,6 @@ MonsterCard& MonsterCard::operator+=(MonsterCard& other) {
 
     int attackIndex = find(atkField.begin(), atkField.end(), this) - atkField.begin();
     int defendIndex = find(defField.begin(), defField.end(), &other) - defField.begin();
-
-    if (defField.empty()) {
-        cout << this->getName() << " attacks directly!" << endl;
-        target->takeDamage(this->getAtk());
-        cout << "Opponent HP: " << target->getHp() << endl;
-        writeLog(this->getName() + " attacks directly and dealt " + to_string(this->getAtk()) + " damage.");
-        return *this;
-    }
-
     if (other.isInDefense()) {
         if (other.isFacedown()) {
             other.reveal();
