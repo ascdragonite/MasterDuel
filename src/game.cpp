@@ -140,6 +140,9 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
     bool hasSummoned = false;
 
     self.resetAttackFlags();
+
+    self.setCanUseReEnd(true);
+    
     if (!isFirstTurn) {
         self.setCanUsePowerOfFriendship(true);
         self.drawCard();
@@ -362,6 +365,22 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
     }
 }
 
+void TrapResult(Card* trapcard){
+    if(trapcard->getName() == "Tsunagite"){
+        cout << "[Tsunagite] Activate Effect : End your battle phase! You can not attack anymore." << endl;
+    }
+    else if(trapcard->getName() == "Mirror Force") {
+        cout << "[Mirror Force Activate Effect : All your monsters in attack position are destroyed!]" << endl;
+    }
+    else if(trapcard->getName() == "Trrricksters!!"){
+        cout << "[Trrricksters!!] Activate Effect : Your attack now reflect back to you! " << endl;
+    }
+    else{
+        cout <<"???" << endl;
+    }
+}
+
+
 void GameState::battlePhase(Player& self, Player& opponent, int index) {
     vector<Card*> atkField = self.getField();
 
@@ -443,10 +462,7 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
             auto temp = trapCardIndexes;
             while (temp == trapCardIndexes && !temp.empty()) {
                 //cout << "index unchanged" << endl;
-                for (int index : trapCardIndexes)
-                {
-                    cout << index << endl;
-                }
+
                 json state = readFromFile();
                 from_json(state["Player" + to_string(opponent.getIndex())], opponent);
                 from_json(state["Player" + to_string(self.getIndex())], self);
@@ -464,6 +480,7 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
 
             } else if (trapCardIndexes.size() == 2 && trapCardIndexes[0] == -1) {
                 cout << "Trap Card " << defField[trapCardIndexes[1]]->getName() << " activated!" << endl;
+                TrapResult(defField[trapCardIndexes[1]]);
                 opponent.canTrap.clear();
             }
             return;
@@ -523,6 +540,7 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
         opponent.canTrap.clear();
     } else if (trapCardIndexes.size() == 2 && trapCardIndexes[0] == -1) {
         cout << "Trap Card " << defField[trapCardIndexes[1]]->getName() << " activated!" << endl;
+        TrapResult(defField[trapCardIndexes[1]]);
         opponent.canTrap.clear();
     }
     this_thread::sleep_for(chrono::milliseconds(1000));

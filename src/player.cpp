@@ -261,6 +261,14 @@ void Player::setCanUsePowerOfFriendship(bool value) {
     canUsePowerOfFriendship = value;
 }
 
+bool Player::getCanUseReEnd() const {
+    return canUseReEnd;
+}
+
+void Player::setCanUseReEnd(bool value) {
+    canUseReEnd = value;
+}
+
 
 void Player :: loadDeckDarkMagician(){
     cout << "Loading deck for player " << index << endl;
