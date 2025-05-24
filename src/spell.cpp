@@ -400,8 +400,9 @@ bool DarkBurningMagic::ActivateEffect(Player& self, Player& opponent) {
         
         writeLog("Opponent used [Dark Burning Magic] to destroy all of your monster cards at the cost of losing 1 battle phases. Attack them! \n");
         
-        self.setSkipBattlePhaseCount(1);
         opponent.setField(newfieldopp);
+
+        self.setSkipBattlePhaseCount(1);
     }
 
 return true; // Indicate success
@@ -866,7 +867,7 @@ bool CruelPact::ActivateEffect(Player& self, Player& opponent) {
     self.setDeck(newdeck);
     self.setField(newfield);
     self.setHand(newhand);
-    cout << "[Cruel Pact] Successfully sacrifice " << namecard << " and 500 Hp to add a Dark Magician with 600 bonus atk from your deck to hand!" << endl;
+    cout << "[Cruel Pact] Successfully sacrifice " << namecard << " and 500 Hp to add a Dark Magician with 1000 bonus atk from your deck to hand!" << endl;
     writeLog("Opponent signed [Cruel Pact] and sacrificed "  + namecard + " and 500 Hp to add a Dark Magician with 1000 bonus atk from their deck to hand! They really go that far? \n");
     return true;
 

@@ -324,10 +324,10 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
                             cout << "You have surrendered. Opponent wins by default.\n";
                             if (self.getIndex() == 1) {
                                 cout << "\nPlayer 2 wins!\n";
-                                writeLog("Player 2 wins and you lost!");
+                                writeLog("Player 2 wins!");
                             } else {
                                 cout << "\nPlayer 1 wins!\n";
-                                writeLog("Player 1 wins and you lost!");
+                                writeLog("Player 1 wins!");
                             }
                             cout << "Game Over.\n";
                             exit(0);
@@ -386,7 +386,6 @@ void TrapResult(Card* trapcard){
 void GameState::battlePhase(Player& self, Player& opponent, int index) {
     vector<Card*> atkField = self.getField();
 
-    // 🔒 Check: sân mình không có quái vật thì return
     bool hasAttacker = false;
     for (Card* c : atkField) {
         if (dynamic_cast<MonsterCard*>(c) != nullptr) {
@@ -421,7 +420,6 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
 
     vector<Card*> defField = opponent.getField();
 
-    // ✅ Kiểm tra sân đối thủ có quái vật không
     bool hasMonster = false;
     for (Card* c : defField) {
         if (c->getType() == "Monster") {

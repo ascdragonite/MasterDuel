@@ -51,7 +51,7 @@ int Player::getSkipBattlePhaseCount() const
 
 Player :: Player(int i){
     index = i;
-    hp = 4000;
+    hp = 8000;
     skipBattlePhaseCount = 0;
     canUsePowerOfFriendship = false; 
 }
@@ -292,12 +292,13 @@ void Player :: loadDeckDarkMagician(){
     deck.push_back(new SpellCard("Thousand Knifes", "If you control faceup Dark Magician: Target 1 monster your opponent controls; destroy that target.."));
     deck.push_back(new SpellCard("Dark Magic", " If you controll faceup a Dark Magician monster, destroy all monster your opponent controll and skip your battle phase."));
     deck.push_back(new SpellCard("Bond Between The Teacher and Student", "If you controll a Dark Magician, special summon from your deck a Dark Magician Girl in defend position"));
-    deck.push_back(new SpellCard("Dark Burning Magic", "If you control a face up Dark Magician, Dark magician girl you can destroy all of your oponent card but skip your battle phase"));
+    deck.push_back(new SpellCard("Bond Between The Teacher and Student", "If you controll a Dark Magician, special summon from your deck a Dark Magician Girl in defend position"));
+    deck.push_back(new SpellCard("Dark Burning Magic", "If you control a face up Dark Magician, Dark magician girl you can destroy all of your oponent cards but your battle phase this turn."));
     deck.push_back(new SpellCard("The Power of Friendship", "Combine all of your faceup monster atk to 1 single attack in this turn, you can not use this card on your first turn and if you have battle this turn you cannot activate this card and if you activate this card, you cannot battle for the rest of this turn."));
-    deck.push_back(new TrapCard("Mirror Force", "When an opponent's monster declares an attack: Destroy all your opponent's Attack Position monsters."));
+    deck.push_back(new TrapCard("Mirror Force", "When an opponent's monster declares an attack: Destroy all your opponent's Attack Position monsters your opponent cannot attack you this turn."));
     deck.push_back(new TrapCard("Tsunagite", "When an opponent's monster declares an attack: Negate the attack and end the battle phase."));
-    deck.push_back(new TrapCard("Trrricksters!!", "When an opponent's monster declares an attack: Target the attacking monster, and if you do, inflict damage to your opponent equal to its atk."));
-    deck.push_back(new TrapCard("Trrricksters!!", "When an opponent's monster declares an attack: Target the attacking monster, and if you do, inflict damage to your opponent equal to its atk."));
+    deck.push_back(new TrapCard("Trrricksters!!", "When an opponent's monster declares an attack: Target the attacking monster, and if you do, inflict damage to your opponent equal to its atk your opponent cannot attack you this turn."));
+    deck.push_back(new TrapCard("Trrricksters!!", "When an opponent's monster declares an attack: Target the attacking monster, and if you do, inflict damage to your opponent equal to its atk and your opponent cannot attack you this turn."));
 }
 
 void Player :: loadDeckBlueEyes(){
