@@ -324,8 +324,10 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
                             cout << "You have surrendered. Opponent wins by default.\n";
                             if (self.getIndex() == 1) {
                                 cout << "\nPlayer 2 wins!\n";
+                                writeLog("Player 2 wins and you lost!");
                             } else {
                                 cout << "\nPlayer 1 wins!\n";
+                                writeLog("Player 1 wins and you lost!");
                             }
                             cout << "Game Over.\n";
                             exit(0);

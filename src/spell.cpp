@@ -230,7 +230,7 @@ bool DragonUnited::ActivateEffect(Player &self, Player &opponent) {// hiện t�
         card3->setAtk(card3->getAtk() + (500 * count));
         card3->setDef(card3->getDef() + (500 * count));
 
-        writeLog("Opponent used [Dragon United] to gain " + to_string(100*count) + " atk and def for " + newfield[in]->getName() + ". Stay focus! \n");
+        writeLog("Opponent used [Dragon United] to gain " + to_string(500*count) + " atk and def for " + newfield[in]->getName() + ". Stay focus! \n");
     }
        
     return true; // Indicate success
@@ -489,38 +489,9 @@ bool BondBetweenTheTeacherandStudent::ActivateEffect(Player& self, Player& oppon
     cout << "[Bond Between The Teacher and Student] Special Summoned Dark Magician Girl in defense position!" << endl;
     writeLog("Opponent used [Bond Between The Teacher and Student] to Special Summon Dark Magician Girl in defense position. One more target!\n");
 
-    // Kiểm tra trong deck có Dark Burning Magic không
-    for (int i = 0; i < static_cast<int>(newdeck.size()); i++) {
-        if (newdeck[i]->getName() == "Dark Burning Magic") {
-            hasDBM = true;
-            indexDBM = i;
-            break;
-        }
-    }
-
-    if (hasDBM) {
-        char choice;
-        cout << "[Bond Between The Teacher and Student] Do you want to add [Dark Burning Magic] from your deck to your hand? (y/n): ";
-        cin >> choice;
-
-        if (choice == 'y' || choice == 'Y') {
-            Card* dbm = newdeck[indexDBM];
-            newhand.push_back(dbm);
-            newdeck.erase(newdeck.begin() + indexDBM);
-            cout << "[Bond Between The Teacher and Student] Dark Burning Magic added to your hand!" << endl;
-            writeLog("Opponent chose to add [Dark Burning Magic] to their hand using [Bond Between The Teacher and Student].\n");
-        } else {
-            cout << "[Bond Between The Teacher and Student] You chose not to add Dark Burning Magic." << endl;
-        }
-    } else {
-        cout << "[Bond Between The Teacher and Student] You do not have Dark Burning Magic in your deck." << endl;
-    }
-
-    // Cập nhật lại game state
     self.setDeck(newdeck);
     self.setField(newfield);
     self.setHand(newhand);
-    self.setSkipBattlePhaseCount(0);
 
     return true;
 }
@@ -542,6 +513,13 @@ bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) { //sm
     for(auto card1 : newfield1){
         if(card1->getType() == "Monster"){
             countm++;
+        }
+    }
+    for(int i = 0; i< newfield1.size(); i++){
+        if(self.hasAttacked(i) == true){
+            cout << "[The Power of Friendship] Activation Failed : You can not use this card when you already attack!" << endl;
+            return false;
+            break;
         }
     }
     if(self.getSkipBattlePhaseCount() > 0){
@@ -861,7 +839,7 @@ bool CruelPact::ActivateEffect(Player& self, Player& opponent) {
         if(newdeck[i]->getName() == "Dark Magician"){
             MonsterCard *DM = dynamic_cast<MonsterCard *>(newdeck[i]);
             newdeck.erase(newdeck.begin()+i);
-            DM->setAtk(DM->getAtk() + 600);
+            DM->setAtk(DM->getAtk() + 1000);
             newhand.push_back(DM);
             hasDM = true;  
             break;
@@ -889,7 +867,7 @@ bool CruelPact::ActivateEffect(Player& self, Player& opponent) {
     self.setField(newfield);
     self.setHand(newhand);
     cout << "[Cruel Pact] Successfully sacrifice " << namecard << " and 500 Hp to add a Dark Magician with 600 bonus atk from your deck to hand!" << endl;
-    writeLog("Opponent signed [Cruel Pact] and sacrificed "  + namecard + " and 500 Hp to add a Dark Magician with 600 bonus atk from their deck to hand! They really go that far? \n");
+    writeLog("Opponent signed [Cruel Pact] and sacrificed "  + namecard + " and 500 Hp to add a Dark Magician with 1000 bonus atk from their deck to hand! They really go that far? \n");
     return true;
 
 

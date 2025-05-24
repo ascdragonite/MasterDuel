@@ -1,5 +1,1 @@
-<<<<<<< Updated upstream
-[Sat May 24 16:07:32 2025] Opponent flip summon their monster: Dark Magician
-[Sat May 24 16:07:51 2025] Opponent summoned a monster in attack position.
-=======
->>>>>>> Stashed changes
+[Sat May 24 23:34:43 2025] Player 2 wins and you lost!
