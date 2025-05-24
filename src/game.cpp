@@ -425,7 +425,7 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
 
 
     if (!hasMonster) {
-        // ✅ Không có quái vật → hỏi có muốn tấn công trực tiếp không
+
         cout << "Opponent has no monsters.\n";
         char choice;
         do {
@@ -478,7 +478,6 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
         return;
     }
 
-    // 🔁 Nhập chỉ số quái vật đối thủ để tấn công
     int defendIndex = -1;
     while (true) {
         cout << "Enter the index of the opponent's card to attack: ";

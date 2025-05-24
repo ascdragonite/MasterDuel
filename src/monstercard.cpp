@@ -63,7 +63,7 @@ MonsterCard& MonsterCard::operator+=(MonsterCard& other) {
     Player* self = OwnerFromIndex(this->getOwner());
     Player* target = OwnerFromIndex(other.getOwner());
 
-    auto atkField = self->getField();    // bản sao, không dùng const auto&
+    auto atkField = self->getField();    
     auto defField = target->getField();
 
     int attackIndex = find(atkField.begin(), atkField.end(), this) - atkField.begin();
