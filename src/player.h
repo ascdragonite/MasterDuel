@@ -17,8 +17,8 @@ private:
     vector<Card *> field;
     int hp;
     int skipBattlePhaseCount;
-    bool hasBattledThisTurn;
     bool canUsePowerOfFriendship;
+    bool canUseReEnd;
 
 public:
     vector<int> canTrap;
@@ -33,14 +33,14 @@ public:
     bool hasAttacked(int fieldIndex) const;
     void setAttacked(int index, bool value);
 
-    bool getHasBattledThisTurn() const;
-    void setHasBattledThisTurn(bool value);
-
     void revealMonster(int fieldIndex);
     void switchPosition(int fieldIndex);
 
     bool getCanUsePowerOfFriendship() const;
     void setCanUsePowerOfFriendship(bool value);
+
+    bool getCanUseReEnd() const;
+    void setCanUseReEnd(bool value);
 
     void takeDamage(int amount);
     int getHp() const;

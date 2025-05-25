@@ -12,8 +12,6 @@ MonsterCard :: MonsterCard(string name, int atk, int def, string description, in
     this -> defenseMode = false;
     this -> owner = owner;
     this -> justSummoned = false;
-    this -> canSwitchPosition = true;
-
 }
 
 MonsterCard :: MonsterCard(string name, int atk, int def, string description, int owner, bool defenseMode, bool isSet) : Card(name, "Monster", description){
@@ -23,7 +21,6 @@ MonsterCard :: MonsterCard(string name, int atk, int def, string description, in
     this -> defenseMode = defenseMode;
     this -> owner = owner;
     this -> justSummoned = false;
-    this -> canSwitchPosition = true;
 }
 
 void MonsterCard::showInfo(bool hidden) const {
@@ -237,14 +234,6 @@ void MonsterCard::clearSummonFlag() {
 
 void MonsterCard::setJustSummoned(bool value) {
     justSummoned = value;
-}
-
-void MonsterCard::setCanSwitchPosition(bool val){
-    canSwitchPosition = val;
-}
-
-bool MonsterCard::getCanSwitchPosition() const{
-    return canSwitchPosition;
 }
 
 

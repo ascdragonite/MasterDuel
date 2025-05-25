@@ -131,15 +131,13 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
             mc->clearSummonFlag();
     }
 
-    cout << "\n[Start of Turn Status]\n";
-    cout << "Player 1 HP: " << player1->getHp()
-        << " | Deck: " << player1->getDeck().size() << endl;
-    cout << "Player 2 HP: " << player2->getHp()
-        << " | Deck: " << player2->getDeck().size() << endl;
 
     bool hasSummoned = false;
 
     self.resetAttackFlags();
+
+    self.setCanUseReEnd(true);
+    
     if (!isFirstTurn) {
         self.setCanUsePowerOfFriendship(true);
         self.drawCard();
@@ -181,6 +179,17 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
         cout << "\n";
 
         printFields(self, opponent);
+        
+        if (checkVictory(*player1, *player2)) {
+            if (player1->getHp() <= 0 || player1->getDeck().empty()) {
+                cout << (self.getIndex() == 2 ? "================= YOU WIN =================\n" : "================ YOU LOSE =================\n");
+            } else if (player2->getHp() <= 0 || player2->getDeck().empty()) {
+                cout << (self.getIndex() == 1 ? "================= YOU WIN =================\n" : "================ YOU LOSE =================\n");
+            } else {
+                cout << "================== DRAW ====================\n";
+            }
+            return;
+        }
 
         cout << "\n================ YOUR TURN ================\n";
         cout << "0: End Turn\n";
@@ -321,8 +330,10 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
                             cout << "You have surrendered. Opponent wins by default.\n";
                             if (self.getIndex() == 1) {
                                 cout << "\nPlayer 2 wins!\n";
+                                writeLog("Player 2 wins!");
                             } else {
                                 cout << "\nPlayer 1 wins!\n";
+                                writeLog("Player 1 wins!");
                             }
                             cout << "Game Over.\n";
                             exit(0);
@@ -342,30 +353,35 @@ void GameState::playerTurn(Player &self, Player &opponent, bool isFirstTurn) {
         }
 
 
-        if (checkVictory(*player1, *player2)) {
-            if (player1->getHp() <= 0 || player1->getDeck().empty()) {
-                cout << "\nPlayer 2 wins!\n";
-            } else if (player2->getHp() <= 0 || player2->getDeck().empty()) {
-                cout << "\nPlayer 1 wins!\n";
-            } else {
-                cout << "\nIt's a draw!\n";
-            }
-            cout << "Game Over.\n";
-            exit(0);
-        };
-
         j = readFromFile();
         j["Player1"] = json(*player1);
         j["Player2"] = json(*player2);
         writeToFile(j);
+
+
         this_thread::sleep_for(std::chrono::milliseconds(3000));
     }
 }
 
+void TrapResult(Card* trapcard){
+    if(trapcard->getName() == "Tsunagite"){
+        cout << "[Tsunagite] Activate Effect : End your battle phase! You can not attack anymore." << endl;
+    }
+    else if(trapcard->getName() == "Mirror Force") {
+        cout << "[Mirror Force Activate Effect : All your monsters in attack position are destroyed!]" << endl;
+    }
+    else if(trapcard->getName() == "Trrricksters!!"){
+        cout << "[Trrricksters!!] Activate Effect : Your attack now reflect back to you! " << endl;
+    }
+    else{
+        cout <<"???" << endl;
+    }
+}
+
+
 void GameState::battlePhase(Player& self, Player& opponent, int index) {
     vector<Card*> atkField = self.getField();
 
-    // 🔒 Check: sân mình không có quái vật thì return
     bool hasAttacker = false;
     for (Card* c : atkField) {
         if (dynamic_cast<MonsterCard*>(c) != nullptr) {
@@ -393,11 +409,6 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
         return;
     }
 
-    if (atkCard->isJustSummoned() && self.getHasBattledThisTurn()) {
-        cout << atkCard->getName() << " was summoned after a battle already happened this turn. It cannot attack.\n";
-        return;
-    }
-
     if (self.hasAttacked(index)) {
         cout << "This monster already attacked this turn.\n";
         return;
@@ -405,7 +416,6 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
 
     vector<Card*> defField = opponent.getField();
 
-    // ✅ Kiểm tra sân đối thủ có quái vật không
     bool hasMonster = false;
     for (Card* c : defField) {
         if (c->getType() == "Monster") {
@@ -438,7 +448,6 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
 
         if (choice == 'y' || choice == 'Y') {
             self.setAttacked(index, true);
-            self.setHasBattledThisTurn(true);
 
             json j = readFromFile(); //write to json
             string turn = j.at("turn");
@@ -449,10 +458,7 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
             auto temp = trapCardIndexes;
             while (temp == trapCardIndexes && !temp.empty()) {
                 //cout << "index unchanged" << endl;
-                for (int index : trapCardIndexes)
-                {
-                    cout << index << endl;
-                }
+
                 json state = readFromFile();
                 from_json(state["Player" + to_string(opponent.getIndex())], opponent);
                 from_json(state["Player" + to_string(self.getIndex())], self);
@@ -470,6 +476,7 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
 
             } else if (trapCardIndexes.size() == 2 && trapCardIndexes[0] == -1) {
                 cout << "Trap Card " << defField[trapCardIndexes[1]]->getName() << " activated!" << endl;
+                TrapResult(defField[trapCardIndexes[1]]);
                 opponent.canTrap.clear();
             }
             return;
@@ -506,7 +513,6 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
     }
 
     // Ghi lại trap
-    self.setHasBattledThisTurn(true);
     self.setAttacked(index, true);
     json j = readFromFile();
     j[string("Player") + to_string(self.getIndex())] = self;
@@ -530,6 +536,7 @@ void GameState::battlePhase(Player& self, Player& opponent, int index) {
         opponent.canTrap.clear();
     } else if (trapCardIndexes.size() == 2 && trapCardIndexes[0] == -1) {
         cout << "Trap Card " << defField[trapCardIndexes[1]]->getName() << " activated!" << endl;
+        TrapResult(defField[trapCardIndexes[1]]);
         opponent.canTrap.clear();
     }
     this_thread::sleep_for(chrono::milliseconds(1000));

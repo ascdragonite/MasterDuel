@@ -35,13 +35,17 @@ bool OshamaScramble::ActivateEffect(Player &self,Player &opponent) { // tráo b�
 bool ReEndOfADream::ActivateEffect(Player &self, Player &opponent) { // thêm lượt nếu hp<1000
     if (self.getHp() > 1000)
     {
-        cout << "[Re:End of a Dream] HP is too high"; //Disabled for testing purposes, uncomment line below to activate
+        cout << "[Re:End of a Dream] Activation Failed : HP is too high"; //Disabled for testing purposes, uncomment line below to activate
+        return false;
+    }
+    if (self.getCanUseReEnd() == false){
+        cout << "[Re:End of a Dream] Activation Failed : You can not use this spell after using Rage of the Blue Eyes!" << endl;
         return false;
     }
     json j = readFromFile();
     if (j["ExtraTurn"])
     {
-        cout << "[Re:End of a Dream] Already used Re:End of a Dream";
+        cout << "[Re:End of a Dream] Activation Failed : Already used Re:End of a Dream";
         return false;
     }
     j["ExtraTurn"] = true;
@@ -54,6 +58,8 @@ bool ReEndOfADream::ActivateEffect(Player &self, Player &opponent) { // thêm l�
     out << j.dump(4) << std::endl; // Pretty print with indent
     out.close();
     // logic card
+    cout << "[Re:End of a Dream] Successfully gave you another turn. Attack them! " << endl;
+    writeLog("Opponent used [Re:End of a Dream] to create an extra turn. Stay alert!");
 
     return true; // Indicate success
 }
@@ -79,8 +85,12 @@ bool WorldVanquisher::ActivateEffect(Player &self, Player &opponent) { // buff 2
         do {
             cout << "[World Vanquisher] : Choose the card you want to buff" << endl;
             cin >> in;
+            if(in<0 || in >= newfield.size()){
+                cout << "Invalid Index, please choose again!" << endl;
+                continue;
+            }
             if (newfield[in]->getType() != "Monster") {
-                cout << "[World Vanquisher] Activation Failed : You need to choose a monster card" << endl;
+                cout << "You need to choose a monster card" << endl;
             }
         } while (newfield[in]->getType() != "Monster");
         MonsterCard *card = dynamic_cast<MonsterCard *>(newfield[in]);
@@ -168,6 +178,7 @@ bool RageofTheBlueEyes::ActivateEffect(Player& self, Player& opponent) {
         }
     }
     self.setHp(self.getHp() * 1 / 3);
+    self.setCanUseReEnd(false);
     cout << "[Rage of The Blue Eyes] Successfully sacrifice 2/3 Hp to gain your Blue-Eyes White Dragon 1 more turn. Attack the enemy!" << endl;
     writeLog("Opponent used [Rage of The Blue Eyes] to sacrifice 2/3 Hp for Blue-Eyes White Dragon's 1 more extra turn. Becareful! \n");
 }
@@ -219,7 +230,7 @@ bool DragonUnited::ActivateEffect(Player &self, Player &opponent) {// hiện t�
         card3->setAtk(card3->getAtk() + (500 * count));
         card3->setDef(card3->getDef() + (500 * count));
 
-        writeLog("Opponent used [Dragon United] to gain " + to_string(100*count) + " atk and def for " + newfield[in]->getName() + ". Stay focus! \n");
+        writeLog("Opponent used [Dragon United] to gain " + to_string(500*count) + " atk and def for " + newfield[in]->getName() + ". Stay focus! \n");
     }
        
     return true; // Indicate success
@@ -275,8 +286,15 @@ bool DisortedFate::ActivateEffect(Player &self,Player &opponent) { // look at fu
     int c2 = 0;
     cout << "List of card in your deck : " << endl;
     for(auto card : newdeck){
-        cout << "[" << c1 << "] " << card->getName() << " : " << card->getDescription() << endl;
-        c1++;
+        if(card->getType() != "Monster"){
+            cout << "[" << c2 << "] " << card->getName() << " : " << card->getDescription() << endl;
+            c2++;
+    }
+        else{
+            MonsterCard *card2 = dynamic_cast<MonsterCard *>(card);
+            cout << "[" << c2 << "] " << card->getName() << " |Atk :  " << card2->getAtk() << "| |Def : " << card2->getDef() << "|" << endl;
+            c2++;
+    }
     }
     int in;
         do {
@@ -295,12 +313,19 @@ bool DisortedFate::ActivateEffect(Player &self,Player &opponent) { // look at fu
 
     newdeckself.push_back(newdeck[in]);
 
-    cout << "[Disorted Fate] : Successfully move " << newdeck[in]->getName() << " to the top of your deck." << endl;
     cout << "List of card in your deck : " << endl;
-    for(auto card2 : newdeckself){
-        cout << c2 << ": " << card2->getName() << endl;
-        c2++;
+    for(auto card : newdeckself){
+        if(card->getType() != "Monster"){
+            cout << "[" << c1 << "] " << card->getName() << " : " << card->getDescription() << endl;
+            c1++;
     }
+        else{
+            MonsterCard *card1 = dynamic_cast<MonsterCard *>(card);
+            cout << "[" << c1 << "] " << card->getName() << " |Atk :  " << card1->getAtk() << "| |Def : " << card1->getDef() << "|" << endl;
+            c1++;
+    }
+    }
+    cout << "[Disorted Fate] : Successfully move " << newdeck[in]->getName() << " to the top of your deck." << endl;
     writeLog("Opponent used [Disorted Fate] to move " + newdeck[in]->getName() + " to the top of there deck. What are they trying to do? \n");
     self.setDeck(newdeckself);
 
@@ -375,8 +400,9 @@ bool DarkBurningMagic::ActivateEffect(Player& self, Player& opponent) {
         
         writeLog("Opponent used [Dark Burning Magic] to destroy all of your monster cards at the cost of losing 1 battle phases. Attack them! \n");
         
-        self.setSkipBattlePhaseCount(1);
         opponent.setField(newfieldopp);
+
+        self.setSkipBattlePhaseCount(1);
     }
 
 return true; // Indicate success
@@ -464,45 +490,15 @@ bool BondBetweenTheTeacherandStudent::ActivateEffect(Player& self, Player& oppon
     cout << "[Bond Between The Teacher and Student] Special Summoned Dark Magician Girl in defense position!" << endl;
     writeLog("Opponent used [Bond Between The Teacher and Student] to Special Summon Dark Magician Girl in defense position. One more target!\n");
 
-    // Kiểm tra trong deck có Dark Burning Magic không
-    for (int i = 0; i < static_cast<int>(newdeck.size()); i++) {
-        if (newdeck[i]->getName() == "Dark Burning Magic") {
-            hasDBM = true;
-            indexDBM = i;
-            break;
-        }
-    }
-
-    if (hasDBM) {
-        char choice;
-        cout << "[Bond Between The Teacher and Student] Do you want to add [Dark Burning Magic] from your deck to your hand? (y/n): ";
-        cin >> choice;
-
-        if (choice == 'y' || choice == 'Y') {
-            Card* dbm = newdeck[indexDBM];
-            newhand.push_back(dbm);
-            newdeck.erase(newdeck.begin() + indexDBM);
-            cout << "[Bond Between The Teacher and Student] Dark Burning Magic added to your hand!" << endl;
-            writeLog("Opponent chose to add [Dark Burning Magic] to their hand using [Bond Between The Teacher and Student].\n");
-        } else {
-            cout << "[Bond Between The Teacher and Student] You chose not to add Dark Burning Magic." << endl;
-        }
-    } else {
-        cout << "[Bond Between The Teacher and Student] You do not have Dark Burning Magic in your deck." << endl;
-    }
-
-    // Cập nhật lại game state
     self.setDeck(newdeck);
     self.setField(newfield);
     self.setHand(newhand);
-    self.setSkipBattlePhaseCount(0);
 
     return true;
 }
 
 
 bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) { //sm tình bạn, 1 hit là nằm
-    //đang dở writeLog, dài quá
     int countm = 0;
     int countmo = 0;
     int newcard = 0;
@@ -518,6 +514,13 @@ bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) { //sm
     for(auto card1 : newfield1){
         if(card1->getType() == "Monster"){
             countm++;
+        }
+    }
+    for(int i = 0; i< newfield1.size(); i++){
+        if(self.hasAttacked(i) == true){
+            cout << "[The Power of Friendship] Activation Failed : You can not use this card when you already attack!" << endl;
+            return false;
+            break;
         }
     }
     if(self.getSkipBattlePhaseCount() > 0){
@@ -770,28 +773,42 @@ bool ThousandKnifes::ActivateEffect(Player& self, Player& opponent) {
     int countm = 0;
     vector<Card*> newfield1 = self.getField();
     vector<Card*> newfield2 = opponent.getField();
-
+    int counto = 0;
     int in;
     for(auto card1 : newfield1){
         MonsterCard *card2 = dynamic_cast<MonsterCard *>(card1);
-        if(card2->getName() == "Dark Magician" && card2->isFacedown() == false ){
+        if(card2 && card2->getName() == "Dark Magician" && card2->isFacedown() == false ){
             countm++;
     }
+    }
+    for(auto card3 : newfield2){
+        if(card3->getType() == "Monster"){
+            counto++;
+        }
     }
     if(countm == 0){
         cout << "[Thousand Knifes] Activation failed: You do not control a face up Dark Magician" << endl;
         return false;
     }
-    if(countm > 0){
+    if(counto == 0){
+        cout << "[Thousand Knifes] Activation failed: Opponent do not have any monster card" << endl;
+        return false;
+    }
+    if(countm > 0 && counto > 0){
         do{
             cout << "[Thousand Knifes] Choose the card you want to destroy : " << endl;
             cin >> in;
 
             if (in < 0 || in >= newfield2.size()) {
-                cout << "[Thousand Knifes] Invalid index!" << endl; 
+                cout << "Invalid index! Choose again" << endl; 
+                continue;
             }
+            if(newfield2[in]->getType() != "Monster"){
+                cout << "You have to choose a monster card!" << endl;
+            }
+
    
-        }while (in < 0 || in >= newfield2.size());
+        }while (newfield2[in]->getType() != "Monster");
 
             cout << "[Thousand Knifes] Successfully destroy 1 card : " << newfield2[in]->getName() << endl;
             writeLog("Opponent used [Thousand Knifes] to detroy " + newfield2[in]->getName() + ". Don't give up! \n");
@@ -823,7 +840,7 @@ bool CruelPact::ActivateEffect(Player& self, Player& opponent) {
         if(newdeck[i]->getName() == "Dark Magician"){
             MonsterCard *DM = dynamic_cast<MonsterCard *>(newdeck[i]);
             newdeck.erase(newdeck.begin()+i);
-            DM->setAtk(DM->getAtk() + 600);
+            DM->setAtk(DM->getAtk() + 1000);
             newhand.push_back(DM);
             hasDM = true;  
             break;
@@ -850,8 +867,8 @@ bool CruelPact::ActivateEffect(Player& self, Player& opponent) {
     self.setDeck(newdeck);
     self.setField(newfield);
     self.setHand(newhand);
-    cout << "[Cruel Pact] Successfully sacrifice " << namecard << " and 500 Hp to add a Dark Magician with 600 bonus atk from your deck to hand!" << endl;
-    writeLog("Opponent signed [Cruel Pact] and sacrificed "  + namecard + " and 500 Hp to add a Dark Magician with 600 bonus atk from their deck to hand! They really go that far? \n");
+    cout << "[Cruel Pact] Successfully sacrifice " << namecard << " and 500 Hp to add a Dark Magician with 1000 bonus atk from your deck to hand!" << endl;
+    writeLog("Opponent signed [Cruel Pact] and sacrificed "  + namecard + " and 500 Hp to add a Dark Magician with 1000 bonus atk from their deck to hand! They really go that far? \n");
     return true;
 
 
@@ -2311,12 +2328,11 @@ bool MirrorForce::ActivateEffect(Player& self, Player& opponent) { //cần check
     vector<Card*> newfieldopp;
     bool candestroy = false;
 
-    writeLog("[Mirror Force] Activate Effect : Your ");
+
     for(auto card1 : newfield){
         MonsterCard *card2 = dynamic_cast<MonsterCard *>(card1);
         if(card2 != nullptr && card2->getType() == "Monster" && card2->isInDefense() == false){
-            cout << "[Mirror Force] Destroyed : " << card2->getName() << endl;
-            writeLog(card2->getName() + "\n");
+            writeLog("[Mirror Force] Destroyed : " + card2->getName());
             
             candestroy = true;
         }
@@ -2325,9 +2341,9 @@ bool MirrorForce::ActivateEffect(Player& self, Player& opponent) { //cần check
         }
     }
     if(candestroy == false){
-        cout << "[Mirror Force] Opponent do not have any monster in attack position" << endl;
+        writeLog("[Mirror Force] Opponent do not have any monster in attack position");
     }
-    writeLog(" has been destroyed! Be careful nextime. \n");
+
     opponent.setField(newfieldopp);
     return true; // Indicate success
 }
@@ -2335,8 +2351,8 @@ bool MirrorForce::ActivateEffect(Player& self, Player& opponent) { //cần check
 
 
 bool Tsunagite::ActivateEffect(Player& self, Player& opponent) {
-    cout << "[Tsunagite] End opponent battle phase!" << endl;
-    writeLog("[Tsunagite] Activate Effect : End your battle phase! You can not attack anymore. \n");
+    writeLog("[Tsunagite] End opponent battle phase!");
+
     opponent.setSkipBattlePhaseCount(1);
     return true; // Indicate success}
 }
@@ -2353,11 +2369,11 @@ bool Trrricksters :: ActivateEffect(Player& self, Player& opponent, int attacker
 
     vector<Card*> newfield = opponent.getField();
     MonsterCard *card = dynamic_cast<MonsterCard *>(newfield[attackerIndex]);
-    cout << "[Trrricksters!!] Targeting " << card->getName() << endl;
-    cout << "[Trrricksters!!] Counterfire " << card->getAtk() << " atk directly to opponent's Hp!" << endl;
+    writeLog( "[Trrricksters!!] Targeting " + card->getName());
+    writeLog( "[Trrricksters!!] Counterfire " + to_string(card->getAtk()) + " atk directly to opponent's Hp!" );
     opponent.setHp(opponent.getHp() - card->getAtk());
-    cout << "Opponent now have " << opponent.getHp() << " Hp" << endl;
-    writeLog("[Trrricksters!!] Activate Effect : Your " + card->getName() + " atk now attack your Hp directly! Your lose " + to_string(card->getAtk()) + " Hp\n You have " + to_string(opponent.getHp()) + " Hp left \n Maybe try to think next time?" );
+    writeLog("Opponent now have " + to_string(opponent.getHp()) + " Hp");
+   
     return true;// Indicate success
 }
 
