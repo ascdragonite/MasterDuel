@@ -291,8 +291,8 @@ void Player :: loadDeckDarkMagician(){
     deck.push_back(new SpellCard("Thousand Knifes", "If you control faceup Dark Magician: Target 1 monster your opponent controls; destroy that target.."));
     deck.push_back(new SpellCard("Thousand Knifes", "If you control faceup Dark Magician: Target 1 monster your opponent controls; destroy that target.."));
     deck.push_back(new SpellCard("Dark Magic", " If you controll faceup a Dark Magician monster, destroy all monster your opponent controll and skip your battle phase."));
-    deck.push_back(new SpellCard("Bond Between The Teacher and Student", "If you controll a Dark Magician, special summon from your deck a Dark Magician Girl in defend position"));
-    deck.push_back(new SpellCard("Bond Between The Teacher and Student", "If you controll a Dark Magician, special summon from your deck a Dark Magician Girl in defend position"));
+    deck.push_back(new SpellCard("Bond Between The Teacher and Student", "If you controll a faceup Dark Magician, special summon from your deck a Dark Magician Girl in defend position"));
+    deck.push_back(new SpellCard("Bond Between The Teacher and Student", "If you controll a faceup Dark Magician, special summon from your deck a Dark Magician Girl in defend position"));
     deck.push_back(new SpellCard("Dark Burning Magic", "If you control a face up Dark Magician, Dark magician girl you can destroy all of your oponent cards but your battle phase this turn."));
     deck.push_back(new SpellCard("The Power of Friendship", "Combine all of your faceup monster atk to 1 single attack in this turn, you can not use this card on your first turn and if you have battle this turn you cannot activate this card and if you activate this card, you cannot battle for the rest of this turn."));
     deck.push_back(new TrapCard("Mirror Force", "When an opponent's monster declares an attack: Destroy all your opponent's Attack Position monsters your opponent cannot attack you this turn."));
@@ -318,10 +318,10 @@ void Player :: loadDeckBlueEyes(){
     deck.push_back(new SpellCard("Oshama Scramble", "Shuffle your opponent's deck when this card is activated."));
     deck.push_back(new SpellCard("Flower Snow Drum n Bass", "Flip coin, winner gets draw 2 cards"));
     deck.push_back(new SpellCard("Flower Snow Drum n Bass", "Flip coin, winner gets draw 2 cards"));
-    deck.push_back(new SpellCard("World Vanquisher", "Buff a monster attack by 1000 when this card is activated."));
+    deck.push_back(new SpellCard("World Vanquisher", "Buff monster attack by 1000 when this card is activated."));
     deck.push_back(new SpellCard("Call of the Sky", "Tribute 2 monster on the field to search 1 BLue Eyes White Dragon and Majesty of The White Dragons from your deck to your hand."));
     deck.push_back(new SpellCard("Dragon United", "Buff a monster attack and defense by 500 for each faceup monster you control when this card is activated."));
-    deck.push_back(new SpellCard("Burst Stream of Destruction", "If you controll a Blue Eyes White Dragon destroy all card your opponent controll but skip your next 1 battle phase."));
+    deck.push_back(new SpellCard("Burst Stream of Destruction", "If you controll a faceup Blue Eyes White Dragon destroy all card your opponent controll but skip your next 1 battle phase."));
     deck.push_back(new SpellCard("Rage of The Blue Eyes", "Sacrifice 2/3 of your lifepoint, Blue Eyes White Dragon you control can now attack again in this turn.")); 
     deck.push_back(new SpellCard("Destr0yer",("Can destroy a monster card in defense mode")));
     deck.push_back(new SpellCard("Roar of The Blue-Eyed Dragons", "Special summon a Blue Eyes White Dragon in the deck in defend position."));

@@ -1,0 +1,5 @@
+[Sun May 25 20:49:14 2025] Opponent summoned a monster in attack position.
+[Sun May 25 20:49:24 2025] Opponent used [Majesty of the White Dragons] when having 1Blue-Eyes White Dragon. They destroyed : 
+ 
+[Sun May 25 20:49:24 2025] Tsunagite
+

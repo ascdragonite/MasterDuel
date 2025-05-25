@@ -1,108 +1,29 @@
 {
     "ExtraTurn": false,
     "Player1": {
-        "attackedThisTurn": [],
+        "attackedThisTurn": [
+            false,
+            true,
+            true,
+            false,
+            false
+        ],
         "canTrap": [],
         "deck": [
+            {
+                "description": "If you control faceup Dark Magician: Target 1 monster your opponent controls; destroy that target..",
+                "name": "Thousand Knifes",
+                "type": "Spell"
+            },
             {
                 "description": "Combine all of your faceup monster atk to 1 single attack in this turn, you can not use this card on your first turn and if you have battle this turn you cannot activate this card and if you activate this card, you cannot battle for the rest of this turn.",
                 "name": "The Power of Friendship",
                 "type": "Spell"
             },
             {
-                "atk": 2500,
-                "def": 2100,
-                "defenseMode": false,
-                "description": "Dark Magician the ultimate wizard in term of attack and defense.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Dark Magician",
-                "owner": 1,
-                "type": "Monster"
-            },
-            {
-                "description": "When an opponent's monster declares an attack: Negate the attack and end the battle phase.",
-                "name": "Tsunagite",
-                "type": "Trap"
-            },
-            {
-                "description": "When an opponent's monster declares an attack: Target the attacking monster, and if you do, inflict damage to your opponent equal to its atk your opponent cannot attack you this turn.",
-                "name": "Trrricksters!!",
-                "type": "Trap"
-            },
-            {
-                "description": "If you control faceup Dark Magician: Target 1 monster your opponent controls; destroy that target..",
-                "name": "Thousand Knifes",
-                "type": "Spell"
-            },
-            {
-                "description": "Buff a monster attack by 1000 when this card is activated.",
-                "name": "World Vanquisher",
-                "type": "Spell"
-            },
-            {
-                "description": "Special summon a Dark Magician in the deck in defend position.",
-                "name": "Dark Magic Veil",
-                "type": "Spell"
-            },
-            {
-                "description": "If you controll a Dark Magician, special summon from your deck a Dark Magician Girl in defend position",
-                "name": "Bond Between The Teacher and Student",
-                "type": "Spell"
-            },
-            {
-                "atk": 2000,
-                "def": 1700,
-                "defenseMode": false,
-                "description": "A devoted young sorcerer who studies every incantation recorded by the legendary Dark Magician. Though her power is still blooming, her will to protect her master is unwavering.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Magicians Apprentice",
-                "owner": 1,
-                "type": "Monster"
-            },
-            {
-                "atk": 2500,
-                "def": 2100,
-                "defenseMode": false,
-                "description": "Dark Magician the ultimate wizard in term of attack and defense.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Dark Magician",
-                "owner": 1,
-                "type": "Monster"
-            },
-            {
-                "atk": 1600,
-                "def": 100,
-                "defenseMode": false,
-                "description": "This mystical staff has chosen its wielder and resonates only with those who follow the path of the Dark Magician. Channeling ancient magic, it guides spellcasters to the secrets long forgotten.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Magicians Rod",
-                "owner": 1,
-                "type": "Monster"
-            },
-            {
-                "description": "If you control faceup Dark Magician: Target 1 monster your opponent controls; destroy that target..",
-                "name": "Thousand Knifes",
-                "type": "Spell"
-            },
-            {
                 "description": " If you controll faceup a Dark Magician monster, destroy all monster your opponent controll and skip your battle phase.",
                 "name": "Dark Magic",
                 "type": "Spell"
-            },
-            {
-                "atk": 3200,
-                "def": 3000,
-                "defenseMode": false,
-                "description": "A noble warrior summoned through ancient chaos rituals inspired by the teachings of the Dark Magician. Though his path diverges, their souls resonate through battle and destiny.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Black Luster Soldier",
-                "owner": 1,
-                "type": "Monster"
             },
             {
                 "description": "Pay 500 Hp and tribute 1 monster on the field to search 1 Dark Magician from your deck and increase 1000 ATK for the Dark Magician summon next turn.",
@@ -121,16 +42,6 @@
                 "type": "Monster"
             },
             {
-                "description": "If you control a face up Dark Magician, Dark magician girl you can destroy all of your oponent cards but your battle phase this turn.",
-                "name": "Dark Burning Magic",
-                "type": "Spell"
-            },
-            {
-                "description": "Look at your full deck and place a card you like at the top of the deck.",
-                "name": "Disorted Fate",
-                "type": "Spell"
-            },
-            {
                 "atk": 0,
                 "def": 0,
                 "defenseMode": false,
@@ -142,14 +53,82 @@
                 "type": "Monster"
             },
             {
+                "description": "When an opponent's monster declares an attack: Destroy all your opponent's Attack Position monsters your opponent cannot attack you this turn.",
+                "name": "Mirror Force",
+                "type": "Trap"
+            },
+            {
+                "description": "When an opponent's monster declares an attack: Target the attacking monster, and if you do, inflict damage to your opponent equal to its atk and your opponent cannot attack you this turn.",
+                "name": "Trrricksters!!",
+                "type": "Trap"
+            },
+            {
+                "atk": 2000,
+                "def": 1700,
+                "defenseMode": false,
+                "description": "A devoted young sorcerer who studies every incantation recorded by the legendary Dark Magician. Though her power is still blooming, her will to protect her master is unwavering.",
+                "isSet": false,
+                "justSummoned": false,
+                "name": "Magicians Apprentice",
+                "owner": 1,
+                "type": "Monster"
+            },
+            {
+                "description": "If you control faceup Dark Magician: Target 1 monster your opponent controls; destroy that target..",
+                "name": "Thousand Knifes",
+                "type": "Spell"
+            },
+            {
+                "description": "Look at your full deck and place a card you like at the top of the deck.",
+                "name": "Disorted Fate",
+                "type": "Spell"
+            },
+            {
+                "description": "If you controll a Dark Magician, special summon from your deck a Dark Magician Girl in defend position",
+                "name": "Bond Between The Teacher and Student",
+                "type": "Spell"
+            },
+            {
+                "description": "Buff a monster attack by 1000 when this card is activated.",
+                "name": "World Vanquisher",
+                "type": "Spell"
+            },
+            {
+                "description": "If you control a face up Dark Magician, Dark magician girl you can destroy all of your oponent cards but your battle phase this turn.",
+                "name": "Dark Burning Magic",
+                "type": "Spell"
+            },
+            {
                 "description": "Special summon a Dark Magician in the deck in defend position.",
                 "name": "Dark Magic Veil",
                 "type": "Spell"
             },
             {
-                "description": "When an opponent's monster declares an attack: Destroy all your opponent's Attack Position monsters your opponent cannot attack you this turn.",
-                "name": "Mirror Force",
+                "atk": 1600,
+                "def": 100,
+                "defenseMode": false,
+                "description": "This mystical staff has chosen its wielder and resonates only with those who follow the path of the Dark Magician. Channeling ancient magic, it guides spellcasters to the secrets long forgotten.",
+                "isSet": false,
+                "justSummoned": false,
+                "name": "Magicians Rod",
+                "owner": 1,
+                "type": "Monster"
+            },
+            {
+                "description": "When an opponent's monster declares an attack: Target the attacking monster, and if you do, inflict damage to your opponent equal to its atk your opponent cannot attack you this turn.",
+                "name": "Trrricksters!!",
                 "type": "Trap"
+            },
+            {
+                "atk": 3200,
+                "def": 3000,
+                "defenseMode": false,
+                "description": "A noble warrior summoned through ancient chaos rituals inspired by the teachings of the Dark Magician. Though his path diverges, their souls resonate through battle and destiny.",
+                "isSet": false,
+                "justSummoned": false,
+                "name": "Black Luster Soldier",
+                "owner": 1,
+                "type": "Monster"
             },
             {
                 "atk": 2000,
@@ -161,19 +140,6 @@
                 "name": "Dark Magician Girl",
                 "owner": 1,
                 "type": "Monster"
-            }
-        ],
-        "field": [],
-        "hand": [
-            {
-                "description": "If you controll a Dark Magician, special summon from your deck a Dark Magician Girl in defend position",
-                "name": "Bond Between The Teacher and Student",
-                "type": "Spell"
-            },
-            {
-                "description": "When an opponent's monster declares an attack: Target the attacking monster, and if you do, inflict damage to your opponent equal to its atk and your opponent cannot attack you this turn.",
-                "name": "Trrricksters!!",
-                "type": "Trap"
             },
             {
                 "atk": 2500,
@@ -185,7 +151,9 @@
                 "name": "Dark Magician",
                 "owner": 1,
                 "type": "Monster"
-            },
+            }
+        ],
+        "field": [
             {
                 "atk": 2800,
                 "def": 2600,
@@ -198,117 +166,72 @@
                 "type": "Monster"
             },
             {
+                "atk": 2500,
+                "def": 2100,
+                "defenseMode": false,
+                "description": "Dark Magician the ultimate wizard in term of attack and defense.",
+                "isSet": false,
+                "justSummoned": true,
+                "name": "Dark Magician",
+                "owner": 1,
+                "type": "Monster"
+            }
+        ],
+        "hand": [
+            {
+                "description": "If you controll a Dark Magician, special summon from your deck a Dark Magician Girl in defend position",
+                "name": "Bond Between The Teacher and Student",
+                "type": "Spell"
+            },
+            {
+                "description": "Special summon a Dark Magician in the deck in defend position.",
+                "name": "Dark Magic Veil",
+                "type": "Spell"
+            },
+            {
                 "description": "Shuffle your opponent's deck when this card is activated.",
                 "name": "Oshama Scramble",
                 "type": "Spell"
+            },
+            {
+                "atk": 2500,
+                "def": 2100,
+                "defenseMode": false,
+                "description": "Dark Magician the ultimate wizard in term of attack and defense.",
+                "isSet": false,
+                "justSummoned": false,
+                "name": "Dark Magician",
+                "owner": 1,
+                "type": "Monster"
             }
         ],
         "hp": 8000,
         "skipBatllePhaseCount": 0
     },
     "Player2": {
-        "attackedThisTurn": [],
+        "attackedThisTurn": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
         "canTrap": [],
         "deck": [
-            {
-                "description": "Special summon a Blue Eyes White Dragon in the deck in defend position.",
-                "name": "Roar of The Blue-Eyed Dragons",
-                "type": "Spell"
-            },
-            {
-                "atk": 3000,
-                "def": 2500,
-                "defenseMode": false,
-                "description": "This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Blue-Eyes White Dragon",
-                "owner": 2,
-                "type": "Monster"
-            },
-            {
-                "description": "Destroy random card in your opponent field up to the number of faceup Blue Eyes White Dragon you control",
-                "name": "Majesty of The White Dragons",
-                "type": "Spell"
-            },
-            {
-                "description": "Destroy all trap card in your opponent field if you control faceup Blue Eyes White Dragon",
-                "name": "Ash Again",
-                "type": "Spell"
-            },
-            {
-                "description": "Buff a monster attack and defense by 500 for each faceup monster you control when this card is activated.",
-                "name": "Dragon United",
-                "type": "Spell"
-            },
-            {
-                "description": "Flip coin, winner gets draw 2 cards",
-                "name": "Flower Snow Drum n Bass",
-                "type": "Spell"
-            },
-            {
-                "description": "If and only if your lifepoint is lower or equal to 1000 you can activate this card. When this card is activated, you can conduct anorther turn",
-                "name": "Re:End of a Dream",
-                "type": "Spell"
-            },
-            {
-                "description": "Sacrifice 2/3 of your lifepoint, Blue Eyes White Dragon you control can now attack again in this turn.",
-                "name": "Rage of The Blue Eyes",
-                "type": "Spell"
-            },
-            {
-                "atk": 1750,
-                "def": 200,
-                "defenseMode": false,
-                "description": "A crystal dragon born from solidified molten lava. T+pazolite's scales shimmer like gemstones, absorbing and reflecting light to confuse enemies on the battlefield.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "T+pazolite",
-                "owner": 2,
-                "type": "Monster"
-            },
-            {
-                "atk": 3000,
-                "def": 2500,
-                "defenseMode": false,
-                "description": "This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Blue-Eyes White Dragon",
-                "owner": 2,
-                "type": "Monster"
-            },
-            {
-                "atk": 1450,
-                "def": 1000,
-                "defenseMode": false,
-                "description": "An ancient dragon that once guarded sacred lands. Though its strength has waned with time, Laurs unwavering spirit remains, ready to sacrifice itself to halt any invader’s advance.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Laur",
-                "owner": 2,
-                "type": "Monster"
-            },
             {
                 "description": "Tribute 2 monster on the field to search 1 BLue Eyes White Dragon and Majesty of The White Dragons from your deck to your hand.",
                 "name": "Call of the Sky",
                 "type": "Spell"
             },
             {
-                "description": "If you controll a Blue Eyes White Dragon destroy all card your opponent controll but skip your next 1 battle phase.",
-                "name": "Burst Stream of Destruction",
+                "description": "Special summon a Blue Eyes White Dragon in the deck in defend position.",
+                "name": "Roar of The Blue-Eyed Dragons",
                 "type": "Spell"
             },
             {
-                "atk": 3500,
-                "def": 2500,
-                "defenseMode": false,
-                "description": "This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale.",
-                "isSet": false,
-                "justSummoned": false,
-                "name": "Deep-Eyes White Dragon",
-                "owner": 2,
-                "type": "Monster"
+                "description": "If you controll a Blue Eyes White Dragon destroy all card your opponent controll but skip your next 1 battle phase.",
+                "name": "Burst Stream of Destruction",
+                "type": "Spell"
             },
             {
                 "description": "Buff a monster attack by 1000 when this card is activated.",
@@ -327,16 +250,6 @@
                 "type": "Monster"
             },
             {
-                "description": "Special summon a Blue Eyes White Dragon in the deck in defend position.",
-                "name": "Roar of The Blue-Eyed Dragons",
-                "type": "Spell"
-            },
-            {
-                "description": "Flip coin, winner gets draw 2 cards",
-                "name": "Flower Snow Drum n Bass",
-                "type": "Spell"
-            },
-            {
                 "atk": 3000,
                 "def": 2500,
                 "defenseMode": false,
@@ -348,14 +261,82 @@
                 "type": "Monster"
             },
             {
+                "description": "Destroy random card in your opponent field up to the number of faceup Blue Eyes White Dragon you control",
+                "name": "Majesty of The White Dragons",
+                "type": "Spell"
+            },
+            {
+                "description": "Destroy all trap card in your opponent field if you control faceup Blue Eyes White Dragon",
+                "name": "Ash Again",
+                "type": "Spell"
+            },
+            {
+                "atk": 1750,
+                "def": 200,
+                "defenseMode": false,
+                "description": "A crystal dragon born from solidified molten lava. T+pazolite's scales shimmer like gemstones, absorbing and reflecting light to confuse enemies on the battlefield.",
+                "isSet": false,
+                "justSummoned": false,
+                "name": "T+pazolite",
+                "owner": 2,
+                "type": "Monster"
+            },
+            {
+                "description": "Buff a monster attack and defense by 500 for each faceup monster you control when this card is activated.",
+                "name": "Dragon United",
+                "type": "Spell"
+            },
+            {
+                "description": "Flip coin, winner gets draw 2 cards",
+                "name": "Flower Snow Drum n Bass",
+                "type": "Spell"
+            },
+            {
+                "description": "Sacrifice 2/3 of your lifepoint, Blue Eyes White Dragon you control can now attack again in this turn.",
+                "name": "Rage of The Blue Eyes",
+                "type": "Spell"
+            },
+            {
+                "description": "Flip coin, winner gets draw 2 cards",
+                "name": "Flower Snow Drum n Bass",
+                "type": "Spell"
+            },
+            {
+                "description": "Special summon a Blue Eyes White Dragon in the deck in defend position.",
+                "name": "Roar of The Blue-Eyed Dragons",
+                "type": "Spell"
+            },
+            {
                 "description": "Look at your full deck and place a card you like at the top of the deck.",
                 "name": "Disorted Fate",
                 "type": "Spell"
             },
             {
-                "description": "Destroy random card in your opponent field up to the number of faceup Blue Eyes White Dragon you control",
-                "name": "Majesty of The White Dragons",
+                "atk": 1450,
+                "def": 1000,
+                "defenseMode": false,
+                "description": "An ancient dragon that once guarded sacred lands. Though its strength has waned with time, Laurs unwavering spirit remains, ready to sacrifice itself to halt any invader’s advance.",
+                "isSet": false,
+                "justSummoned": false,
+                "name": "Laur",
+                "owner": 2,
+                "type": "Monster"
+            },
+            {
+                "description": "Destroy all trap card in your opponent field if you control faceup Blue Eyes White Dragon",
+                "name": "Ash Again",
                 "type": "Spell"
+            },
+            {
+                "atk": 3500,
+                "def": 2500,
+                "defenseMode": false,
+                "description": "This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale.",
+                "isSet": false,
+                "justSummoned": false,
+                "name": "Deep-Eyes White Dragon",
+                "owner": 2,
+                "type": "Monster"
             },
             {
                 "atk": 1800,
@@ -369,7 +350,19 @@
                 "type": "Monster"
             }
         ],
-        "field": [],
+        "field": [
+            {
+                "atk": 3000,
+                "def": 2500,
+                "defenseMode": false,
+                "description": "This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale.",
+                "isSet": false,
+                "justSummoned": true,
+                "name": "Blue-Eyes White Dragon",
+                "owner": 2,
+                "type": "Monster"
+            }
+        ],
         "hand": [
             {
                 "description": "Can destroy a monster card in defense mode",
@@ -377,8 +370,13 @@
                 "type": "Spell"
             },
             {
-                "description": "Destroy all trap card in your opponent field if you control faceup Blue Eyes White Dragon",
-                "name": "Ash Again",
+                "description": "If and only if your lifepoint is lower or equal to 1000 you can activate this card. When this card is activated, you can conduct anorther turn",
+                "name": "Re:End of a Dream",
+                "type": "Spell"
+            },
+            {
+                "description": "Shuffle your opponent's deck when this card is activated.",
+                "name": "Oshama Scramble",
                 "type": "Spell"
             },
             {
@@ -393,25 +391,20 @@
                 "type": "Monster"
             },
             {
-                "atk": 2100,
-                "def": 700,
+                "atk": 3000,
+                "def": 2500,
                 "defenseMode": false,
-                "description": "A shadow dragon, slender yet deadly. Kuroma hides within dark clouds, striking without warning and bringing silent destruction to its prey.",
+                "description": "This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale.",
                 "isSet": false,
                 "justSummoned": false,
-                "name": "Kuroma",
+                "name": "Blue-Eyes White Dragon",
                 "owner": 2,
                 "type": "Monster"
-            },
-            {
-                "description": "Shuffle your opponent's deck when this card is activated.",
-                "name": "Oshama Scramble",
-                "type": "Spell"
             }
         ],
-        "hp": 8000,
+        "hp": 2700,
         "skipBatllePhaseCount": 0
     },
     "hasBattled": false,
-    "turn": "PLAYER1"
+    "turn": "PLAYER2"
 }
