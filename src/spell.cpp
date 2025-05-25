@@ -716,7 +716,7 @@ bool MajestyofTheWhiteDragons :: ActivateEffect(Player& self, Player& opponent) 
         if (count >= newfield2.size()){
             cout << "[Majesty of the White Dragons] You have " << count << " Blue-Eyes White Dragon. Destroy " << count << " enemy's card!" << endl;
             cout << "[Majesty of the White Dragons] Succesfully destroy all opponent's field!" << endl;
-            writeLog("Opponent used [Majesty of the White Dragons] when having " + to_string(count) + "Blue-Eyes White Dragon. They destroyed all of your card!");
+            writeLog("Opponent used [Majesty of the White Dragons] when having " + to_string(count) + " Blue-Eyes White Dragon. They destroyed all of your card!");
             opponent.setField(newfieldopp);
         }
         if (count < newfield2.size()){
@@ -724,13 +724,13 @@ bool MajestyofTheWhiteDragons :: ActivateEffect(Player& self, Player& opponent) 
     
     cout << "[Majesty of the White Dragons] You have " << count << " Blue-Eyes White Dragon. Destroy " << count << " enemy's card!" << endl;
 
-    writeLog("Opponent used [Majesty of the White Dragons] when having " + to_string(count) + "Blue-Eyes White Dragon. They destroyed : \n " );
+    string log = "Opponent used [Majesty of the White Dragons] when having " + to_string(count) + " Blue-Eyes White Dragon. They destroyed : \n ";
 
     for (int i = 0; i < count; ++i){
         cout << "[Majesty of the White Dragons] Destroy : " << newfield2[i]->getName() << endl;
-        writeLog(newfield2[i]->getName() + "\n");
+        log += newfield2[i]->getName() + "\n";
     }
-
+    writeLog(log);
     newfield2.erase(newfield2.begin(), newfield2.begin() + count);
     opponent.setField(newfield2);
 }
