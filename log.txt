@@ -1,7 +1,0 @@
-[Sun May 25 01:16:40 2025] Opponent used [Disorted Fate] to move Ash Again to the top of there deck. What are they trying to do? 
-
-[Sun May 25 01:16:55 2025] Opponent used [Flower Snow Drum n Bass] and drew you 2 cards. Thank you, I guess? 
-
-[Sun May 25 01:17:18 2025] Opponent summoned a monster in attack position.
-[Sun May 25 01:17:24 2025] Opponent declared an attack from Blue-Eyes White Dragon targeting opponent's card at index 0.
-[Sun May 25 01:17:24 2025] Blue-Eyes White Dragon destroyed Magicians Rod and dealt 1400 damage.

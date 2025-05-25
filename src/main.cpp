@@ -54,7 +54,7 @@ int main() {
     string player;
     cout << "==================== GAME RULE ====================" << endl;
     cout << "Each player starts with 8000 HP." << endl;
-    cout << "Each player has a deck of 30 cards." << endl;
+    cout << "Each player has a deck of 26 cards." << endl;
     cout << "Each player draws 5 cards at the start of the duel." << endl;
     cout << "A player loses when their HP reaches 0 or if they cannot draw a card." << endl;
     cout << "Starting from turn 2, each player draws 1 card at the beginning of their turn." << endl;
@@ -65,6 +65,7 @@ int main() {
     cout << "as long as it was already on the field since a previous turn." << endl;
     cout << "as long as it was not summoned this turn." << endl;
     cout << "NOTE: Face-down monsters can only change position by flip summoning." << endl;
+    cout << "NOTE: Monster summoned this turn cannot switch position aplied to all kind of summon (normal summon, special summon)." << endl;
     cout << "You can activate multiple Spell Cards per turn." << endl;
     cout << "If a Spell resolves successfully, it is removed from your hand." << endl;
     cout << "If it fails, it remains in your hand." << endl;
@@ -76,11 +77,11 @@ int main() {
     cout << "If your opponent controls no monsters, you can attack their HP directly." << endl;
     cout << "If your monster attacks a face-down monster, it is flipped face-up before damage calculation." << endl;
     cout << "- ATK vs ATK: The weaker monster is destroyed." << endl;
-    cout << "             Its controller takes damage equal to the difference." << endl;
+    cout << "              Its controller takes damage equal to the difference." << endl;
+    cout << "              If both monster have equal ATK, both are destroyed." << endl;
     cout << "- ATK vs DEF: If ATK > DEF, the defending monster is destroyed." << endl;
     cout << "             If ATK < DEF, the attacker takes damage = DEF - ATK." << endl;
     cout << "             If ATK == DEF, no monsters are destroyed and no damage is taken." << endl;
-    cout << "Note: If you have already entered battle this turn, you cannot summon a monster and attack again." << endl;
     cout << "====================================================" << endl;
 
     cout << "==================== TURN PHASES ===================" << endl;
