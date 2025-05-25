@@ -150,15 +150,6 @@ int main() {
             isFirstTurn = false;
 
             // Check for victory
-            if (gameState->checkVictory(*player1, *player2)) {
-                cout << "Game Over! ";
-                if (player1->getHp() <= 0 || player1->getDeck().empty()) {
-                    cout << "Player 2 wins!\n";
-                } else {
-                    cout << "Player 1 wins!\n";
-                }
-                break;
-            }
             self->setSkipBattlePhaseCount(self->getSkipBattlePhaseCount() - 1);
             state = readFromFile();
             // Update JSON state
@@ -191,6 +182,16 @@ int main() {
                 }
             }
             oppAttacked = temp;
+
+            if (gameState->checkVictory(*player1, *player2)) {
+                cout << "Game Over! ";
+                if (player1->getHp() <= 0 || player1->getDeck().empty()) {
+                    cout << "Player 2 wins!\n";
+                } else {
+                    cout << "Player 1 wins!\n";
+                }
+                break;
+            }
 
             if (!self->canTrap.empty() && self->canTrap[0] != -1) {
                 int index = ActivateTrapCards(self->canTrap, *self, *opponent, attackerIndex) ;
