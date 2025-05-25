@@ -1,4 +1,5 @@
-[Sun May 25 21:15:04 2025] Opponent summoned a monster in attack position.
-[Sun May 25 21:15:09 2025] Opponent used [Majesty of the White Dragons] when having 1Blue-Eyes White Dragon. They destroyed : 
- Dark Magician Girl
+[Sun May 25 21:44:25 2025] Opponent used [The Power of Friendship] and gained 4000 atk in one single attack. Focus on defense! 
 
+[Sun May 25 21:44:26 2025] Every battle has its own consequence. Both of you and opponent lose everything in the battlefield! [The Power of Friendship] costs them : Dark Magician Girl
+Magicians Apprentice
+We also lost : Blue-Eyes White Dragon

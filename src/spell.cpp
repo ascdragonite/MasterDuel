@@ -615,7 +615,7 @@ bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) { //sm
                     cout << "[The Power of Friendship] Fail to destroy " << card5->getName() << " with " << newcard << " atk " << endl;
                     cout << "All of your monster used in [The Power of Friendship] will be destroy!" << endl;
                     cout << "[The Power of Friendship] Destroy : " << endl;
-                    writeLog("Even [The Power of Friendship] can not stop us! Counterattack and destroy : ");
+                    string logM = "Even [The Power of Friendship] can not stop us! Counterattack and destroy : ";
                     for(auto card6 : newfield1){
                         MonsterCard *card7 = dynamic_cast<MonsterCard *>(card6);
                         if(card7 == nullptr || card7->getType() != "Monster" || card7->isFacedown() == true){
@@ -623,11 +623,12 @@ bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) { //sm
                         }
                         if(card7->getType() == "Monster" && card7->isFacedown() == false){
                             cout << card7->getName() << endl;
-                            writeLog(card7->getName());
+                            logM += (card7->getName() + "\n");
                         }
                     }
                     cout << "You lose " << card5->getAtk() - newcard << " Hp " << endl;
-                    writeLog("They lose " + to_string(card5->getAtk() - newcard) + " Hp. How pathethic!");
+                    logM += "They lose " + to_string(card5->getAtk() - newcard) + " Hp. How pathethic!";
+                    writeLog(logM);
                     newhp2 = self.getHp() - (card5->getAtk() - newcard);
                     self.setHp(newhp2);
                     self.setField(newfieldself);
@@ -637,7 +638,7 @@ bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) { //sm
                 
                     cout << "[The Power of Friendship] Self Destruct : " << endl;
 
-                    writeLog("Every battle has its own consequence. Both of you and opponent lose everything in the battlefield! [The Power of Friendship] costs them : ");
+                    string logm1 = "Every battle has its own consequence. Both of you and opponent lose everything in the battlefield! [The Power of Friendship] costs them : ";
                     for(auto card6 : newfield1){
                         MonsterCard *card7 = dynamic_cast<MonsterCard *>(card6);
                         if(card7 == nullptr || card7->getType() != "Monster" || card7->isFacedown() == true){
@@ -645,13 +646,14 @@ bool ThePowerofFriendship::ActivateEffect(Player& self, Player& opponent) { //sm
                         }
                         if(card7->getType() == "Monster" && card7->isFacedown() == false){
                             cout << card7->getName() << endl;
-                            writeLog(card7->getName());
+                            logm1 += card7->getName() + "\n";
                         }
                     }
                     self.setField(newfieldself);
                     
                     cout << "[The Power of Friendship] Opponent Destruct : " << endl;
-                    writeLog("We also lost : " + card5->getName());
+                    logm1 += "We also lost : " + card5->getName();
+                    writeLog(logm1);
                     cout << card5->getName() << endl;        
                     newfield2.erase(newfield2.begin()+in);
                     opponent.setField(newfield2);        
