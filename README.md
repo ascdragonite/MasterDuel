@@ -3,7 +3,7 @@
 A console-based turn-based card game inspired by Yu-Gi-Oh.
 
 This project focuses on:
-- Object-Oriented Programming (inheritance, polymorphism)
+- Object-Oriented Programming (encapsulation, inheritance, polymorphism)
 - Turn-based game mechanics and battle logic
 - Core system and game state design
 
